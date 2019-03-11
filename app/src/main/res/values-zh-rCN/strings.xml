@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CST2355_Final_19W</string>
+    <string name="menu_title_dict">韦氏词典</string>
+    <string name="menu_title_newsfeed">新闻提要</string>
+    <string name="menu_title_flightstatus">航班状态跟踪</string>
+    <string name="menu_title_nytimes">纽约时报文章搜索</string>
+</resources>

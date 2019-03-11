@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">CST2355_Final_19W</string>
+    <string name="menu_title_dict">Merriam Webster Dictionary</string>
+    <string name="menu_title_newsfeed">News Feed</string>
+    <string name="menu_title_flightstatus">Flight Status tracker</string>
+    <string name="menu_title_nytimes">New York Times Article Search</string>
+</resources>
