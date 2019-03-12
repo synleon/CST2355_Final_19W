@@ -1,16 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/menu_dict"
-        android:title="@string/menu_title_dict" />
+        android:icon="@drawable/icons_dict"
+        android:title="@string/menu_title_dict"
+        app:showAsAction="always"/>
     <item
         android:id="@+id/menu_newsfeed"
-        android:title="@string/menu_title_newsfeed" />
+        android:icon="@drawable/icon_news"
+        android:title="@string/menu_title_newsfeed"
+        app:showAsAction="always"/>
     <item
         android:id="@+id/menu_flghtstatus"
-        android:title="@string/menu_title_flightstatus" />
+        android:icon="@drawable/icon_flight"
+        android:title="@string/menu_title_flightstatus"
+        app:showAsAction="always"/>
     <item
         android:id="@+id/menu_nytimes"
-        android:title="@string/menu_title_nytimes" />
+        android:icon="@drawable/icon_nytimes"
+        android:title="@string/menu_title_nytimes"
+        app:showAsAction="always"/>
 </menu>
