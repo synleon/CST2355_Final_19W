@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
                 //startActivity(new Intent(MainActivity.this, Activity_flghtstatus.class));
                 break;
             case R.id.menu_nytimes:
-                //startActivity(new Intent(MainActivity.this, Activity_nytimes.class));
+                startActivity(new Intent(MainActivity.this, Activity_nytimes.class));
                 break;
             default:
                 break;
