@@ -1,9 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity_flghtstatus">
+    tools:context=".Activity_flightstatus">
 
-</android.support.constraint.ConstraintLayout>
+    <Button
+        android:id="@+id/flightstatus_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="flightstatusButton"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"/>
+
+    <ProgressBar
+        android:id="@+id/dict_progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/flightstatus_button"/>
+
+    <ListView
+        android:id="@+id/flightstatus_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/dict_progressBar"
+        android:layout_below="@id/flightstatus_editText1"/>
+
+    <EditText
+        android:id="@+id/flightstatus_editText1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:textSize="30sp"
+        android:inputType="textPersonName"
+        android:text="Name"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"/>
+</RelativeLayout>
