@@ -5,7 +5,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 
 
@@ -87,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
                 //startActivity(new Intent(MainActivity.this, Activity_newsfeed.class));
                 break;
             case R.id.menu_flghtstatus:
-                startActivity(new Intent(MainActivity.this, Activity_flghtstatus.class));
+                startActivity(new Intent(MainActivity.this, Activity_flightstatus.class));
                 break;
             case R.id.menu_nytimes:
                 startActivity(new Intent(MainActivity.this, Activity_nytimes.class));
