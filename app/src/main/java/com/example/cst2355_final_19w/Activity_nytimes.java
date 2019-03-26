@@ -1,6 +1,7 @@
 package com.example.cst2355_final_19w;
 
 import android.content.Intent;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.Arrays;
@@ -36,17 +38,12 @@ public class Activity_nytimes extends AppCompatActivity {
 
 
         ListView theList = (ListView)findViewById(R.id.ny_list);
-        SwipeRefreshLayout refresher = (SwipeRefreshLayout)findViewById(R.id.refresher) ;
-        refresher.setOnRefreshListener(()-> {
-            numObjects *= 2;
-            ((MyOwnAdapter) adt).notifyDataSetChanged();
-            refresher.setRefreshing( false );
-        });
-
 
         theList.setAdapter(adt);
 
+        ProgressBar progressBar = findViewById(R.id.ny_progressBar);
 
+        progressBar.setProgress(100);
 
         //This listens for items being clicked in the list view
         theList.setOnItemClickListener(( parent,  view,  position,  id) -> {
@@ -60,6 +57,13 @@ public class Activity_nytimes extends AppCompatActivity {
 
            // numObjects = 20;
           //  ((MyOwnAdapter) adt).notifyDataSetChanged();
+        });
+
+        Button btn = findViewById(R.id.ny_button);
+        btn.setOnClickListener(v -> {
+            Snackbar sb = Snackbar.make(btn, "Go back?", Snackbar.LENGTH_LONG)
+                    .setAction("Yes", e -> finish());
+            sb.show();
         });
     }
 
