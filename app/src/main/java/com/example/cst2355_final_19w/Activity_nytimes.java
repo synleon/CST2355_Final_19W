@@ -1,41 +1,156 @@
 package com.example.cst2355_final_19w;
 
+import android.content.Intent;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AbsListView;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.Toast;
+import android.widget.TextView;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class Activity_nytimes extends AppCompatActivity {
 
-    private ListView listview;
-    private ProgressBar progressBar;
-    //private Toolbar tbar;
+    int numObjects = 6;
+    public static final String ITEM_ID = "ID";
 
+    public static final int EMPTY_ACTIVITY = 345;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nytimes);
 
-        Toast.makeText(this, "Welcome to NY times!", Toast.LENGTH_LONG).show();
+         ListAdapter adt = new MyOwnAdapter();
 
-       // tbar = findViewById(R.id.newsfeedtoolbar);
 
+        ListView theList = (ListView)findViewById(R.id.ny_list);
+        SwipeRefreshLayout refresher = (SwipeRefreshLayout)findViewById(R.id.refresher) ;
+        refresher.setOnRefreshListener(()-> {
+            numObjects *= 2;
+            ((MyOwnAdapter) adt).notifyDataSetChanged();
+            refresher.setRefreshing( false );
+        });
+
+
+        theList.setAdapter(adt);
+
+
+
+        //This listens for items being clicked in the list view
+        theList.setOnItemClickListener(( parent,  view,  position,  id) -> {
+            Log.e("you clicked on :" , "item "+ position);
+            Bundle dataToPass = new Bundle();
+            dataToPass.putLong(ITEM_ID, id);
+
+            Intent nextActivity = new Intent(Activity_nytimes.this, EmptyActivity.class);
+            nextActivity.putExtras(dataToPass); //send data to next activity
+            startActivityForResult(nextActivity, EMPTY_ACTIVITY); //make the transition
+
+           // numObjects = 20;
+          //  ((MyOwnAdapter) adt).notifyDataSetChanged();
+        });
+    }
+
+    //This class needs 4 functions to work properly:
+    protected class MyOwnAdapter extends BaseAdapter
+    {
+
+        @Override
+        public int getCount() {
+            return numObjects;
+        }
+
+        public Object getItem(int position){
+            return "SHow this in row "+ position;
+        }
+
+        public View getView(int position, View old, ViewGroup parent)
+        {
+            LayoutInflater inflater = getLayoutInflater();
+
+            View newView = inflater.inflate(R.layout.activity_save, parent, false );
+
+
+            TextView rowText = (TextView)newView.findViewById(R.id.textOnRow);
+            String stringToShow = getItem(position).toString();
+            rowText.setText( stringToShow );
+            //return the row:
+            return newView;
+        }
+
+        public long getItemId(int position)
+        {
+            return position;
+        }
+    }
+
+    //A copy of ArrayAdapter. You just give it an array and it will do the rest of the work.
+    protected class MyArrayAdapter<E> extends BaseAdapter
+    {
+        private List<E> dataCopy = null;
+
+        //Keep a reference to the data:
+        public MyArrayAdapter(List<E> originalData)
+        {
+            dataCopy = originalData;
+        }
+
+        //You can give it an array
+        public MyArrayAdapter(E [] array)
+        {
+            dataCopy = Arrays.asList(array);
+        }
+
+
+        //Tells the list how many elements to display:
+        public int getCount()
+        {
+            return dataCopy.size();
+        }
+
+
+        public E getItem(int position){
+            return dataCopy.get(position);
+        }
+
+        public View getView(int position, View old, ViewGroup parent)
+        {
+            //get an object to load a layout:
+            LayoutInflater inflater = getLayoutInflater();
+
+            //Recycle views if possible:
+            TextView root = (TextView)old;
+            //If there are no spare layouts, load a new one:
+            if(old == null)
+                root = (TextView)inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
+
+            //Get the string to go in row: position
+            String toDisplay = getItem(position).toString();
+
+            //Set the text of the text view
+            root.setText(toDisplay);
+
+            //Return the text view:
+            return root;
+        }
+
+
+        //Return 0 for now. We will change this when using databases
+        public long getItemId(int position)
+        {
+            return 0;
+        }
     }
 }
-
-
-
-
-
-
