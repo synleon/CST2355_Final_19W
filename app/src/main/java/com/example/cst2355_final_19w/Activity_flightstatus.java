@@ -8,6 +8,6 @@ public class Activity_flightstatus extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_flghtstatus);
+        setContentView(R.layout.activity_flightstatus);
     }
 }
