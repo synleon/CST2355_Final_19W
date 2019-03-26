@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".Activity_nytimes" />
-        <activity android:name=".Activity_flghtstatus" />
+        <activity android:name=".Activity_flightstatus" />
         <activity android:name=".Activity_dict" />
         <activity android:name=".EmptyActivity" />
         <activity android:name=".MainActivity">
