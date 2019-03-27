@@ -22,8 +22,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.support.design.widget.Snackbar;
 
+/** This class is a main class for launch the News Feed section of the final project application.
+ *
+ *  @Author: Linlin Cheng
+ *  @Since: 2019-03-24
+ *  @Reference: Professor Eric Torunski, InClassExamples_W19
+ */
+
 public class Activity_newsfeed extends AppCompatActivity
 {
+
+    /** declare a variable with type Toolbar used for creating a toolbar object. */
     Toolbar tBar;
 
     // need to be changed
@@ -36,31 +45,40 @@ public class Activity_newsfeed extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_newsfeed);
 
-        // create an object of progress bar and set it visible.
+        /** create an object of progress bar and set it visible.*/
         ProgressBar progressBar = (ProgressBar)findViewById(R.id.progressBar);
         progressBar.setVisibility(View.VISIBLE);
 
-        // create an object of tool bar and display it.
+        /** create an object of tool bar and display it.*/
         tBar = (Toolbar)findViewById(R.id.toolbar_newsF);
         setSupportActionBar(tBar);
 
-        // set function for "GO BACK" button
+        /** set a function for "GO BACK" button. */
         Button goBackBu = (Button)findViewById(R.id.goback_newsF);
         goBackBu.setOnClickListener( b -> {
             Intent goBackIntent = new Intent(Activity_newsfeed.this, MainActivity.class);
             startActivity(goBackIntent);
         });
 
-        // create an object of listView
+        /** create an object of listView
+         *  then use it to call the function setAdapter() with a parameter "adapter" which is an object of
+         *  the inner class called NewsAdapter. */
         ListView newsList = (ListView) findViewById(R.id.list_newsF);
         NewsAdapter adapter = new NewsAdapter();
         newsList.setAdapter(adapter);
 
         LayoutInflater inflater = getLayoutInflater();
         //View newView = inflater.inflate(R.layout.activity_list_newsfeed,parent,false);
+
+        newsList.setOnItemClickListener((parent, view, position, id) ->
+        {
+            Intent nextActivity = new Intent(Activity_newsfeed.this, Activity_listDetail_newsfeed.class );
+            startActivity(nextActivity);
+        });
+
     }
 
-    // display the toolbar
+    /** display the items of toolbar */
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
@@ -70,36 +88,41 @@ public class Activity_newsfeed extends AppCompatActivity
         return true;
     }
 
-    // define the function for each item in the toolbar
+    /** this method is used to define a utility of each item in the toolbar */
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
         switch(item.getItemId())
         {
             case R.id.dictionary:
-                // make toast when click dictionary icon on toolbar
+                /** make toast when click dictionary icon on toolbar */
                 Toast.makeText(this, "You have come to Dictionary Section.", Toast.LENGTH_LONG).show();
                 break;
             case R.id.flightStat_newsFeed:
-                // make toast when click flight icon on toolbar
+                /** make toast when click flight icon on toolbar */
                 Toast.makeText(this, "You have come to Flight Status Section.", Toast.LENGTH_LONG).show();
                 break;
             case R.id.item_NYtime_newsFeed:
-                // show a snack bar when click New York Time icon on toolbar
+                /** show a snack bar when click New York Time icon on toolbar */
                 showSnackBar();
                 break;
             case R.id.item_help_newsFeed:
-                // make a alert when click overflow title
+                /** make a alert when click overflow title */
                 alert();
                 break;
         }
         return true;
     }
 
-    // this method will be executed when the item "HELP" in the toolbar is clicked.
+    /** this method will be executed when the item "HELP" in the toolbar is clicked. */
     public void alert()
     {
+        /** create an object of View used to set the "HELP" layout later*/
         View helpView = getLayoutInflater().inflate(R.layout.activity_dialogbox_newsfeed, null);
+
+        /** create an object of AlertDialog.Builder and
+         *  use it to set a message and a button with function needed,
+         *  then show the view. */
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.help_newsF)
                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
@@ -107,14 +130,18 @@ public class Activity_newsfeed extends AppCompatActivity
                         // What to do on Accept
                     }
                 }).setView(helpView);
-
         builder.create().show();
     }
 
-    // this method will be executed when the item "New York Times" in the toolbar is clicked.
+    /** this method will be executed when the item "New York Times" in the toolbar is clicked. */
     public void showSnackBar()
     {
+        /** find view */
         tBar = (Toolbar)findViewById(R.id.toolbar_newsF);
+
+        /** create an object of Snackbar
+         *  use it to set a button with the function needed
+         *  then show the view*/
         Snackbar sb = Snackbar.make(tBar, "Go to New York Time Article Search?", Snackbar.LENGTH_LONG)
                 .setAction("Yes", new View.OnClickListener()
                 {
@@ -127,6 +154,7 @@ public class Activity_newsfeed extends AppCompatActivity
         sb.show();
     }
 
+    /** this inner class is used for populating the listView*/
     protected class NewsAdapter extends BaseAdapter
     {
         public NewsAdapter() {
