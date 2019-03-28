@@ -5,5 +5,12 @@
     <string name="menu_title_flightstatus">Flight Status tracker</string>
     <string name="menu_title_nytimes">New York Times Article Search</string>
     <string name="buttomgotocheckflight">buttomgotocheckflight</string>
-
+    <string name="greeting_newsFeed">WELCOME TO NEWS FEED</string>
+    <string name="help_newsF">HELP</string>
+    <string name="searchText_newsF">Type here to search</string>
+    <string name="goback">GO BACK</string>
+    <string name="sbText">Search</string>
+    <string name="author">Author: Linlin Cheng</string>
+    <string name="versionNum">Version Number: 1.0</string>
+    <string name="instruction">Instruction</string>
 </resources>
