@@ -22,6 +22,10 @@ import android.widget.TextView;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ *
+ */
+
 public class Activity_nytimes extends AppCompatActivity {
 
     int numObjects = 6;
@@ -49,6 +53,7 @@ public class Activity_nytimes extends AppCompatActivity {
         theList.setOnItemClickListener(( parent,  view,  position,  id) -> {
             Log.e("you clicked on :" , "item "+ position);
             Bundle dataToPass = new Bundle();
+            dataToPass.putInt("position", position);
             dataToPass.putLong(ITEM_ID, id);
 
             Intent nextActivity = new Intent(Activity_nytimes.this, EmptyActivity.class);
