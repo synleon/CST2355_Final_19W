@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.menu_newsfeed:
                 //startActivity(new Intent(MainActivity.this, Activity_newsfeed.class));
                 break;
-            case R.id.menu_flghtstatus:
+            case R.id.menu_flightstatus:
                 startActivity(new Intent(MainActivity.this, Activity_flightstatus.class));
                 break;
             case R.id.menu_nytimes:

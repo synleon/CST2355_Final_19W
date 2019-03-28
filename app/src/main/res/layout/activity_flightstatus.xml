@@ -10,22 +10,22 @@
         android:id="@+id/flightstatus_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="flightstatusButton"
+        android:text="@string/buttomgotocheckflight"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"/>
-
-    <ProgressBar
-        android:id="@+id/dict_progressBar"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/flightstatus_button"/>
 
     <ListView
         android:id="@+id/flightstatus_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/dict_progressBar"
+        android:layout_above="@id/flightstatus_button"
+        android:layout_below="@id/flight_progressBar"/>
+
+    <ProgressBar
+        android:id="@+id/flight_progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
         android:layout_below="@id/flightstatus_editText1"/>
 
     <EditText
@@ -34,8 +34,17 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:textSize="30sp"
-        android:inputType="textPersonName"
-        android:text="Name"
+        android:hint="input airport code"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"/>
+        android:layout_alignParentEnd="true"/>
+
+    <!--<android.support.v7.widget.Toolbar-->
+        <!--android:id="@+id/toolbar"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:background="@color/colorAccent"-->
+        <!--android:layout_height="?attr/actionBarSize"-->
+        <!--&gt;-->
+    <!--</android.support.v7.widget.Toolbar>-->
+
+
 </RelativeLayout>

@@ -13,7 +13,7 @@
         android:title="@string/menu_title_newsfeed"
         app:showAsAction="always"/>
     <item
-        android:id="@+id/menu_flghtstatus"
+        android:id="@+id/menu_flightstatus"
         android:icon="@drawable/icon_flight"
         android:title="@string/menu_title_flightstatus"
         app:showAsAction="always"/>

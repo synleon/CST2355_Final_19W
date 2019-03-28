@@ -5,4 +5,6 @@
     <string name="menu_title_newsfeed">新闻提要</string>
     <string name="menu_title_flightstatus">航班状态跟踪</string>
     <string name="menu_title_nytimes">纽约时报文章搜索</string>
+    <string name="buttomgotocheckflight">航班跟踪按钮</string>
+
 </resources>
