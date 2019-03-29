@@ -142,7 +142,7 @@ public class Activity_flightstatus extends AppCompatActivity {
 
         /**
          *method to provide detial information for each flight
-         * @param position
+         * @param position this is
          * @param convertView
          * @param parent
          * @return

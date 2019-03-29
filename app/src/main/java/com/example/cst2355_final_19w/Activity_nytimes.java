@@ -18,6 +18,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Arrays;
 import java.util.List;
@@ -55,6 +56,8 @@ public class Activity_nytimes extends AppCompatActivity {
         ProgressBar progressBar = findViewById(R.id.ny_progressBar);
 
         progressBar.setProgress(100);
+
+        Toast.makeText(this, "Welcome to New York Times!", Toast.LENGTH_LONG).show();
 
         //This listens for items being clicked in the list view
         theList.setOnItemClickListener(( parent,  view,  position,  id) -> {
