@@ -22,11 +22,22 @@ import android.widget.TextView;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ *
+ */
+
 public class Activity_nytimes extends AppCompatActivity {
-
+    /**
+     * create the number of objects
+     */
     int numObjects = 6;
+    /**
+     * create ID instance
+     */
     public static final String ITEM_ID = "ID";
-
+    /**
+     * create the number of EMPTY_ACTTIVITY
+     */
     public static final int EMPTY_ACTIVITY = 345;
 
     @Override
@@ -49,6 +60,7 @@ public class Activity_nytimes extends AppCompatActivity {
         theList.setOnItemClickListener(( parent,  view,  position,  id) -> {
             Log.e("you clicked on :" , "item "+ position);
             Bundle dataToPass = new Bundle();
+            dataToPass.putInt("position", position);
             dataToPass.putLong(ITEM_ID, id);
 
             Intent nextActivity = new Intent(Activity_nytimes.this, EmptyActivity.class);
