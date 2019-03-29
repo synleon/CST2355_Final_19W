@@ -27,10 +27,17 @@ import java.util.List;
  */
 
 public class Activity_nytimes extends AppCompatActivity {
-
+    /**
+     * create the number of objects
+     */
     int numObjects = 6;
+    /**
+     * create ID instance
+     */
     public static final String ITEM_ID = "ID";
-
+    /**
+     * create the number of EMPTY_ACTTIVITY
+     */
     public static final int EMPTY_ACTIVITY = 345;
 
     @Override
