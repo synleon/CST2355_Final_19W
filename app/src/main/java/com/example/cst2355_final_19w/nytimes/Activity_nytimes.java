@@ -1,32 +1,37 @@
-package com.example.cst2355_final_19w;
+package com.example.cst2355_final_19w.nytimes;
 
 import android.content.Intent;
 import android.support.design.widget.Snackbar;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.support.v7.widget.Toolbar;
+
+import com.example.cst2355_final_19w.R;
 
 import java.util.Arrays;
 import java.util.List;
 
 /**
+ * The main activity of new york times page
+ * @author leon
+ * @since March 30 2019
  *
  */
-
 public class Activity_nytimes extends AppCompatActivity {
     /**
      * create the number of objects
@@ -42,14 +47,42 @@ public class Activity_nytimes extends AppCompatActivity {
     public static final int EMPTY_ACTIVITY = 345;
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        //Inflate menu
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.ny_main_toolbar, menu);
+
+        // set search listener
+        MenuItem searchItem = menu.findItem(R.id.ny_search_item);
+        SearchView searchView = (SearchView)searchItem.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // start async task to perform the article search on new york times
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+        return true;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nytimes);
 
-         ListAdapter adt = new MyOwnAdapter();
+        // Initialize toolbar
+        Toolbar toolbar = findViewById(R.id.ny_main_toolbar);
+        setSupportActionBar(toolbar);
+
+        ListAdapter adt = new MyOwnAdapter();
 
 
-        ListView theList = (ListView)findViewById(R.id.ny_list);
+        ListView theList = (ListView) findViewById(R.id.ny_list);
 
         theList.setAdapter(adt);
 
@@ -60,18 +93,18 @@ public class Activity_nytimes extends AppCompatActivity {
         Toast.makeText(this, "Welcome to New York Times!", Toast.LENGTH_LONG).show();
 
         //This listens for items being clicked in the list view
-        theList.setOnItemClickListener(( parent,  view,  position,  id) -> {
-            Log.e("you clicked on :" , "item "+ position);
+        theList.setOnItemClickListener((parent, view, position, id) -> {
+            Log.e("you clicked on :", "item " + position);
             Bundle dataToPass = new Bundle();
             dataToPass.putInt("position", position);
             dataToPass.putLong(ITEM_ID, id);
 
-            Intent nextActivity = new Intent(Activity_nytimes.this, EmptyActivity.class);
+            Intent nextActivity = new Intent(Activity_nytimes.this, EmptyContainerActivity.class);
             nextActivity.putExtras(dataToPass); //send data to next activity
             startActivityForResult(nextActivity, EMPTY_ACTIVITY); //make the transition
 
-           // numObjects = 20;
-          //  ((MyOwnAdapter) adt).notifyDataSetChanged();
+            // numObjects = 20;
+            //  ((MyOwnAdapter) adt).notifyDataSetChanged();
         });
 
         Button btn = findViewById(R.id.ny_button);
@@ -83,77 +116,69 @@ public class Activity_nytimes extends AppCompatActivity {
     }
 
     //This class needs 4 functions to work properly:
-    protected class MyOwnAdapter extends BaseAdapter
-    {
+    protected class MyOwnAdapter extends BaseAdapter {
 
         @Override
         public int getCount() {
             return numObjects;
         }
 
-        public Object getItem(int position){
-            return "SHow this in row "+ position;
+        public Object getItem(int position) {
+            return "SHow this in row " + position;
         }
 
-        public View getView(int position, View old, ViewGroup parent)
-        {
+        public View getView(int position, View old, ViewGroup parent) {
             LayoutInflater inflater = getLayoutInflater();
 
-            View newView = inflater.inflate(R.layout.activity_save, parent, false );
+            View newView = inflater.inflate(R.layout.activity_save, parent, false);
 
 
-            TextView rowText = (TextView)newView.findViewById(R.id.textOnRow);
+            TextView rowText = (TextView) newView.findViewById(R.id.textOnRow);
             String stringToShow = getItem(position).toString();
-            rowText.setText( stringToShow );
+            rowText.setText(stringToShow);
             //return the row:
             return newView;
         }
 
-        public long getItemId(int position)
-        {
+        public long getItemId(int position) {
             return position;
         }
     }
 
     //A copy of ArrayAdapter. You just give it an array and it will do the rest of the work.
-    protected class MyArrayAdapter<E> extends BaseAdapter
-    {
+    protected class MyArrayAdapter<E> extends BaseAdapter {
         private List<E> dataCopy = null;
 
         //Keep a reference to the data:
-        public MyArrayAdapter(List<E> originalData)
-        {
+        public MyArrayAdapter(List<E> originalData) {
             dataCopy = originalData;
         }
 
         //You can give it an array
-        public MyArrayAdapter(E [] array)
-        {
+        public MyArrayAdapter(E[] array) {
             dataCopy = Arrays.asList(array);
         }
 
 
         //Tells the list how many elements to display:
-        public int getCount()
-        {
+        public int getCount() {
             return dataCopy.size();
         }
 
 
-        public E getItem(int position){
+        public E getItem(int position) {
             return dataCopy.get(position);
         }
 
-        public View getView(int position, View old, ViewGroup parent)
-        {
+        public View getView(int position, View old, ViewGroup parent) {
             //get an object to load a layout:
             LayoutInflater inflater = getLayoutInflater();
 
             //Recycle views if possible:
-            TextView root = (TextView)old;
+            TextView root = (TextView) old;
             //If there are no spare layouts, load a new one:
-            if(old == null)
-                root = (TextView)inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
+            if (old == null)
+                root = (TextView) inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
 
             //Get the string to go in row: position
             String toDisplay = getItem(position).toString();
@@ -167,8 +192,7 @@ public class Activity_nytimes extends AppCompatActivity {
 
 
         //Return 0 for now. We will change this when using databases
-        public long getItemId(int position)
-        {
+        public long getItemId(int position) {
             return 0;
         }
     }

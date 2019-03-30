@@ -1,4 +1,4 @@
-package com.example.cst2355_final_19w;
+package com.example.cst2355_final_19w.nytimes;
 
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -6,16 +6,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.cst2355_final_19w.R;
 
-public class Lab8_activity_message extends Fragment {
+
+public class Fragment_nytimes_article extends Fragment {
     /**
      * create to check is tablet or not
      */
@@ -98,7 +98,7 @@ public class Lab8_activity_message extends Fragment {
         builder.setMessage("Delete?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        EmptyActivity parent = (EmptyActivity) getActivity();
+                        EmptyContainerActivity parent = (EmptyContainerActivity) getActivity();
                         Intent backToFragmentExample = new Intent();
                         backToFragmentExample.putExtra(Activity_nytimes.ITEM_ID, dataFromActivity.getLong(Activity_nytimes.ITEM_ID));
                         // backToFragmentExample.putExtra(Activity_nytimes.ITEM_POSITION, dataFromActivity.getLong(ChatRoomActivitylab5_lab8.ITEM_POSITION ));

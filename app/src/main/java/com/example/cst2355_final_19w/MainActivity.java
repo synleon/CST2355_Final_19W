@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.cst2355_final_19w.nytimes.Activity_nytimes;
+
 
 /**
  * Main activity for final project
