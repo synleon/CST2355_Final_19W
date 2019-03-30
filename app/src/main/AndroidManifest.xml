@@ -10,10 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".Activity_newsfeed"></activity>
-        <activity android:name=".Activity_nytimes" />
+        <activity android:name=".nytimes.Activity_nytimes" />
         <activity android:name=".Activity_flightstatus" />
         <activity android:name=".Activity_dict" />
-        <activity android:name=".EmptyActivity" />
+        <activity android:name=".nytimes.EmptyContainerActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
