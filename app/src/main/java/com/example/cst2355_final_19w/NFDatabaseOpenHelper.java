@@ -24,7 +24,6 @@ public class NFDatabaseOpenHelper extends SQLiteOpenHelper
         db.execSQL("CREATE TABLE " + TABLE_NAME + " ("
                 + COL_ID +" INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + COL_TITLE + " TEXT, "
-                + COL_TEXT + " TEXT, "
                 + COL_URL + " TEXT);");
     }
 

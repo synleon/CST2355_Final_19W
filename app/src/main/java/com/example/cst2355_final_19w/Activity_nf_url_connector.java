@@ -5,7 +5,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -18,18 +21,24 @@ import java.net.URLEncoder;
 /** This class is used for connecting the the web "http://webhose.io"  and get useful information
  *  then set the info into a layout file */
 
-public class Activity_URL_newsfeed extends AppCompatActivity
+public class Activity_nf_url_connector extends AppCompatActivity
 {
     ProgressBar progressBar;
+    EditText typedTerm;
+    ImageView icon;
+    TextView articalTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_newsfeed);
+        setContentView(R.layout.activity_nf_mainlayout);
+        typedTerm = (EditText) findViewById(R.id.searchEdit_newsF);
+        typedTerm.setText(searchTerm);
     }
 
-     private class nfQuery extends AsyncTask<String, Integer, String> {
+     private class nfQuery extends AsyncTask<String, Integer, String>
+     {
          String searchTerm;
          String urlAddress;
          String title;
@@ -106,6 +115,8 @@ public class Activity_URL_newsfeed extends AppCompatActivity
          @Override
          protected void onPostExecute(String s)
          {
+             articalTitle = (TextView) findViewById(R.id.item);
+             articalTitle.setText(title);
 
 
          }

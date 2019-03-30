@@ -23,6 +23,13 @@
         app:showAsAction="always"/>
 
     <item
+        android:id="@+id/item_NYtime_favorate"
+        android:icon="@drawable/icon_nf_favorate"
+        android:title="@string/menu_title_nytimes"
+        android:orderInCategory="103"
+        app:showAsAction="always"/>
+
+    <item
         android:id="@+id/item_help_newsFeed"
         android:icon="@drawable/icon_nytimes"
         android:title="@string/help_newsF"

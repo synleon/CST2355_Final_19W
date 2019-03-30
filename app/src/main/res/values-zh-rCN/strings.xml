@@ -14,4 +14,7 @@
     <string name="author">作者：程琳琳</string>
     <string name="versionNum">版本号：1.0</string>
     <string name="instruction">使用说明</string>
+    <string name="deleteButton">删除</string>
+    <string name="favor">收藏夹</string>
+    <string name="save">保存到收藏夹</string>
 </resources>

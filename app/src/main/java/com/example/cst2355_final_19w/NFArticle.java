@@ -7,6 +7,12 @@ public class NFArticle
     private String urlAddress;
     private long id;
 
+    public NFArticle(String title, long id)
+    {
+        setTitle(title);
+        setId(id);
+    }
+
     public NFArticle(String title, String text, long id)
     {
         setTitle(title);

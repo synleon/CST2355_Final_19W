@@ -14,10 +14,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -34,7 +32,7 @@ import java.util.ArrayList;
  *  @Reference: Professor Eric Torunski, InClassExamples_W19
  */
 
-public class Activity_newsfeed extends AppCompatActivity
+public class Activity_nf_main extends AppCompatActivity
 {
 
     /** declare a variable with type Toolbar used for creating a toolbar object.
@@ -65,7 +63,7 @@ public class Activity_newsfeed extends AppCompatActivity
     {
         Toast.makeText(this,"Welcome to News Feed page", Toast.LENGTH_LONG).show();
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_newsfeed);
+        setContentView(R.layout.activity_nf_mainlayout);
 
         /** create an object of progress bar and set it visible.*/
         ProgressBar progressBar = (ProgressBar)findViewById(R.id.progressBar);
@@ -83,7 +81,7 @@ public class Activity_newsfeed extends AppCompatActivity
         Button searchBu = (Button) findViewById(R.id.sb_newsF);
         searchBu.setOnClickListener( sb ->
             {
-                Intent nextToDo = new Intent(Activity_newsfeed.this, Activity_URL_newsfeed.class);
+                Intent nextToDo = new Intent(Activity_nf_main.this, Activity_nf_url_connector.class);
                 startActivityForResult(nextToDo,REQUSTCODE);
 
                 ContentValues newValue = new ContentValues();
@@ -104,7 +102,7 @@ public class Activity_newsfeed extends AppCompatActivity
         /** set a function for "GO BACK" button. */
         Button goBackBu = (Button)findViewById(R.id.goback_newsF);
         goBackBu.setOnClickListener( b -> {
-            Intent goBackIntent = new Intent(Activity_newsfeed.this, MainActivity.class);
+            Intent goBackIntent = new Intent(Activity_nf_main.this, MainActivity.class);
             startActivity(goBackIntent);
         });
 
@@ -116,11 +114,11 @@ public class Activity_newsfeed extends AppCompatActivity
         newsList.setAdapter(adapter);
 
        // LayoutInflater inflater = getLayoutInflater();
-        //View newView = inflater.inflate(R.layout.activity_list_newsfeed,parent,false);
+        //View newView = inflater.inflate(R.layout.activity_nf_list_detail,parent,false);
 
         newsList.setOnItemClickListener((parent, view, position, id) ->
         {
-            Intent nextActivity = new Intent(Activity_newsfeed.this, Activity_listDetail_newsfeed.class );
+            Intent nextActivity = new Intent(Activity_nf_main.this, Activity_listDetail_newsfeed.class );
             startActivity(nextActivity);
         });
 
@@ -145,14 +143,14 @@ public class Activity_newsfeed extends AppCompatActivity
             case R.id.dictionary:
 
                 /**hop to dictionary section when click the icon*/
-                Intent goDictionary = new Intent(Activity_newsfeed.this, Activity_dict.class);
+                Intent goDictionary = new Intent(Activity_nf_main.this, Activity_dict.class);
                 startActivity(goDictionary);
                 break;
 
             case R.id.flightStat_newsFeed:
 
                 /**hop to flight state section when click the icon*/
-                Intent goFlight = new Intent(Activity_newsfeed.this, Activity_flightstatus.class);
+                Intent goFlight = new Intent(Activity_nf_main.this, Activity_flightstatus.class);
                 startActivity(goFlight);
                 break;
 
@@ -175,7 +173,7 @@ public class Activity_newsfeed extends AppCompatActivity
     public void alert()
     {
         /** create an object of View used to set the "HELP" layout later*/
-        View helpView = getLayoutInflater().inflate(R.layout.activity_dialogbox_newsfeed, null);
+        View helpView = getLayoutInflater().inflate(R.layout.activity_nf_helpdialog, null);
 
         /** create an object of AlertDialog.Builder and
          *  use it to set a message and a button with function needed,
@@ -205,7 +203,7 @@ public class Activity_newsfeed extends AppCompatActivity
                     @Override
                     public void onClick(View v){
                         // activity need to be changed
-                        Intent nextHop = new Intent(Activity_newsfeed.this, Activity_nytimes.class);
+                        Intent nextHop = new Intent(Activity_nf_main.this, Activity_nytimes.class);
                         startActivity(nextHop);
                     }});
         sb.show();
@@ -238,7 +236,7 @@ public class Activity_newsfeed extends AppCompatActivity
         {
             LayoutInflater inflater = getLayoutInflater();
 
-            View newView = inflater.inflate(R.layout.activity_list_newsfeed,parent,false);
+            View newView = inflater.inflate(R.layout.activity_nf_list_detail,parent,false);
 
             TextView rowText = (TextView) newView.findViewById(R.id.item);
             //String textToShow = getItem(position).toString();

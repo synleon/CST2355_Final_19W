@@ -16,6 +16,6 @@ public class Activity_listDetail_newsfeed extends AppCompatActivity
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list_newsfeed);
+        setContentView(R.layout.activity_nf_list_detail);
     }
 }

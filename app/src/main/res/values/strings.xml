@@ -13,4 +13,7 @@
     <string name="author">Author: Linlin Cheng</string>
     <string name="versionNum">Version Number: 1.0</string>
     <string name="instruction">Instruction</string>
+    <string name="deleteButton">DELETE</string>
+    <string name="favor">FAVORITES</string>
+    <string name="save">SAVE TO FAVORITES</string>
 </resources>
