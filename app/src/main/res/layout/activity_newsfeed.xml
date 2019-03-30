@@ -11,13 +11,13 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"/>
 
-    <TextView
+    <!--<TextView
         android:id="@+id/textView_newsF"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/toolbar_newsF"
         android:text="@string/greeting_newsFeed"
-        android:gravity="center"/>
+        android:gravity="center"/>-->
 
     <GridLayout
         android:id="@+id/search_newsF"
@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:rowCount="1"
         android:columnCount="2"
-        android:layout_below="@id/textView_newsF">
+        android:layout_below="@id/toolbar_newsF">
 
         <EditText
             android:id="@+id/searchEdit_newsF"

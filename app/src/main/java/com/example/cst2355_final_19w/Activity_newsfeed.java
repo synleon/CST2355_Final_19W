@@ -1,7 +1,9 @@
 package com.example.cst2355_final_19w;
 
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -22,7 +24,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.support.design.widget.Snackbar;
 
-/** This class is a main class for launch the News Feed section of the final project application.
+import java.util.ArrayList;
+
+/**
+ *  This class is a main class for launch the News Feed section of the final project application.
  *
  *  @Author: Linlin Cheng
  *  @Since: 2019-03-24
@@ -32,26 +37,69 @@ import android.support.design.widget.Snackbar;
 public class Activity_newsfeed extends AppCompatActivity
 {
 
-    /** declare a variable with type Toolbar used for creating a toolbar object. */
-    Toolbar tBar;
+    /** declare a variable with type Toolbar used for creating a toolbar object.
+     *  @param tBar */
+    private Toolbar tBar;
 
-    // need to be changed
-    public String[] news = {"news1", "news2","new3", "new4","new5","news6", "news7","new8", "new9","new10",
-            "news11", "news12","new13", "new14","new15"};
+    /** declare a variable with type ArrayList to list the articles found online
+     *  @param news */
+    private ArrayList<NFArticle> news = new ArrayList<>();
+
+    /** declare several final static variables with type String for using in a database
+     *  @param ITEM_SELECTED
+     *  @param ITEM_POSITION
+     *  @param ITEM_ID
+     *  @param db*/
+    private static final String ITEM_SELECTED = "ITEM";
+    private static final String ITEM_POSITION = "POSITION";
+    private static final String ITEM_ID = "ID";
+    protected SQLiteDatabase db;
+
+    /** declare two variables with type static final int for startActivityForResult function*/
+    private static final int REQUSTCODE = 20;
+    private static final int RESULTCODE = 50;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
+        Toast.makeText(this,"Welcome to News Feed page", Toast.LENGTH_LONG).show();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_newsfeed);
 
         /** create an object of progress bar and set it visible.*/
         ProgressBar progressBar = (ProgressBar)findViewById(R.id.progressBar);
-        progressBar.setVisibility(View.VISIBLE);
+        //progressBar.setVisibility(View.VISIBLE);
 
         /** create an object of tool bar and display it.*/
         tBar = (Toolbar)findViewById(R.id.toolbar_newsF);
         setSupportActionBar(tBar);
+
+        /** create an object of NFDatabaseOpenHelper to open a writable dababase */
+        NFDatabaseOpenHelper dbOpener = new NFDatabaseOpenHelper(this);
+        db = dbOpener.getWritableDatabase();
+
+        /** set a function for "SEARCH" button. */
+        Button searchBu = (Button) findViewById(R.id.sb_newsF);
+        searchBu.setOnClickListener( sb ->
+            {
+                Intent nextToDo = new Intent(Activity_newsfeed.this, Activity_URL_newsfeed.class);
+                startActivityForResult(nextToDo,REQUSTCODE);
+
+                ContentValues newValue = new ContentValues();
+                newValue.put(NFDatabaseOpenHelper.COL_TITLE,);
+                newValue.put(NFDatabaseOpenHelper.COL_MESSAGE, typedMessage);
+                long newId = db.insert(MyDatabaseOpenHelper.TABLE_NAME, null, newValue);
+                printCursor();
+                typedText.setText("");
+
+                chatMessage.add(new Message(typedMessage, false, 0,newId));
+
+                adapter.notifyDataSetChanged();
+
+                Snackbar.make(receiveButton, "Inserted message id:" + newId, Snackbar.LENGTH_LONG).show();
+
+            });
 
         /** set a function for "GO BACK" button. */
         Button goBackBu = (Button)findViewById(R.id.goback_newsF);
@@ -67,7 +115,7 @@ public class Activity_newsfeed extends AppCompatActivity
         NewsAdapter adapter = new NewsAdapter();
         newsList.setAdapter(adapter);
 
-        LayoutInflater inflater = getLayoutInflater();
+       // LayoutInflater inflater = getLayoutInflater();
         //View newView = inflater.inflate(R.layout.activity_list_newsfeed,parent,false);
 
         newsList.setOnItemClickListener((parent, view, position, id) ->
@@ -95,18 +143,27 @@ public class Activity_newsfeed extends AppCompatActivity
         switch(item.getItemId())
         {
             case R.id.dictionary:
-                /** make toast when click dictionary icon on toolbar */
-                Toast.makeText(this, "You have come to Dictionary Section.", Toast.LENGTH_LONG).show();
+
+                /**hop to dictionary section when click the icon*/
+                Intent goDictionary = new Intent(Activity_newsfeed.this, Activity_dict.class);
+                startActivity(goDictionary);
                 break;
+
             case R.id.flightStat_newsFeed:
-                /** make toast when click flight icon on toolbar */
-                Toast.makeText(this, "You have come to Flight Status Section.", Toast.LENGTH_LONG).show();
+
+                /**hop to flight state section when click the icon*/
+                Intent goFlight = new Intent(Activity_newsfeed.this, Activity_flightstatus.class);
+                startActivity(goFlight);
                 break;
+
             case R.id.item_NYtime_newsFeed:
+
                 /** show a snack bar when click New York Time icon on toolbar */
                 showSnackBar();
                 break;
+
             case R.id.item_help_newsFeed:
+
                 /** make a alert when click overflow title */
                 alert();
                 break;
@@ -142,20 +199,20 @@ public class Activity_newsfeed extends AppCompatActivity
         /** create an object of Snackbar
          *  use it to set a button with the function needed
          *  then show the view*/
-        Snackbar sb = Snackbar.make(tBar, "Go to New York Time Article Search?", Snackbar.LENGTH_LONG)
+        Snackbar sb = Snackbar.make(tBar, "Go to New York Time Article Search page?", Snackbar.LENGTH_LONG)
                 .setAction("Yes", new View.OnClickListener()
                 {
                     @Override
                     public void onClick(View v){
                         // activity need to be changed
-                        Intent nextHop = new Intent(Activity_newsfeed.this, MainActivity.class);
+                        Intent nextHop = new Intent(Activity_newsfeed.this, Activity_nytimes.class);
                         startActivity(nextHop);
                     }});
         sb.show();
     }
 
     /** this inner class is used for populating the listView*/
-    protected class NewsAdapter extends BaseAdapter
+    private class NewsAdapter extends BaseAdapter
     {
         public NewsAdapter() {
             super();
@@ -163,12 +220,12 @@ public class Activity_newsfeed extends AppCompatActivity
 
         @Override
         public int getCount() {
-            return news.length;
+            return news.size();
         }
 
         @Override
         public Object getItem(int position) {
-            return news[position];
+            return news.get(position).getTitle();
         }
 
         @Override
