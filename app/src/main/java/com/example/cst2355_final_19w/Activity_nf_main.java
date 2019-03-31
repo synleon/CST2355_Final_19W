@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -57,6 +58,8 @@ public class Activity_nf_main extends AppCompatActivity
     private static final int REQUSTCODE = 20;
     private static final int RESULTCODE = 50;
 
+    protected static String SEARCHTERM = null;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -81,10 +84,13 @@ public class Activity_nf_main extends AppCompatActivity
         Button searchBu = (Button) findViewById(R.id.sb_newsF);
         searchBu.setOnClickListener( sb ->
             {
-                Intent nextToDo = new Intent(Activity_nf_main.this, Activity_nf_url_connector.class);
-                startActivityForResult(nextToDo,REQUSTCODE);
+                EditText editSearchText = (EditText) findViewById(R.id.searchEdit_newsF) ;
+                SEARCHTERM = editSearchText.getText().toString();
 
-                ContentValues newValue = new ContentValues();
+                Intent nextToDo = new Intent(Activity_nf_main.this, Activity_nf_url_connector.class);
+                startActivity(nextToDo);
+
+                /*ContentValues newValue = new ContentValues();
                 newValue.put(NFDatabaseOpenHelper.COL_TITLE,);
                 newValue.put(NFDatabaseOpenHelper.COL_MESSAGE, typedMessage);
                 long newId = db.insert(MyDatabaseOpenHelper.TABLE_NAME, null, newValue);
@@ -95,12 +101,12 @@ public class Activity_nf_main extends AppCompatActivity
 
                 adapter.notifyDataSetChanged();
 
-                Snackbar.make(receiveButton, "Inserted message id:" + newId, Snackbar.LENGTH_LONG).show();
+                Snackbar.make(receiveButton, "Inserted message id:" + newId, Snackbar.LENGTH_LONG).show();*/
 
             });
 
         /** set a function for "GO BACK" button. */
-        Button goBackBu = (Button)findViewById(R.id.goback_newsF);
+        Button goBackBu = (Button)findViewById(R.id.goback);
         goBackBu.setOnClickListener( b -> {
             Intent goBackIntent = new Intent(Activity_nf_main.this, MainActivity.class);
             startActivity(goBackIntent);
@@ -238,7 +244,7 @@ public class Activity_nf_main extends AppCompatActivity
 
             View newView = inflater.inflate(R.layout.activity_nf_list_detail,parent,false);
 
-            TextView rowText = (TextView) newView.findViewById(R.id.item);
+            TextView rowText = (TextView) newView.findViewById(R.id.article_title);
             //String textToShow = getItem(position).toString();
             //rowText.setText(textToShow);
             rowText.setText(getItem(position).toString());

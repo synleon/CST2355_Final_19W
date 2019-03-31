@@ -24,32 +24,37 @@ import java.net.URLEncoder;
 public class Activity_nf_url_connector extends AppCompatActivity
 {
     ProgressBar progressBar;
-    EditText typedTerm;
+    EditText searchEditText;
     ImageView icon;
     TextView articalTitle;
+    TextView url;
+
+    String searchTerm;
+    String urlAddress;
+    String title;
+    String text;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nf_mainlayout);
-        typedTerm = (EditText) findViewById(R.id.searchEdit_newsF);
-        typedTerm.setText(searchTerm);
+
+        NFQuery nfQuery = new NFQuery();
+        nfQuery.execute("http://webhose.io/filterWebContent?token=264a10ac-9a70-4d5b-9f57-280bb2ec5604&format=xml&sort=crawled" + Activity_nf_main.SEARCHTERM);
+
+        finish();
     }
 
-     private class nfQuery extends AsyncTask<String, Integer, String>
+     private class NFQuery extends AsyncTask<String, Integer, String>
      {
-         String searchTerm;
-         String urlAddress;
-         String title;
-         String text;
 
          @Override
-         protected String doInBackground(String... strings) {
+         protected String doInBackground(String... strings)
+         {
              try {
                  /** connect to an url to find the weather info */
-                 searchTerm = URLEncoder.encode(searchTerm, "UTF-8");
-                 URL url = new URL("http://webhose.io/filterWebContent?token=264a10ac-9a70-4d5b-9f57-280bb2ec5604&format=xml&sort=crawled&q=" + searchTerm);
+                 URL url = new URL("http://webhose.io/filterWebContent?token=264a10ac-9a70-4d5b-9f57-280bb2ec5604&format=xml&sort=crawled&q=" + Activity_nf_main.SEARCHTERM);
                  HttpURLConnection webhoseConnecter = (HttpURLConnection) url.openConnection();
 
                  /** get input stream*/
@@ -62,38 +67,41 @@ public class Activity_nf_url_connector extends AppCompatActivity
                  xpp.setInput(inStream, "UTF-8");
 
                  /** loop through the xml file*/
-                 while (xpp.getEventType() != XmlPullParser.END_DOCUMENT) {
-                     if (xpp.getEventType() == XmlPullParser.START_TAG) {
+                 while (xpp.getEventType() != XmlPullParser.END_DOCUMENT)
+                 {
+                     if (xpp.getEventType() == XmlPullParser.START_TAG)
+                     {
                          String tagName = null;
                          tagName = xpp.getName();
 
-                         switch (tagName) {
+                         /*switch (tagName)
+                         {
                              case "url":
-                                 urlAddress = xpp.nextText();
+                                 urlAddress = xpp.getText();
                                  Log.e("News Feed ", "Find URL: " + urlAddress);
                                  publishProgress(25);
                                  Thread.sleep(2000);
                                  break;
                              case "title":
-                                 title = xpp.nextText();
+                                 title = xpp.getText();
                                  Log.e("News Feed ", "Find a title: " + title);
                                  publishProgress(50);
                                  Thread.sleep(2000);
                                  break;
                              case "text":
-                                 text = xpp.nextText();
+                                 text = xpp.getText();
                                  Log.e("News Feed ", "Find the text: " + text);
                                  publishProgress(75);
                                  Thread.sleep(2000);
-                         }
+                         }*/
 
 
-                        /*if(tagName.equals("url"))
-                            urlAddress = xpp.nextText( );
+                        if(tagName.equals("url"))
+                            urlAddress = xpp.getText();
                         else if(tagName.equals("title"))
                             title = xpp.nextText();
                         else if(tagName.equals("text"))
-                            text = xpp.nextText();*/
+                            text = xpp.getText();
                      }
                      xpp.next();
                  }
@@ -115,13 +123,11 @@ public class Activity_nf_url_connector extends AppCompatActivity
          @Override
          protected void onPostExecute(String s)
          {
-             articalTitle = (TextView) findViewById(R.id.item);
+             articalTitle = (TextView) findViewById(R.id.article_title);
              articalTitle.setText(title);
 
-
+             url = (TextView) findViewById(R.id.urlAddress);
+             url.setText(urlAddress);
          }
-
-
      }
-
 }

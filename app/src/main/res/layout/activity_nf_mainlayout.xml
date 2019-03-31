@@ -40,17 +40,17 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/search_newsF"
-        android:layout_above="@id/goback_newsF"/>
+        android:layout_above="@id/goback"/>
 
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="visible"
-        android:layout_above="@id/goback_newsF"/>
+        android:layout_above="@id/goback"/>
 
     <Button
-        android:id="@+id/goback_newsF"
+        android:id="@+id/goback"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
