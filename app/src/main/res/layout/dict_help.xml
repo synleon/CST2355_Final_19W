@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textView_intro"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"/>
+    //android:text="Dictionary.com which was invented by Disken in 1965, is the world’s leading online source for English definitions, synonyms, word origins,
+        audio pronunciations, example sentences, slang phrases, idioms, word games, legal and medical terms, Word of the Day and more. V 5.5 is the latest version."
+
+    <TextView
+        android:id="@+id/textView_instruction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"/>
+        //android:text=" How to use the dictionary? 1. Browse the dictionary. 2. Searching the dictionary using the Quick Search. 3. Search the dictionary using the Advanced Search.
+                       4. Categories. 5. Sources. 6. Historical Thesaurus. 7. Other resources"/>
+
+</LinearLayout>
