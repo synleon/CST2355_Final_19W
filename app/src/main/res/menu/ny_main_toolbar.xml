@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:id="@+id/ny_search_item"
-        app:actionViewClass="android.widget.SearchView"
+    <item
+        android:id="@+id/ny_search_item"
         android:icon="@android:drawable/ic_search_category_default"
-        app:showAsAction="always|collapseActionView"
-        android:title="@string/menu_title_nytimes"/>
+        android:title="@string/menu_title_nytimes"
+        app:actionViewClass="android.widget.SearchView"
+        app:showAsAction="ifRoom|collapseActionView" />
     <item android:id="@+id/ny_help_about"
         android:icon="@android:drawable/ic_menu_help"
         app:showAsAction="never"
