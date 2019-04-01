@@ -18,7 +18,7 @@
             android:paddingBottom="10dp"/>
 
         <TextView
-            android:id="@+id/title"
+            android:id="@+id/favor_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAlignment="center"
@@ -26,23 +26,33 @@
             android:paddingBottom="10dp"/>
 
         <TextView
-            android:id="@+id/restText"
+            android:id="@+id/favor_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="10dp" />
 
         <TextView
-            android:id="@+id/url"
+            android:id="@+id/favor_url"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="10dp" />
     </LinearLayout>
 
     <Button
-        android:id="@+id/save"
-        android:layout_width="match_parent"
+        android:id="@+id/delete"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/deleteButton"
-        android:layout_alignParentBottom="true"/>
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"/>
+
+    <Button
+        android:id="@+id/goPrevious4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/goback"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"/>
+
 
 </RelativeLayout>

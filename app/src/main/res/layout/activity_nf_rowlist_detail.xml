@@ -18,7 +18,7 @@
             android:paddingBottom="10dp"/>
 
         <TextView
-            android:id="@+id/title"
+            android:id="@+id/titleOfArticle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAlignment="center"
@@ -26,13 +26,13 @@
             android:paddingBottom="10dp"/>
 
         <TextView
-            android:id="@+id/restText"
+            android:id="@+id/textOfArticle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="10dp" />
 
         <TextView
-            android:id="@+id/urlAddress"
+            android:id="@+id/urlOfArticle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="10dp" />
@@ -47,7 +47,7 @@
         android:layout_alignParentEnd="true"/>
 
     <Button
-        android:id="@id/goback"
+        android:id="@+id/goPrevious2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/goback"

@@ -3,11 +3,14 @@ package com.example.cst2355_final_19w;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,6 +26,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.support.design.widget.Snackbar;
 
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserFactory;
+
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 /**
@@ -42,7 +53,7 @@ public class Activity_nf_main extends AppCompatActivity
 
     /** declare a variable with type ArrayList to list the articles found online
      *  @param news */
-    private ArrayList<NFArticle> news = new ArrayList<>();
+    //protected static ArrayList<NFArticle> NEWS = new ArrayList<>();
 
     /** declare several final static variables with type String for using in a database
      *  @param ITEM_SELECTED
@@ -53,12 +64,18 @@ public class Activity_nf_main extends AppCompatActivity
     private static final String ITEM_POSITION = "POSITION";
     private static final String ITEM_ID = "ID";
     protected SQLiteDatabase db;
+    private Cursor results;
 
     /** declare two variables with type static final int for startActivityForResult function*/
     private static final int REQUSTCODE = 20;
     private static final int RESULTCODE = 50;
 
     protected static String SEARCHTERM = null;
+   // protected static NewsAdapter ADAPTER;
+
+    //private ProgressBar progressBar;
+    //private TextView articalTitle;
+    //private TextView url;
 
 
     @Override
@@ -69,7 +86,7 @@ public class Activity_nf_main extends AppCompatActivity
         setContentView(R.layout.activity_nf_mainlayout);
 
         /** create an object of progress bar and set it visible.*/
-        ProgressBar progressBar = (ProgressBar)findViewById(R.id.progressBar);
+        //ProgressBar progressBar = (ProgressBar)findViewById(R.id.progressBar);
         //progressBar.setVisibility(View.VISIBLE);
 
         /** create an object of tool bar and display it.*/
@@ -80,28 +97,35 @@ public class Activity_nf_main extends AppCompatActivity
         NFDatabaseOpenHelper dbOpener = new NFDatabaseOpenHelper(this);
         db = dbOpener.getWritableDatabase();
 
+
+
         /** set a function for "SEARCH" button. */
-        Button searchBu = (Button) findViewById(R.id.sb_newsF);
-        searchBu.setOnClickListener( sb ->
+        Button searchButton = (Button) findViewById(R.id.sb_newsF);
+        searchButton.setOnClickListener( sb ->
             {
-                EditText editSearchText = (EditText) findViewById(R.id.searchEdit_newsF) ;
-                SEARCHTERM = editSearchText.getText().toString();
+                try{
+                    EditText editSearchText = (EditText) findViewById(R.id.searchEdit_newsF) ;
+                    SEARCHTERM = editSearchText.getText().toString();
+                    URLEncoder.encode(SEARCHTERM, "UTF-8");
+                } catch(UnsupportedEncodingException e){
+                    Log.e("Crash", e.getMessage());
+                }
 
                 Intent nextToDo = new Intent(Activity_nf_main.this, Activity_nf_url_connector.class);
                 startActivity(nextToDo);
 
                 /*ContentValues newValue = new ContentValues();
                 newValue.put(NFDatabaseOpenHelper.COL_TITLE,);
-                newValue.put(NFDatabaseOpenHelper.COL_MESSAGE, typedMessage);
-                long newId = db.insert(MyDatabaseOpenHelper.TABLE_NAME, null, newValue);
+                long newId = db.insert(NFDatabaseOpenHelper.TABLE_NAME, null, newValue);
                 printCursor();
                 typedText.setText("");
 
-                chatMessage.add(new Message(typedMessage, false, 0,newId));
+                chatMessage.add(new Message(typedMessage, false, 0,newId)); */
 
-                adapter.notifyDataSetChanged();
 
-                Snackbar.make(receiveButton, "Inserted message id:" + newId, Snackbar.LENGTH_LONG).show();*/
+                //ADAPTER.notifyDataSetChanged();
+
+                //Snackbar.make(searchBu, "Inserted message id:" + newId, Snackbar.LENGTH_LONG).show();
 
             });
 
@@ -112,21 +136,18 @@ public class Activity_nf_main extends AppCompatActivity
             startActivity(goBackIntent);
         });
 
-        /** create an object of listView
+/*        *//** create an object of listView
          *  then use it to call the function setAdapter() with a parameter "adapter" which is an object of
-         *  the inner class called NewsAdapter. */
+         *  the inner class called NewsAdapter. *//*
         ListView newsList = (ListView) findViewById(R.id.list_newsF);
         NewsAdapter adapter = new NewsAdapter();
         newsList.setAdapter(adapter);
-
-       // LayoutInflater inflater = getLayoutInflater();
-        //View newView = inflater.inflate(R.layout.activity_nf_list_detail,parent,false);
 
         newsList.setOnItemClickListener((parent, view, position, id) ->
         {
             Intent nextActivity = new Intent(Activity_nf_main.this, Activity_listDetail_newsfeed.class );
             startActivity(nextActivity);
-        });
+        });*/
 
     }
 
@@ -148,14 +169,14 @@ public class Activity_nf_main extends AppCompatActivity
         {
             case R.id.dictionary:
 
-                /**hop to dictionary section when click the icon*/
+                /** go to dictionary section when click the icon*/
                 Intent goDictionary = new Intent(Activity_nf_main.this, Activity_dict.class);
                 startActivity(goDictionary);
                 break;
 
             case R.id.flightStat_newsFeed:
 
-                /**hop to flight state section when click the icon*/
+                /** go to flight state section when click the icon*/
                 Intent goFlight = new Intent(Activity_nf_main.this, Activity_flightstatus.class);
                 startActivity(goFlight);
                 break;
@@ -215,8 +236,8 @@ public class Activity_nf_main extends AppCompatActivity
         sb.show();
     }
 
-    /** this inner class is used for populating the listView*/
-    private class NewsAdapter extends BaseAdapter
+/*    *//** this inner class is used for populating the listView*//*
+    protected class NewsAdapter extends BaseAdapter
     {
         public NewsAdapter() {
             super();
@@ -224,12 +245,12 @@ public class Activity_nf_main extends AppCompatActivity
 
         @Override
         public int getCount() {
-            return news.size();
+            return NEWS.size();
         }
 
         @Override
         public Object getItem(int position) {
-            return news.get(position).getTitle();
+            return NEWS.get(position).getTitle();
         }
 
         @Override
@@ -242,7 +263,7 @@ public class Activity_nf_main extends AppCompatActivity
         {
             LayoutInflater inflater = getLayoutInflater();
 
-            View newView = inflater.inflate(R.layout.activity_nf_list_detail,parent,false);
+            View newView = inflater.inflate(R.layout.activity_nf_rowlist,parent,false);
 
             TextView rowText = (TextView) newView.findViewById(R.id.article_title);
             //String textToShow = getItem(position).toString();
@@ -250,6 +271,28 @@ public class Activity_nf_main extends AppCompatActivity
             rowText.setText(getItem(position).toString());
 
             return newView;
+        }
+    }*/
+
+
+
+    public void printCursor() {
+        /*Log.e("MyDatabaseFile version:", db.getVersion() + "");
+        Log.e("Number of columns:", results.getColumnCount() + "");
+        Log.e("Name of the columns:", results.getColumnNames().toString());
+        Log.e("Number of results", results.getCount() + "");
+        Log.e("Each row of results :", "");*/
+        results.moveToFirst();
+        for (int i = 0; i < results.getCount(); i++) {
+            while (!results.isAfterLast()) {
+                boolean isSent = results.getInt(0) > 0;
+                String message = results.getString(1);
+                long id = results.getLong(2);
+                Log.e("id", id + "");
+                Log.e("isSent", isSent + "");
+                Log.e("message", message + "");
+                results.moveToNext();
+            }
         }
     }
 }
