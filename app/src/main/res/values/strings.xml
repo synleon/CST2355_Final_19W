@@ -16,4 +16,5 @@
     <string name="nytimes_author">Author:leon</string>
     <string name="nytimes_version">Version:1.0</string>
     <string name="nytimes_instructon">instruction</string>
+    <string name="nytimes_article_search_hint">Enter a keyword to start search</string>
 </resources>

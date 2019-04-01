@@ -17,4 +17,5 @@
     <string name="nytimes_author">作者：李扬</string>
     <string name="nytimes_version">版本：1.0</string>
     <string name="nytimes_instructon">使用说明</string>
+    <string name="nytimes_article_search_hint">输入关键词开始查询</string>
 </resources>

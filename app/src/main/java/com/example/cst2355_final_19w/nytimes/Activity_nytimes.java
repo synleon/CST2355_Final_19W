@@ -21,7 +21,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.SearchView;
+//import android.widget.SearchView;
+import android.support.v7.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.support.v7.widget.Toolbar;
@@ -89,40 +90,6 @@ public class Activity_nytimes extends AppCompatActivity {
         //Inflate menu
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.ny_main_toolbar, menu);
-
-        // set search listener
-        MenuItem searchItem = menu.findItem(R.id.ny_search_item);
-        SearchView searchView = (SearchView)searchItem.getActionView();
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                if (query == null || query.isEmpty()) {
-                    return false;
-                }
-                else {
-                    // start async task to perform the article search on new york times
-                    // form full query request url
-                    String queryString = nytimesUrl + "?api-key=" + nytimesAPIKEY + "&q=" + query.replace(' ', '+');
-
-                    // add log info
-                    Log.i("NYTIMES", "QUERY URL=[" + queryString + "]");
-
-                    // let go the query task
-                    NytimesArticleQuery articleQuery = new NytimesArticleQuery();
-
-                    // let progress bar appear
-                    progressBar.setVisibility(View.VISIBLE);
-
-                    articleQuery.execute(queryString);
-                    return true;
-                }
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-        });
         return true;
     }
 
@@ -170,6 +137,38 @@ public class Activity_nytimes extends AppCompatActivity {
             Snackbar sb = Snackbar.make(btn, "Go back?", Snackbar.LENGTH_LONG)
                     .setAction("Yes", e -> finish());
             sb.show();
+        });
+
+        SearchView searchView = findViewById(R.id.search_nytimes);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                if (query == null || query.isEmpty()) {
+                    return false;
+                }
+                else {
+                    // start async task to perform the article search on new york times
+                    // form full query request url
+                    String queryString = nytimesUrl + "?api-key=" + nytimesAPIKEY + "&q=" + query.replace(' ', '+');
+
+                    // add log info
+                    Log.i("NYTIMES", "QUERY URL=[" + queryString + "]");
+
+                    // let go the query task
+                    NytimesArticleQuery articleQuery = new NytimesArticleQuery();
+
+                    // let progress bar appear
+                    progressBar.setVisibility(View.VISIBLE);
+
+                    articleQuery.execute(queryString);
+                    return true;
+                }
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
         });
     }
 
