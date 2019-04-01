@@ -3,6 +3,7 @@ package com.example.cst2355_final_19w.nytimes;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -21,7 +22,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-//import android.widget.SearchView;
 import android.support.v7.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -76,6 +76,11 @@ public class Activity_nytimes extends AppCompatActivity {
     public static final int EMPTY_ACTIVITY = 345;
 
     /**
+     * The key name of shared preference for last search keyword
+     */
+    public final String KEY_LASTSEARCH = "lastSearch";
+
+    /**
      * the adapter for articles list view
      */
     private MyListAdapter adapter;
@@ -83,7 +88,18 @@ public class Activity_nytimes extends AppCompatActivity {
     /**
      * the progress bar
      */
-    ProgressBar progressBar;
+    private ProgressBar progressBar;
+
+    /**
+     * last search keyword
+     */
+    private String lastSearch;
+
+    /**
+     * Shared Preferences
+     */
+    SharedPreferences prefs;
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -91,6 +107,16 @@ public class Activity_nytimes extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.ny_main_toolbar, menu);
         return true;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        SharedPreferences.Editor editor =  prefs.edit();
+        // save last search keyword to shared preference file
+        editor.putString(KEY_LASTSEARCH, lastSearch);
+        editor.commit();
     }
 
     @Override
@@ -141,12 +167,16 @@ public class Activity_nytimes extends AppCompatActivity {
 
         SearchView searchView = findViewById(R.id.search_nytimes);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
             @Override
             public boolean onQueryTextSubmit(String query) {
                 if (query == null || query.isEmpty()) {
                     return false;
                 }
                 else {
+                    // save search keyword
+                    lastSearch = query;
+
                     // start async task to perform the article search on new york times
                     // form full query request url
                     String queryString = nytimesUrl + "?api-key=" + nytimesAPIKEY + "&q=" + query.replace(' ', '+');
@@ -170,6 +200,17 @@ public class Activity_nytimes extends AppCompatActivity {
                 return false;
             }
         });
+
+        // read last search keyword and set it to search view
+        prefs = getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE);
+        lastSearch = prefs.getString(KEY_LASTSEARCH, null);
+
+        if (lastSearch != null && !lastSearch.isEmpty()) {
+            // set lastSearch to SearchView
+            searchView.setQuery(lastSearch, false);
+            // clear focus to avoiding keyboard show
+            searchView.clearFocus();
+        }
     }
 
     @Override
