@@ -1,9 +1,12 @@
 package com.example.cst2355_final_19w;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,6 +41,9 @@ public class Activity_nf_url_connector extends AppCompatActivity {
     TextView articleText;
     NewsAdapter adapter;
     int positionClicked = 0;
+    private Toolbar tBar;
+
+    //public static SQLiteDatabase DB;
 
     public static final String ITEM_SELECTED = "TITLE";
     public static final String ITEM_TEXT = "TEXT";
@@ -45,21 +51,39 @@ public class Activity_nf_url_connector extends AppCompatActivity {
 
     public static final int EMPTY_ACTIVITY = 345;
 
-    protected static ArrayList<NF_Article> NEWS = new ArrayList<>(10);
+    protected static ArrayList<NF_Article> NEWS = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nf_list_all);
 
+        /** create an object of tool bar and display it.*/
+        tBar = (Toolbar)findViewById(R.id.toolbar_newsF);
+        setSupportActionBar(tBar);
+        setSupportActionBar(tBar);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        tBar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         articleTitle = (TextView) findViewById(R.id.titleOfArticle);
         articleUrl = (TextView) findViewById(R.id.urlOfArticle);
         articleText = (TextView) findViewById(R.id.textOfArticle);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
+
+        //NF_DatabaseOpenHelper dbOpener = new NF_DatabaseOpenHelper(this);
+        //DB = dbOpener.getWritableDatabase();
+
         NFQuery nfQuery = new NFQuery();
         nfQuery.execute("http://webhose.io/filterWebContent?" +
                 "token=264a10ac-9a70-4d5b-9f57-280bb2ec5604&format=xml&sort=crawled" + Activity_nf_main.SEARCHTERM);
+
 
         ListView newsList = (ListView) findViewById(R.id.list_newsF);
         adapter = new NewsAdapter();
@@ -137,8 +161,6 @@ public class Activity_nf_url_connector extends AppCompatActivity {
                 if (xpp.getEventType() == XmlPullParser.START_TAG
                         && xpp.getName().equalsIgnoreCase("post")) {
                     parsePost(xpp);
-                    if (NEWS.size() >= maxNewsCount)
-                        break;
                 }
                 xpp.next();
             }
@@ -166,29 +188,28 @@ public class Activity_nf_url_connector extends AppCompatActivity {
 
                 if (!foundURL && tagName.equals("url")) {
                     foundURL = true;
-                    urlAddress = xpp.nextText();
+                    //if(xpp.nextText() != null || xpp.nextText() != "")
+                        urlAddress = xpp.nextText();
                     Log.e("News Feed ", "Find URL: " + urlAddress);
                     publishProgress(25);
-                    Thread.sleep(2000);
                 } else if (!foundTitle && tagName.equals("title")) {
                     foundTitle = true;
-                    title = xpp.nextText();
+                    //if(xpp.nextText() != null || xpp.nextText() != "")
+                        title = xpp.nextText();
                     Log.e("News Feed ", "Find a title: " + title);
                     publishProgress(50);
-                    Thread.sleep(2000);
                 } else if (!foundText && tagName.equals("text")) {
                     foundText = true;
-                    text = xpp.nextText();
+                    //if(xpp.nextText() != null || xpp.nextText() != "")
+                        text = xpp.nextText();
                     Log.e("News Feed ", "Find the text: " + text);
                     publishProgress(75);
-                    Thread.sleep(2000);
 
                 }
             }
 
             if (foundTitle && foundText && foundURL)
                 NEWS.add(new NF_Article(title, text, urlAddress));
-
     }
 
         @Override

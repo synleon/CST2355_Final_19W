@@ -2,6 +2,7 @@ package com.example.cst2355_final_19w;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Button;
 
 public class Activity_nf_empty extends AppCompatActivity {
 
@@ -18,7 +19,7 @@ public class Activity_nf_empty extends AppCompatActivity {
         dFragment.setTablet(false); //tell the Fragment that it's on a phone.
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.frame, dFragment)
+                .replace(R.id.empty_frame, dFragment)
                 .addToBackStack(null)
                 .commit();
     }

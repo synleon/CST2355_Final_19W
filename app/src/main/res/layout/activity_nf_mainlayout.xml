@@ -9,7 +9,8 @@
         android:id="@+id/toolbar_newsF"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"/>
+        android:layout_alignParentTop="true"
+        android:background="?attr/colorPrimary"/>
 
     <GridLayout
         android:id="@+id/search_newsF"
@@ -34,27 +35,5 @@
             android:layout_height="wrap_content"
             android:text="@string/sbText"/>
     </GridLayout>
-
-   <!--<ListView
-        android:id="@+id/list_newsF"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/search_newsF"
-        android:layout_above="@id/progressBar"/>-->
-
-    <Button
-        android:id="@+id/goback"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:text="@string/goback"/>
-
-    <!--<ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="invisible"
-        android:layout_above="@id/goback"/>-->
-
 
 </RelativeLayout>

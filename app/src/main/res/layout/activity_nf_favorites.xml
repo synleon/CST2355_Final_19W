@@ -24,12 +24,12 @@
         android:layout_below="@id/favor"
         android:layout_above="@id/goPrevious3"/>
 
-    <Button
+    <!--<Button
         android:id="@+id/goPrevious3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:text="@string/goback"/>
+        android:text="@string/goback"/>-->
 
 </RelativeLayout>

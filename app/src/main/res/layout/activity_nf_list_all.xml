@@ -3,24 +3,33 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <ListView
-        android:id="@+id/list_newsF"
+
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_newsF"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/progressBar"
-        android:layout_alignParentTop="true"/>
+        android:layout_alignParentTop="true"
+        android:background="?attr/colorPrimary"/>
+
+    <ListView
+        android:id="@+id/list_newsF"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar_newsF"
+/>
 
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@id/goPrevious1"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true"/><!--
 
     <Button
         android:id="@+id/goPrevious1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:text="@string/goback"/>
+        android:text="@string/goback"/>-->
 </RelativeLayout>

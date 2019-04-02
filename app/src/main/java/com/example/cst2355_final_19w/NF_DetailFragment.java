@@ -1,18 +1,25 @@
 package com.example.cst2355_final_19w;
 
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
-public class NF_DetailFragment extends Fragment {
-
+public class NF_DetailFragment extends Fragment
+{
     private boolean isTablet;
     private int position;
     private Bundle dataFromActivity;
-    private long id;
+    protected static SQLiteDatabase DB;
+    protected NF_DatabaseOpenHelper dbOpener;
 
     public void setTablet(boolean tablet)
     {
@@ -23,8 +30,14 @@ public class NF_DetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+
         // Inflate the layout for this fragment
         View result =  inflater.inflate(R.layout.activity_nf_fragment_layout_detail, container, false);
+
+        dbOpener = new NF_DatabaseOpenHelper(result.getContext());
+        DB = dbOpener.getWritableDatabase();
+
+        dataFromActivity = getArguments();
 
         //show the title
         TextView title = (TextView)result.findViewById(R.id.titleOfArticle);
@@ -37,6 +50,17 @@ public class NF_DetailFragment extends Fragment {
         //show the url:
         TextView url = (TextView)result.findViewById(R.id.urlOfArticle);
         url.setText(dataFromActivity.getString(Activity_nf_url_connector.ITEM_URL));
+
+        Button saveToFavor = (Button) result.findViewById(R.id.save);
+        saveToFavor.setOnClickListener( stf -> {
+            ContentValues newValue = new ContentValues();
+            newValue.put(NF_DatabaseOpenHelper.COL_TITLE, Activity_nf_url_connector.NEWS.get(position).getTitle());
+            newValue.put(NF_DatabaseOpenHelper.COL_TEXT, Activity_nf_url_connector.NEWS.get(position).getText());
+            newValue.put(NF_DatabaseOpenHelper.COL_URL,Activity_nf_url_connector.NEWS.get(position).getUrlAddress());
+            long newId = DB.insert(NF_DatabaseOpenHelper.TABLE_NAME, null, newValue);
+            Snackbar.make( saveToFavor,"Inserted one favorite article which id is : " + newId, Snackbar.LENGTH_LONG).show();
+        });
+
         return result;
     }
 }

@@ -56,12 +56,6 @@ public class Activity_nf_main extends AppCompatActivity
     private static final int RESULTCODE = 50;
 
     protected static String SEARCHTERM = null;
-   // protected static NewsAdapter ADAPTER;
-
-    //private ProgressBar progressBar;
-    //private TextView articalTitle;
-    //private TextView url;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -70,18 +64,9 @@ public class Activity_nf_main extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nf_mainlayout);
 
-        /** create an object of progress bar and set it visible.*/
-        //ProgressBar progressBar = (ProgressBar)findViewById(R.id.progressBar);
-        //progressBar.setVisibility(View.VISIBLE);
-
         /** create an object of tool bar and display it.*/
         tBar = (Toolbar)findViewById(R.id.toolbar_newsF);
         setSupportActionBar(tBar);
-
-        /** create an object of NF_DatabaseOpenHelper to open a writable dababase */
-        NF_DatabaseOpenHelper dbOpener = new NF_DatabaseOpenHelper(this);
-        db = dbOpener.getWritableDatabase();
-
 
 
         /** set a function for "SEARCH" button. */
@@ -99,41 +84,14 @@ public class Activity_nf_main extends AppCompatActivity
                 Intent nextToDo = new Intent(Activity_nf_main.this, Activity_nf_url_connector.class);
                 startActivity(nextToDo);
 
-                /*ContentValues newValue = new ContentValues();
-                newValue.put(NF_DatabaseOpenHelper.COL_TITLE,);
-                long newId = db.insert(NF_DatabaseOpenHelper.TABLE_NAME, null, newValue);
-                printCursor();
-                typedText.setText("");
-
-                chatMessage.add(new Message(typedMessage, false, 0,newId)); */
-
-
-                //ADAPTER.notifyDataSetChanged();
-
-                //Snackbar.make(searchBu, "Inserted message id:" + newId, Snackbar.LENGTH_LONG).show();
-
             });
 
         /** set a function for "GO BACK" button. */
-        Button goBackBu = (Button)findViewById(R.id.goback);
+        /*Button goBackBu = (Button)findViewById(R.id.goback);
         goBackBu.setOnClickListener( b -> {
             Intent goBackIntent = new Intent(Activity_nf_main.this, MainActivity.class);
             startActivity(goBackIntent);
-        });
-
-/*        *//** create an object of listView
-         *  then use it to call the function setAdapter() with a parameter "adapter" which is an object of
-         *  the inner class called NewsAdapter. *//*
-        ListView newsList = (ListView) findViewById(R.id.list_newsF);
-        NewsAdapter adapter = new NewsAdapter();
-        newsList.setAdapter(adapter);
-
-        newsList.setOnItemClickListener((parent, view, position, id) ->
-        {
-            Intent nextActivity = new Intent(Activity_nf_main.this, Activity_listDetail_newsfeed.class );
-            startActivity(nextActivity);
         });*/
-
     }
 
     /** display the items of toolbar */
@@ -220,45 +178,6 @@ public class Activity_nf_main extends AppCompatActivity
                     }});
         sb.show();
     }
-
-/*    *//** this inner class is used for populating the listView*//*
-    protected class NewsAdapter extends BaseAdapter
-    {
-        public NewsAdapter() {
-            super();
-        }
-
-        @Override
-        public int getCount() {
-            return NEWS.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return NEWS.get(position).getTitle();
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View oldView, ViewGroup parent)
-        {
-            LayoutInflater inflater = getLayoutInflater();
-
-            View newView = inflater.inflate(R.layout.activity_nf_single_row_type,parent,false);
-
-            TextView rowText = (TextView) newView.findViewById(R.id.article_title);
-            //String textToShow = getItem(position).toString();
-            //rowText.setText(textToShow);
-            rowText.setText(getItem(position).toString());
-
-            return newView;
-        }
-    }*/
-
 
 
     public void printCursor() {

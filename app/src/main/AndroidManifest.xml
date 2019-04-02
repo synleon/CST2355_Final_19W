@@ -15,6 +15,7 @@
         android:usesCleartextTraffic="true">
         <activity android:name=".Activity_nf_main"/>
         <activity android:name=".Activity_nf_url_connector"/>
+        <activity android:name=".Activity_nf_empty"/>
         <activity android:name=".Activity_nytimes" />
         <activity android:name=".Activity_flightstatus" />
         <activity android:name=".Activity_dict" />
