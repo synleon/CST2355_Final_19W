@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:text="TextView"
         android:layout_toEndOf="@id/ny_article_pub_date"
-        android:layout_toStartOf="@id/ny_article_save"
+        android:layout_toStartOf="@id/ny_article_switch_saved"
         android:textSize="15sp"
         android:clickable="false"
         android:focusable="false"
@@ -49,15 +49,15 @@
         android:focusable="false"
         android:focusableInTouchMode="false" />
 
-
-
-    <Button
-        android:id="@+id/ny_article_save"
+    <Switch
+        android:id="@+id/ny_article_switch_saved"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:text="save"
-        android:clickable="false"
+        android:layout_alignParentEnd="true"
+        android:text="Save"
+        android:clickable="true"
         android:focusable="false"
-        android:focusableInTouchMode="false"/>
+        android:focusableInTouchMode="false"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"/>
 </RelativeLayout>
