@@ -1,9 +1,11 @@
 package com.example.cst2355_final_19w;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -22,9 +24,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -40,14 +44,32 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 public class Activity_dict extends AppCompatActivity {
 
-    /**
-     * Array adapter
-     */
-    private WordListAdapter wordListAdapter;
+    public static final String ITEM_SELECTED = "ITEM";
+    public static final String ITEM_POSITION = "POSITION";
+    public static final String ITEM_ID = "ID";
+    public static final String ITEM_WORD = "WORD";
+    public static final int EMPTY_ACTIVITY = 345;
+
+    public static final String ITEM_DEF = "Definition";
+    ArrayList<Word> definitions = new ArrayList<>();
+    public static final String ITEM_POSITION_DEF = "POSITION";
+    public static final String ITEM_ID_DEF = "ID";
+
+
+    int numObjects = 6;
+    ArrayList<Word> words = new ArrayList<>();
+    private static int ACTIVITY_VIEW_CONTACT = 33;
+    int positionClicked = 0;
+    Cursor results;
+
+
     /**
      * set up default camera capture equal to 1;
      */
@@ -55,25 +77,20 @@ public class Activity_dict extends AppCompatActivity {
 
     /**
      * create progressbar progressBar;
-      */
-   private  ProgressBar progressBar;
+     */
+    private ProgressBar progressBar;
     /**
      * create progress bar progressBar;
      */
-   private TextView textView;
+    private TextView textView;
     /**
      * create text veiw textView;
      */
-   private SQLiteDatabase db;
+    private SQLiteDatabase db;
     /**
      * create sharedpreferences sp;
      */
-   private SharedPreferences sp;
-    /**
-     * create string word;
-     */
-   private String word;
-
+    private SharedPreferences sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +99,8 @@ public class Activity_dict extends AppCompatActivity {
         setContentView(R.layout.activity_dict);
         Toolbar bar = (Toolbar) findViewById(R.id.toolbar_dict);
         setSupportActionBar(bar);
+
+        ListView theList = (ListView) findViewById(R.id.dict_list);
 
         Toast.makeText(this, "Welcome to Dictionary", Toast.LENGTH_LONG).show();
 
@@ -92,109 +111,188 @@ public class Activity_dict extends AppCompatActivity {
             sb.show();
         });
 
-        Button btn = findViewById(R.id.dict_delete);
+        Button delete_btn = findViewById(R.id.dict_delete);
         btn.setOnClickListener(v -> {
             Snackbar sb = Snackbar.make(btn, "delete?", Snackbar.LENGTH_LONG)
                     .setAction("Yes", e -> finish());
             sb.show();
         });
-        (how to connect database to delete a word?)
-
 
         ProgressBar progressBar = findViewById(R.id.dict_progressBar);
         progressBar.setProgress(100);
 
 
-       ListView wordList = findViewById(R.id.dict_list);
-       wordListAdapter = new WordListAdapter(this, R.id.dict_list);
-        wordList.setAdapter(wordListAdapter);
+        boolean isTablet = findViewById(R.id.fragmentLocation) != null;
 
+        //get a database:
+        dict_MyDatabaseOpenHelper dbOpener = new dict_MyDatabaseOpenHelper(this);
+        //SQLiteDatabase db = dbOpener.getWritableDatabase();
+        db = dbOpener.getWritableDatabase();
 
-        sp = getSharedPreferences("Wordlist", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sp.edit();
-        //editor.putString(words);
-        editor.putString(wordList);
-        editor.commit();
-        wordListAdapter.add(word);
+        //query all the results from the database:
+        String[] columns = {dict_MyDatabaseOpenHelper.COL_ID, dict_MyDatabaseOpenHelper.COL_word};
+        results = db.query(false, dict_MyDatabaseOpenHelper.TABLE_NAME, columns, null, null, null, null, null, null);
 
+        //find the column indices:
+        int wordColIndex = results.getColumnIndex(dict_MyDatabaseOpenHelper.COL_word);
+        int idColIndex = results.getColumnIndex(dict_MyDatabaseOpenHelper.COL_ID);
 
+        //iterate over the results, return true if there is a next item:
+        while (results.moveToNext()) {
+            String word = results.getString(wordColIndex);
+            long id = results.getLong(idColIndex);
 
-         //Setting the item click listener for the listview
-          wordList.setOnItemClickListener((parent, container, position, id) -> {
-            String word = (String) parent.getItemAtPosition(position);
+            //add the new word to the array list:
+            words.add(new Word(word, id));
+        }
 
-            (how to display word list here )
-        });
+        ListAdapter adt = new ListAdapter();
+        theList.setAdapter(adt);
+
+        //This listens for items being clicked in the list view
+        //theList.setOnItemClickListener((parent, view, position, id) -> {
+        theList.setOnItemClickListener((list, word) -> {
+
+                    Bundle dataToPass = new Bundle();
+                    dataToPass.putString(dict_definitionDatabaseOpenHelper.COL_DEF, String.valueOf(words.getDefinitions()));
+                    dataToPass.putString(COL_DEF, words.getDefinition());
+            //  dataToPass.putLong(ITEM_POSITION_DEF, position);
+            // dataToPass.putLong(ITEM_ID_DEF,definitions .get(position).getId());
+
+                    if (isTablet) {
+                        dict_search_fragment dFragment = new dict_search_fragment(); //add a DetailFragment
+                        dFragment.setArguments(dataToPass); //pass it a bundle for information
+                        dFragment.setTablet(true);  //tell the fragment if it's running on a tablet or not
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .add(R.id.fragmentLocation, dFragment) //Add the fragment in FrameLayout
+                                .addToBackStack("AnyName") //make the back button undo the transaction
+                                .commit(); //actually load the fragment.
+                    } else //isPhone
+                    {
+                        Intent nextActivity = new Intent(Activity_dict.this, EmptyActivity.class);
+                        nextActivity.putExtras(dataToPass); //send data to next activity
+                        startActivityForResult(nextActivity, EMPTY_ACTIVITY); //make the transition
+                    }
+                }
+
+        );
+              printCursor();
     }
 
-    /**
-     * A customized array adapter of word
-     */
-    private class WordListAdapter extends ArrayAdapter<String> {
+    //This class needs 4 functions to work properly:
+    protected class ListAdapter extends BaseAdapter {
 
-        /**
-         * Inflater used to inflate a layout from the resource
-         */
-        private LayoutInflater inflater;
-
-        /**
-         * constructor
-         *
-         * @param context
-         * @param resource the resource id that identifies the activity
-         */
-        WordListAdapter(Context context, int resource) {
-            super(context, resource);
-            this.inflater = LayoutInflater.from(context);
-        }
-
-        /**
-         * Override getView method, used to provide for each item in listview
-         *
-         * @param position
-         * @param convertView
-         * @param parent
-         * @return
-         */
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-
-            View view = inflater.inflate(R.layout.layout_wordlistitem, null);
-
-            TextView textView = view.findViewById(R.id.textView_word);
-
-            textView.setText(getItem(position));
-
-            return view;
+        public int getCount() {
+            return words.size();
         }
 
-        public boolean onCreateOptionsMenu(Menu menu) {
-            MenuInflater inflater = getMenuInflater();
-            inflater.inflate(R.menu.dict_menu, menu);
-            return true;
+        public Object getItem(int position) {
+            return words.get(position).getWord();//"\nItem "+ (position+1) + "\nSub Item "+ (position+1) +"\n";
         }
 
-        public boolean onOptionsItemSelected(MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.help:
-                    helpDialog();
-                    return true;
+        public View getView(int position, View old, ViewGroup parent) {
+            LayoutInflater inflater = getLayoutInflater();
+            View newView;
+            newView = inflater.inflate(R.layout.dict_search, parent, false);
 
-                case R.id.search:
-                    search();
-                    return true;
+            TextView rowText = (TextView) newView.findViewById(R.id.dict_editText1);
+            String stringToShow = getItem(position).toString();
+            rowText.setText(stringToShow);
+            return newView;
+        }
 
-                case R.id.choice4:
-                    Toast.makeText(this, "You clicked on the overflow menu",
-                            Toast.LENGTH_LONG).show();
+        public long getItemId(int position) {
+            return position;
+        }
+    }
 
-                    return true;
 
-                default:
-                    return super.onOptionsItemSelected(item);
+    //This function only gets called on the phone. The tablet never goes to a new activity
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == EMPTY_ACTIVITY) {
+            if (resultCode == RESULT_OK) //if you hit the delete button instead of back button
+            {
+                long id = data.getLongExtra(ITEM_ID, 0);
+                long position = data.getLongExtra(ITEM_POSITION, 0);
+                deleteMessageId((int) id, (int) position);
             }
-
         }
+    }
+
+    public void deleteMessageId(int id, int position) {
+        Log.i("Delete this message:", " id=" + id);
+        words.remove(position);
+/*        for(int i=0; i< messages.size(); i++){
+            if(messages.get(i).getId() == id ){
+                messages.remove(i);
+                i=messages.size();
+            }
+        }*/
+        // messages.remove(new Message(messages.get(id).getMessage(), messages.get(id).getIsSent(), id));
+//If you click the "Delete" button
+        int numDeleted = db.delete(dict_MyDatabaseOpenHelper.TABLE_NAME,
+                dict_MyDatabaseOpenHelper.COL_ID + "=?", new String[]{Long.toString(id)});
+
+        //Log.i("ViewContact", "Deleted " + numDeleted + " rows");
+
+        //set result to PUSHED_DELETE to show clicked the delete button
+        //setResult(PUSHED_DELETE);
+        //go back to previous page:
+        //finish();
+
+        adt.notifyDataSetChanged();
+    }
+
+
+    public void printCursor() {
+        Log.e("MyDatabaseFile version:", db.getVersion() + "");
+        Log.e("Number of columns:", results.getColumnCount() + "");
+        Log.e("Name of the columns:", results.getColumnNames().toString());
+        Log.e("Number of results", results.getCount() + "");
+        Log.e("Each row of results :", "following");
+        results.moveToFirst();
+        for (int i = 0; i < results.getCount(); i++) {
+            while (!results.isAfterLast()) {
+                boolean isSent = results.getInt(1) > 0;
+                String message = results.getString(2);
+                long id = results.getLong(0);
+                String eachLine = "id: " + id + " , isSent: " + isSent + ", message:" + message;
+                Log.e("Each row", eachLine + "");
+                results.moveToNext();
+            }
+        }
+    }
+
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.dict_menu, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.help:
+                helpDialog();
+                return true;
+
+            case R.id.search:
+                search();
+                return true;
+
+            case R.id.choice4:
+                Toast.makeText(this, "You clicked on the overflow menu", Toast.LENGTH_LONG).show();
+
+
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
     }
 
     public void helpDialog() {
@@ -207,7 +305,7 @@ public class Activity_dict extends AppCompatActivity {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setPositiveButton("OK", null)
-               .setNegativeButton("Cancel", null);
+                .setNegativeButton("Cancel", null);
 
         builder.create().show();
     }
@@ -220,18 +318,11 @@ public class Activity_dict extends AppCompatActivity {
         //this starts doInBackground on other thread
         networkThread.execute("https://www.dictionaryapi.com/api/v1/references/sd3/xml/pasta?key=4556541c-b8ed-4674-9620-b6cba447184f");
 
-        pronounce = (TextView) findViewById(R.id.pronounce);
-        type = (TextView) findViewById(R.id.type);
-        definition1 = (TextView) findViewById(R.id.definition1);
-        definition2 = (TextView) findViewById(R.id.definition2);
-
-        }
-
     // a subclass of AsyncTask                  Type1    Type2    Type3
     private class DictQuery extends AsyncTask<String, Integer, String> {
 
 
-    private String id, pronounce, definition1, definition2, type;
+    private int id, String definition;
 
         @Override
         protected String doInBackground(String... params) {
