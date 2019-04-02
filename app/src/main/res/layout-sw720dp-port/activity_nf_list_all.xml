@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
     <ListView
         android:id="@+id/list_newsF"
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_above="@id/progressBar"
         android:layout_alignParentTop="true"/>
@@ -14,13 +14,19 @@
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@id/goPrevious1"
-        android:layout_centerHorizontal="true"/>
+        android:layout_above="@id/goPrevious1"/>
 
     <Button
         android:id="@+id/goPrevious1"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:text="@string/goback"/>
+
+    <FrameLayout
+        android:id="@+id/frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toEndOf="@id/list_newsF"
+        android:background="@color/colorAccent"/>
 </RelativeLayout>

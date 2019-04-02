@@ -44,15 +44,15 @@
         android:layout_height="wrap_content"
         android:text="@string/deleteButton"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"/>
+        android:layout_alignParentEnd="true"/>
 
-    <Button
+    <!--<Button
         android:id="@+id/goPrevious4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/goback"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"/>
+        android:layout_alignParentEnd="true"/>-->
 
 
 </RelativeLayout>

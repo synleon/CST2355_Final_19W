@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-public class NFDatabaseOpenHelper extends SQLiteOpenHelper
+public class NF_DatabaseOpenHelper extends SQLiteOpenHelper
 {
     public final static String TABLE_NAME = "NewsFeed";
     public final static String FILENAME = "NewsFeedDB";
@@ -14,7 +14,7 @@ public class NFDatabaseOpenHelper extends SQLiteOpenHelper
     public final static String COL_URL = "URL";
     public static final int VERSION_NUM = 1;
 
-        public NFDatabaseOpenHelper(Activity ctx){
+        public NF_DatabaseOpenHelper(Activity ctx){
         super(ctx, "NewsFeedDB", null,VERSION_NUM );
     }
 

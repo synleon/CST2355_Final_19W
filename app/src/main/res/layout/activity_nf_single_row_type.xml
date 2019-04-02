@@ -9,13 +9,15 @@
     <ImageView
         android:id="@+id/icon"
         android:layout_width="wrap_content"
-        android:layout_height="30dp"
+        android:layout_height="50dp"
         android:src="@drawable/icon_nf_favorate"/>
 
     <TextView
         android:id="@+id/article_title"
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:text="This is an article"/>
+        android:layout_height="50dp"
+        android:text="This is an article"
+        android:textSize="12sp"
+        android:textStyle="bold"/>
 
 </GridLayout>

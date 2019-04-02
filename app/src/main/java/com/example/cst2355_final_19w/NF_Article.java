@@ -1,31 +1,31 @@
 package com.example.cst2355_final_19w;
 
-public class NFArticle
+public class NF_Article
 {
     private String title;
     private String text;
     private String urlAddress;
     private long id;
 
-    public NFArticle(String title)
+    public NF_Article(String title)
     {
         setTitle(title);
     }
 
-    public NFArticle(String title, long id)
+    public NF_Article(String title, long id)
     {
         setTitle(title);
         setId(id);
     }
 
-    public NFArticle(String title, String text, long id)
+    public NF_Article(String title, String text, long id)
     {
         setTitle(title);
         setText(text);
         setId(id);
     }
 
-    public NFArticle(String title, String text, String url)
+    public NF_Article(String title, String text, String url)
     {
         setTitle(title);
         setText(text);

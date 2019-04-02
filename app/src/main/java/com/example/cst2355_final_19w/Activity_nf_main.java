@@ -1,40 +1,25 @@
 package com.example.cst2355_final_19w;
 
-import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 import android.support.design.widget.Snackbar;
 
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserFactory;
-
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.net.URLEncoder;
-import java.util.ArrayList;
 
 /**
  *  This class is a main class for launch the News Feed section of the final project application.
@@ -53,7 +38,7 @@ public class Activity_nf_main extends AppCompatActivity
 
     /** declare a variable with type ArrayList to list the articles found online
      *  @param news */
-    //protected static ArrayList<NFArticle> NEWS = new ArrayList<>();
+    //protected static ArrayList<NF_Article> NEWS = new ArrayList<>();
 
     /** declare several final static variables with type String for using in a database
      *  @param ITEM_SELECTED
@@ -93,8 +78,8 @@ public class Activity_nf_main extends AppCompatActivity
         tBar = (Toolbar)findViewById(R.id.toolbar_newsF);
         setSupportActionBar(tBar);
 
-        /** create an object of NFDatabaseOpenHelper to open a writable dababase */
-        NFDatabaseOpenHelper dbOpener = new NFDatabaseOpenHelper(this);
+        /** create an object of NF_DatabaseOpenHelper to open a writable dababase */
+        NF_DatabaseOpenHelper dbOpener = new NF_DatabaseOpenHelper(this);
         db = dbOpener.getWritableDatabase();
 
 
@@ -115,8 +100,8 @@ public class Activity_nf_main extends AppCompatActivity
                 startActivity(nextToDo);
 
                 /*ContentValues newValue = new ContentValues();
-                newValue.put(NFDatabaseOpenHelper.COL_TITLE,);
-                long newId = db.insert(NFDatabaseOpenHelper.TABLE_NAME, null, newValue);
+                newValue.put(NF_DatabaseOpenHelper.COL_TITLE,);
+                long newId = db.insert(NF_DatabaseOpenHelper.TABLE_NAME, null, newValue);
                 printCursor();
                 typedText.setText("");
 
@@ -263,7 +248,7 @@ public class Activity_nf_main extends AppCompatActivity
         {
             LayoutInflater inflater = getLayoutInflater();
 
-            View newView = inflater.inflate(R.layout.activity_nf_rowlist,parent,false);
+            View newView = inflater.inflate(R.layout.activity_nf_single_row_type,parent,false);
 
             TextView rowText = (TextView) newView.findViewById(R.id.article_title);
             //String textToShow = getItem(position).toString();
