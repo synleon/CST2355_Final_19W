@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -23,6 +24,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.support.v7.widget.SearchView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.support.v7.widget.Toolbar;
@@ -147,6 +149,8 @@ public class Activity_nytimes extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.ny_main_toolbar);
         setSupportActionBar(toolbar);
 
+
+
         //This listens for items being clicked in the list view
         theList.setOnItemClickListener((parent, view, position, id) -> {
             Log.i("you clicked on :", "item " + position);
@@ -156,6 +160,8 @@ public class Activity_nytimes extends AppCompatActivity {
             Intent nextActivity = new Intent(Intent.ACTION_VIEW, Uri.parse(article.getArticle_url()));
             startActivity(nextActivity);
         });
+
+        fillListWithSavedArticles();
 
         // set return button onclick listener
         Button btn = findViewById(R.id.ny_button);
@@ -213,6 +219,37 @@ public class Activity_nytimes extends AppCompatActivity {
         }
     }
 
+    /**
+     * get saved articles from database and populate the listView
+     */
+    public void fillListWithSavedArticles() {
+        //query all the results from the database:
+        String[] columns = {MyDatabaseOpenHelper.COL_ID,MyDatabaseOpenHelper.COL_PUBDATE,MyDatabaseOpenHelper.COL_AUTHOR,
+                MyDatabaseOpenHelper.COL_TITLE,MyDatabaseOpenHelper.COL_URL,MyDatabaseOpenHelper.COL_SAVED};
+        Cursor results = db.query(false, MyDatabaseOpenHelper.TABLE_NAME, columns,
+                null, null, null, null, null, null);
+//        Cursor results = db.rawQuery("SELECT _id,pub_date,author,title,url,saved from " + MyDatabaseOpenHelper.TABLE_NAME, null);
+
+        //iterate over the results, and populate the list view
+        //find the column indices:
+        int idIndex = results.getColumnIndex(MyDatabaseOpenHelper.COL_ID);
+        int idSaved = results.getColumnIndex(MyDatabaseOpenHelper.COL_SAVED);
+        int idUrl = results.getColumnIndex(MyDatabaseOpenHelper.COL_URL);
+        int idTitle = results.getColumnIndex(MyDatabaseOpenHelper.COL_TITLE);
+        int idAuthor = results.getColumnIndex(MyDatabaseOpenHelper.COL_AUTHOR);
+        int idPubDate = results.getColumnIndex(MyDatabaseOpenHelper.COL_PUBDATE);
+
+
+        results.moveToFirst();
+        while (!results.isAfterLast())
+        {
+            NytimesArticleData article = new NytimesArticleData(results.getString(idIndex), results.getString(idPubDate), results.getString(idTitle),
+                    results.getString(idAuthor), results.getString(idUrl), results.getInt(idSaved));
+            adapter.add(article);
+            results.moveToNext();
+        }
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
@@ -222,6 +259,9 @@ public class Activity_nytimes extends AppCompatActivity {
                 builder.setView(R.layout.layout_nytimes_help).setPositiveButton("OK", null);
                 builder.create().show();
                 break;
+//            case R.id.ny_saved_article:
+//                // TODO: open a new fragment to show
+//                break;
             default:
                 break;
         }
@@ -244,9 +284,66 @@ public class Activity_nytimes extends AppCompatActivity {
         long id = db.insert(MyDatabaseOpenHelper.TABLE_NAME, null, newRowValues);
         String message = (id != -1) ? "Article saved successfully!" : "Save article failed!";
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-        Button btn = view.findViewById(R.id.ny_article_save);
-        btn.setText("Saved!");
-        btn.setEnabled(false);
+//        Button btn = view.findViewById(R.id.ny_article_save);
+//        btn.setText("Saved!");
+//        btn.setEnabled(false);
+    }
+
+    /**
+     * Method used to save articles to SQLite database
+     *
+     * @param view the view that user clicked save switch
+     * @param isSaveChecked whether save switch is checked or not
+     * @param article article needs to be saved
+     */
+    public void saveArticle(View view, boolean isSaveChecked, NytimesArticleData article) {
+        Switch switchSave = view.findViewById(R.id.ny_article_switch_saved);
+        if (isSaveChecked && !isArticleSaved(article)) {
+            // save article
+            ContentValues newRowValues = new ContentValues();
+            newRowValues.put(MyDatabaseOpenHelper.COL_ID, article.getArticle_id());
+            newRowValues.put(MyDatabaseOpenHelper.COL_PUBDATE, article.getArticle_pubData());
+            newRowValues.put(MyDatabaseOpenHelper.COL_TITLE, article.getArticle_title());
+            newRowValues.put(MyDatabaseOpenHelper.COL_AUTHOR, article.getArticle_byline());
+            newRowValues.put(MyDatabaseOpenHelper.COL_URL, article.getArticle_url());
+            newRowValues.put(MyDatabaseOpenHelper.COL_SAVED, 1);
+            long id = db.insert(MyDatabaseOpenHelper.TABLE_NAME, null, newRowValues);
+            String message = (id != -1) ? "Article saved successfully!" : "Save article failed!";
+            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+            switchSave.setText("Saved");
+            article.setSaved(1);
+        }
+        else {
+            // delete article
+            String whereClause = MyDatabaseOpenHelper.COL_ID + "=?";
+            int rows = db.delete(MyDatabaseOpenHelper.TABLE_NAME, whereClause, new String[]{article.getArticle_id()});
+            if (rows > 0) {
+                Toast.makeText(this, "Article deleted!", Toast.LENGTH_LONG).show();
+            }
+            switchSave.setText("Not Saved");
+            article.setSaved(0);
+        }
+
+    }
+
+    /**
+     * check whether an article has been saved based on article
+     * @param article article to check
+     * @return
+     */
+    public boolean isArticleSaved(NytimesArticleData article) {
+        // construct a query
+        String[] colums = {MyDatabaseOpenHelper.COL_ID};
+        String whereClause = MyDatabaseOpenHelper.COL_ID + "=?";
+        Cursor results = db.query(false, MyDatabaseOpenHelper.TABLE_NAME, colums,
+                whereClause, new String[]{article.getArticle_id()}, null, null, null, null);
+        int nRows = results.getCount();
+        if (nRows == 0) {
+            return false;
+        }
+        else {
+            return true;
+        }
     }
 
     /**
@@ -309,7 +406,7 @@ public class Activity_nytimes extends AppCompatActivity {
                     Log.i("NYTIMES", "\tstrByline=[" + strByline + "]");
 
                     // construct a article object
-                    NytimesArticleData article = new NytimesArticleData(id, pubDate, title, strByline, webUrl);
+                    NytimesArticleData article = new NytimesArticleData(id, pubDate, title, strByline, webUrl, 0);
 
                     // send the article object to UI thread
                     publishProgress(article);
@@ -337,10 +434,23 @@ public class Activity_nytimes extends AppCompatActivity {
          */
         @Override
         protected void onProgressUpdate(NytimesArticleData... values) {
-            // call adapter to add article object
-            adapter.add(values[0]);
+            if (values.length != 0) {
+                NytimesArticleData article = values[0];
+                // check whether this article has been saved
+                if (isArticleSaved(values[0])) {
+                    article.setSaved(1);
+                }
+                else {
+                    article.setSaved(0);
+                }
+                // call adapter to add article object
+                adapter.add(values[0]);
+            }
+
         }
     }
+
+
 
     /**
      * class representing an article from New York Times
@@ -374,19 +484,26 @@ public class Activity_nytimes extends AppCompatActivity {
         private String article_url;
 
         /**
+         * whether has been saved, 0 - not 1 - yes
+         */
+        private int saved;
+
+        /**
          * constructor
          * @param article_id id
          * @param article_pubData published date
          * @param article_title title
          * @param article_byline byline
          * @param article_url url
+         * @param article_saved saved flag
          */
-        public NytimesArticleData(String article_id, String article_pubData, String article_title, String article_byline, String article_url) {
+        public NytimesArticleData(String article_id, String article_pubData, String article_title, String article_byline, String article_url, int article_saved) {
             this.article_id = article_id;
             this.article_pubData = article_pubData;
             this.article_title = article_title;
             this.article_byline = article_byline;
             this.article_url = article_url;
+            this.saved = article_saved;
         }
 
         /**
@@ -439,6 +556,16 @@ public class Activity_nytimes extends AppCompatActivity {
             return this;
         }
 
+        /**
+         * setter for saved
+         * @param saved whether has been saved
+         * @return
+         */
+        public NytimesArticleData setSaved(int saved) {
+            this.saved = saved;
+            return this;
+        }
+
         public String getArticle_id() {
             return article_id;
         }
@@ -457,6 +584,10 @@ public class Activity_nytimes extends AppCompatActivity {
 
         public String getArticle_url() {
             return article_url;
+        }
+
+        public int getSaved() {
+            return saved;
         }
     }
 
@@ -498,11 +629,24 @@ public class Activity_nytimes extends AppCompatActivity {
             textView = view.findViewById(R.id.ny_article_author);
             textView.setText(article.getArticle_byline());
 
-            // set save button click onclick listener
-            Button btnSave = view.findViewById(R.id.ny_article_save);
-            btnSave.setOnClickListener(v -> {
-                saveArticle(v, article);
+            // set switch onclick listener
+            Switch switchSaved = view.findViewById(R.id.ny_article_switch_saved);
+
+            // set saved switch
+            if (article.getSaved() == 1) {
+                switchSaved.setChecked(true);
+                switchSaved.setText("Saved");
+            }
+            else {
+                switchSaved.setChecked(false);
+                switchSaved.setText("Not Saved");
+            }
+
+            // set listener, has to go after setCheck
+            switchSaved.setOnCheckedChangeListener((v, c) -> {
+                saveArticle(v, c, article);
             });
+
             return view;
         }
     }

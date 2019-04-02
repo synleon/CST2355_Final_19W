@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 public class MyDatabaseOpenHelper extends SQLiteOpenHelper {
-    public static final int VERSION_NUM     = 1;
+    public static final int VERSION_NUM     = 2;
     public static final String DB_NAME      = "nytimes";
     public static final String TABLE_NAME   = "articles";
     public static final String COL_ID       = "_id";
@@ -14,6 +14,7 @@ public class MyDatabaseOpenHelper extends SQLiteOpenHelper {
     public static final String COL_AUTHOR   = "author";
     public static final String COL_TITLE    = "title";
     public static final String COL_URL      = "url";
+    public static final String COL_SAVED    = "saved";
 
 
     /**
@@ -44,10 +45,11 @@ public class MyDatabaseOpenHelper extends SQLiteOpenHelper {
         // create database
         db.execSQL("CREATE TABLE " + TABLE_NAME + "( "
                 + COL_ID + " TEXT,"
-                + COL_PUBDATE + " TEXT, "
-                + COL_AUTHOR +  " TEXT, "
-                + COL_TITLE +   " TEXT, "
-                + COL_URL +     " TEXT)");
+                + COL_PUBDATE + " TEXT,"
+                + COL_AUTHOR +  " TEXT,"
+                + COL_TITLE +   " TEXT,"
+                + COL_URL +     " TEXT,"
+                + COL_SAVED +   " INTEGER)");
     }
 
     /**
