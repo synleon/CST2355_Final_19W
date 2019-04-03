@@ -5,6 +5,7 @@ public class NF_Article
     private String title;
     private String text;
     private String urlAddress;
+    private String imageLink;
     private long id;
 
     public NF_Article(String title)
@@ -29,8 +30,15 @@ public class NF_Article
     {
         setTitle(title);
         setText(text);
-        // setId(id);
         setUrlAddress(url);
+    }
+
+    public NF_Article(String title, String text, String url, String imageLink)
+    {
+        setTitle(title);
+        setText(text);
+        setUrlAddress(url);
+        setImageLink(imageLink);
     }
 
     public void setTitle(String title)
@@ -71,5 +79,15 @@ public class NF_Article
     public long getId()
     {
         return id;
+    }
+
+    public void setImageLink(String imageLink)
+    {
+        this.imageLink = imageLink;
+    }
+
+    public String getImageLink()
+    {
+        return imageLink;
     }
 }

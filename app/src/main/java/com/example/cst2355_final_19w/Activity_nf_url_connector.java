@@ -1,8 +1,11 @@
 package com.example.cst2355_final_19w;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +25,10 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -42,6 +49,7 @@ public class Activity_nf_url_connector extends AppCompatActivity {
     NewsAdapter adapter;
     int positionClicked = 0;
     private Toolbar tBar;
+    private File file;
 
     //public static SQLiteDatabase DB;
 
@@ -80,8 +88,7 @@ public class Activity_nf_url_connector extends AppCompatActivity {
         //DB = dbOpener.getWritableDatabase();
 
         NFQuery nfQuery = new NFQuery();
-        nfQuery.execute("http://webhose.io/filterWebContent?" +
-                "token=264a10ac-9a70-4d5b-9f57-280bb2ec5604&format=xml&sort=crawled" + Activity_nf_main.SEARCHTERM);
+        nfQuery.execute("http://webhose.io/filterWebContent?token=264a10ac-9a70-4d5b-9f57-280bb2ec5604&format=xml&sort=crawled&q=" + Activity_nf_main.SEARCHTERM);
 
 
         ListView newsList = (ListView) findViewById(R.id.list_newsF);
@@ -123,6 +130,9 @@ public class Activity_nf_url_connector extends AppCompatActivity {
         private String urlAddress;
         private String title;
         private String text;
+        private String iconName;
+        private String imageLink;
+        Bitmap image;
 
         @Override
         protected String doInBackground(String... strings) {
@@ -174,6 +184,7 @@ public class Activity_nf_url_connector extends AppCompatActivity {
             boolean foundURL = false;
             boolean foundTitle = false;
             boolean foundText = false;
+            boolean foundImage = false;
 
             while (true) {
                 xpp.next();
@@ -202,14 +213,18 @@ public class Activity_nf_url_connector extends AppCompatActivity {
                     text = xpp.nextText();
                     Log.e("News Feed ", "Find the text: " + text);
                     publishProgress(75);
-
+                } else if (!foundImage && tagName.equals("main_image")){
+                    foundImage = true;
+                    imageLink = xpp.nextText();
+                    Log.e("News Feed ", "Find the text: " + imageLink);
+                    publishProgress(100);
                 }
             }
 
             if (foundTitle && foundText && foundURL
-                    && urlAddress != null && title != null && text != null
-                    && urlAddress.length() > 0 && title.length() > 0 && text.length() > 0)
-                NEWS.add(new NF_Article(title, text, urlAddress));
+                    && urlAddress != null && title != null && text != null && imageLink != null
+                    && urlAddress.length() > 0 && title.length() > 0 && text.length() > 0 && imageLink.length() > 0)
+                NEWS.add(new NF_Article(title, text, urlAddress, imageLink ));
     }
 
         @Override
@@ -225,6 +240,8 @@ public class Activity_nf_url_connector extends AppCompatActivity {
 
             progressBar.setVisibility(View.INVISIBLE);
         }
+
+
     }
 
     protected class NewsAdapter extends BaseAdapter {
@@ -256,8 +273,16 @@ public class Activity_nf_url_connector extends AppCompatActivity {
             TextView rowText = (TextView) newView.findViewById(R.id.article_title);
             rowText.setText(getItem(position).toString());
 
+            /*ImageView imageView = (ImageView) newView.findViewById(R.id.icon);
+            imageView.setImageBitmap();*/
+
             return newView;
         }
+    }
+    public boolean fileExistance(String fname)
+    {
+        file = getBaseContext().getFileStreamPath(fname);
+        return file.exists();
     }
 
    /* public void deleteMessage(long id, int positionClicked) {
@@ -282,3 +307,44 @@ public class Activity_nf_url_connector extends AppCompatActivity {
         }
     }*/
 }
+// determine if an icon exists
+// if exists, open it or download one
+            /*if(fileExistance(iconName + ".png")) {
+                Log.e("ASYNC TASK", "IS LOOKING FOR THE FILE" + iconName + ".png");
+                Log.e("ASYNC TASK", "FOUND THE ICON LOCALLY");
+
+                FileInputStream fis = null;
+
+                try {
+                    fis = openFileInput(iconName + ".png");
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+
+                image = BitmapFactory.decodeStream(fis);
+            } else {
+                Log.e(ACTIVITY_SERVICE, "IS LOOKING FOR FILE" + iconName + ".png");
+                Log.e(ACTIVITY_SERVICE, "THE ICON DOES NOT EXIST AND NEED TO DOWNLOAD");
+                // connect to an url to get corresponding weather icon
+                URL iconUrl = new URL("http://openweathermap.org/img/w/" + iconName + ".png");
+                HttpURLConnection iconConnecter = (HttpURLConnection) iconUrl.openConnection();
+                iconConnecter.setReadTimeout(10000  *//* milliseconds *//*);
+                iconConnecter.setConnectTimeout(15000  *//* milliseconds *//*);
+                iconConnecter.setRequestMethod("GET");
+                iconConnecter.setDoInput(true);
+                iconConnecter.connect();
+
+                image = null;
+                int responseCode = iconConnecter.getResponseCode();
+
+                if (responseCode == 200)
+                {
+                    image = BitmapFactory.decodeStream(iconConnecter.getInputStream());
+                }
+
+                FileOutputStream imageOutput = openFileOutput(iconName + ".png", Context.MODE_PRIVATE);
+                image.compress(Bitmap.CompressFormat.PNG, 80, imageOutput);
+                imageOutput.flush();
+                imageOutput.close();
+                iconConnecter.disconnect();
+            }*/

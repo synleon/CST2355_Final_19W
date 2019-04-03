@@ -13,6 +13,8 @@ public class NF_DatabaseOpenHelper extends SQLiteOpenHelper
     public final static String COL_TITLE = "Title";
     public final static String COL_TEXT = "Text";
     public final static String COL_URL = "URL";
+    public final static String COL_IMAGELINK = "ImageLink";
+
     public static final int VERSION_NUM = 1;
 
     public NF_DatabaseOpenHelper(Context ctx){
@@ -26,7 +28,8 @@ public class NF_DatabaseOpenHelper extends SQLiteOpenHelper
                 + COL_ID +" INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + COL_TITLE + " TEXT, "
                 + COL_TEXT + " TEXT, "
-                + COL_URL + " TEXT);");
+                + COL_URL + " TEXT,"
+                + COL_IMAGELINK + " TEXT);");
     }
 
     @Override

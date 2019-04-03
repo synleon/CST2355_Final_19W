@@ -20,8 +20,8 @@ public class NF_DetailFragment extends Fragment
     private boolean isTablet;
     private int position;
     private Bundle dataFromActivity;
-    protected static SQLiteDatabase DB;
-    protected NF_DatabaseOpenHelper dbOpener;
+    //protected static SQLiteDatabase DB;
+    //protected NF_DatabaseOpenHelper dbOpener;
     private Toolbar tBar;
 
     public void setTablet(boolean tablet)
@@ -35,8 +35,8 @@ public class NF_DetailFragment extends Fragment
         // Inflate the layout for this fragment
         View result =  inflater.inflate(R.layout.activity_nf_fragment_layout_detail, container, false);
 
-        dbOpener = new NF_DatabaseOpenHelper(result.getContext());
-        DB = dbOpener.getWritableDatabase();
+        //dbOpener = new NF_DatabaseOpenHelper(result.getContext());
+        //DB = dbOpener.getWritableDatabase();
 
         dataFromActivity = getArguments();
 
@@ -69,7 +69,7 @@ public class NF_DetailFragment extends Fragment
             newValue.put(NF_DatabaseOpenHelper.COL_TITLE, Activity_nf_url_connector.NEWS.get(position).getTitle());
             newValue.put(NF_DatabaseOpenHelper.COL_TEXT, Activity_nf_url_connector.NEWS.get(position).getText());
             newValue.put(NF_DatabaseOpenHelper.COL_URL,Activity_nf_url_connector.NEWS.get(position).getUrlAddress());
-            long newId = DB.insert(NF_DatabaseOpenHelper.TABLE_NAME, null, newValue);
+            long newId = Activity_nf_main.DB.insert(NF_DatabaseOpenHelper.TABLE_NAME, null, newValue);
             Snackbar.make( saveToFavor,"Inserted one favorite article which id is : " + newId, Snackbar.LENGTH_LONG).show();
         });
 

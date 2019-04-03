@@ -29,62 +29,71 @@ import java.net.URLEncoder;
  *  @Reference: Professor Eric Torunski, InClassExamples_W19
  */
 
-public class Activity_nf_main extends AppCompatActivity
-{
+public class Activity_nf_main extends AppCompatActivity {
 
-    /** declare a variable with type Toolbar used for creating a toolbar object.
-     *  @param tBar */
+    /**
+     * declare a variable with type Toolbar used for creating a toolbar object.
+     *
+     * @param tBar
+     */
     private Toolbar tBar;
 
     /** declare a variable with type ArrayList to list the articles found online
      *  @param news */
     //protected static ArrayList<NF_Article> NEWS = new ArrayList<>();
 
-    /** declare several final static variables with type String for using in a database
-     *  @param ITEM_SELECTED
-     *  @param ITEM_POSITION
-     *  @param ITEM_ID
-     *  @param db*/
+    /**
+     * declare several final static variables with type String for using in a database
+     *
+     * @param ITEM_SELECTED
+     * @param ITEM_POSITION
+     * @param ITEM_ID
+     * @param db
+     */
     private static final String ITEM_SELECTED = "ITEM";
     private static final String ITEM_POSITION = "POSITION";
     private static final String ITEM_ID = "ID";
-    protected SQLiteDatabase db;
-    private Cursor results;
+    protected static SQLiteDatabase DB;
+    protected static NF_DatabaseOpenHelper OPENHELPER;
 
-    /** declare two variables with type static final int for startActivityForResult function*/
+    /**
+     * declare two variables with type static final int for startActivityForResult function
+     */
     private static final int REQUSTCODE = 20;
     private static final int RESULTCODE = 50;
 
     protected static String SEARCHTERM = null;
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
-        Toast.makeText(this,"Welcome to News Feed page", Toast.LENGTH_LONG).show();
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nf_mainlayout);
 
+        Toast.makeText(this, "Welcome to News Feed page", Toast.LENGTH_LONG).show();
+
         /** create an object of tool bar and display it.*/
-        tBar = (Toolbar)findViewById(R.id.toolbar_newsF);
+        tBar = (Toolbar) findViewById(R.id.toolbar_newsF);
         setSupportActionBar(tBar);
 
+        OPENHELPER = new NF_DatabaseOpenHelper(this);
+        DB = OPENHELPER.getWritableDatabase();
 
         /** set a function for "SEARCH" button. */
         Button searchButton = (Button) findViewById(R.id.sb_newsF);
-        searchButton.setOnClickListener( sb ->
-            {
-                try{
-                    EditText editSearchText = (EditText) findViewById(R.id.searchEdit_newsF) ;
-                    SEARCHTERM = editSearchText.getText().toString();
-                    URLEncoder.encode(SEARCHTERM, "UTF-8");
-                } catch(UnsupportedEncodingException e){
-                    Log.e("Crash", e.getMessage());
-                }
+        searchButton.setOnClickListener(sb ->
+        {
+            try {
+                EditText editSearchText = (EditText) findViewById(R.id.searchEdit_newsF);
+                SEARCHTERM = editSearchText.getText().toString();
+                URLEncoder.encode(SEARCHTERM, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                Log.e("Crash", e.getMessage());
+            }
 
-                Intent nextToDo = new Intent(Activity_nf_main.this, Activity_nf_url_connector.class);
-                startActivity(nextToDo);
+            Intent nextToDo = new Intent(Activity_nf_main.this, Activity_nf_url_connector.class);
+            startActivity(nextToDo);
 
-            });
+        });
 
         /** set a function for "GO BACK" button. */
         /*Button goBackBu = (Button)findViewById(R.id.goback);
@@ -94,22 +103,23 @@ public class Activity_nf_main extends AppCompatActivity
         });*/
     }
 
-    /** display the items of toolbar */
+    /**
+     * display the items of toolbar
+     */
     @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
+    public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.toolbar_newsfeed, menu);
 
         return true;
     }
 
-    /** this method is used to define a utility of each item in the toolbar */
+    /**
+     * this method is used to define a utility of each item in the toolbar
+     */
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        switch(item.getItemId())
-        {
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
             case R.id.nf_dictionary:
 
                 /** go to dictionary section when click the icon*/
@@ -138,15 +148,17 @@ public class Activity_nf_main extends AppCompatActivity
 
             case R.id.nf_favorite:
                 /** make a list of favorites*/
-                favorList();
+                Intent nextToDo = new Intent(Activity_nf_main.this, Activity_nf_favorites.class);
+                startActivity(nextToDo);
                 break;
         }
         return true;
     }
 
-    /** this method will be executed when the item "HELP" in the toolbar is clicked. */
-    public void alert()
-    {
+    /**
+     * this method will be executed when the item "HELP" in the toolbar is clicked.
+     */
+    public void alert() {
         /** create an object of View used to set the "HELP" layout later*/
         View helpView = getLayoutInflater().inflate(R.layout.activity_nf_helpdialog, null);
 
@@ -163,50 +175,25 @@ public class Activity_nf_main extends AppCompatActivity
         builder.create().show();
     }
 
-    /** this method will be executed when the item "New York Times" in the toolbar is clicked. */
-    public void showSnackBar()
-    {
+    /**
+     * this method will be executed when the item "New York Times" in the toolbar is clicked.
+     */
+    public void showSnackBar() {
         /** find view */
-        tBar = (Toolbar)findViewById(R.id.toolbar_newsF);
+        tBar = (Toolbar) findViewById(R.id.toolbar_newsF);
 
         /** create an object of Snackbar
          *  use it to set a button with the function needed
          *  then show the view*/
         Snackbar sb = Snackbar.make(tBar, "Go to New York Time Article Search page?", Snackbar.LENGTH_LONG)
-                .setAction("Yes", new View.OnClickListener()
-                {
+                .setAction("Yes", new View.OnClickListener() {
                     @Override
-                    public void onClick(View v){
+                    public void onClick(View v) {
                         // activity need to be changed
                         Intent nextHop = new Intent(Activity_nf_main.this, Activity_nytimes.class);
                         startActivity(nextHop);
-                    }});
+                    }
+                });
         sb.show();
-    }
-
-
-    public void printCursor() {
-        /*Log.e("MyDatabaseFile version:", db.getVersion() + "");
-        Log.e("Number of columns:", results.getColumnCount() + "");
-        Log.e("Name of the columns:", results.getColumnNames().toString());
-        Log.e("Number of results", results.getCount() + "");
-        Log.e("Each row of results :", "");*/
-        results.moveToFirst();
-        for (int i = 0; i < results.getCount(); i++) {
-            while (!results.isAfterLast()) {
-                boolean isSent = results.getInt(0) > 0;
-                String message = results.getString(1);
-                long id = results.getLong(2);
-                Log.e("id", id + "");
-                Log.e("isSent", isSent + "");
-                Log.e("message", message + "");
-                results.moveToNext();
-            }
-        }
-    }
-
-    public void favorList()
-    {
-
     }
 }
