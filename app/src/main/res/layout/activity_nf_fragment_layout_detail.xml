@@ -12,18 +12,12 @@
         android:orientation="vertical"
         android:layout_alignParentTop="true">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar_newsF"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:background="?attr/colorPrimary"/>
-
         <ImageView
             android:id="@+id/icon"
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:paddingBottom="10dp"/>
+
         <TextView
             android:id="@+id/titleOfArticle"
             android:layout_width="match_parent"
@@ -42,7 +36,9 @@
             android:id="@+id/urlOfArticle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="10dp" />
+            android:paddingBottom="10dp"
+            android:textStyle="italic"/>
+            <!--android:autoLink="email|phone|web"-->
 
         <Button
             android:id="@+id/save"

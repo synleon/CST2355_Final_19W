@@ -1,8 +1,10 @@
 package com.example.cst2355_final_19w;
 
 import android.content.ContentValues;
-import android.database.Cursor;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Paint;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -20,6 +22,7 @@ public class NF_DetailFragment extends Fragment
     private Bundle dataFromActivity;
     protected static SQLiteDatabase DB;
     protected NF_DatabaseOpenHelper dbOpener;
+    private Toolbar tBar;
 
     public void setTablet(boolean tablet)
     {
@@ -29,8 +32,6 @@ public class NF_DetailFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-
         // Inflate the layout for this fragment
         View result =  inflater.inflate(R.layout.activity_nf_fragment_layout_detail, container, false);
 
@@ -49,7 +50,18 @@ public class NF_DetailFragment extends Fragment
 
         //show the url:
         TextView url = (TextView)result.findViewById(R.id.urlOfArticle);
-        url.setText(dataFromActivity.getString(Activity_nf_url_connector.ITEM_URL));
+        url.setText(dataFromActivity.getString(Activity_nf_url_connector.ITEM_URL ));
+        url.getPaint().setFlags(Paint. UNDERLINE_TEXT_FLAG );
+
+        url.setOnClickListener( http ->{
+            TextView getUrl = (TextView) result.findViewById(R.id.urlOfArticle);
+            getUrl.getText().toString();
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            String urlHop = url.getText().toString();
+            intent.setData(Uri.parse(urlHop));
+            startActivity(intent);
+        });
+
 
         Button saveToFavor = (Button) result.findViewById(R.id.save);
         saveToFavor.setOnClickListener( stf -> {

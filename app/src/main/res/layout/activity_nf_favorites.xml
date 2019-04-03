@@ -4,6 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme" />
+
     <TextView
         android:id="@+id/favor"
         android:layout_width="match_parent"
@@ -23,13 +31,5 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/favor"
         android:layout_above="@id/goPrevious3"/>
-
-    <!--<Button
-        android:id="@+id/goPrevious3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:text="@string/goback"/>-->
 
 </RelativeLayout>

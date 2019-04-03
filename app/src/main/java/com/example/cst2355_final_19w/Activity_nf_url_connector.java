@@ -61,7 +61,6 @@ public class Activity_nf_url_connector extends AppCompatActivity {
         /** create an object of tool bar and display it.*/
         tBar = (Toolbar)findViewById(R.id.toolbar_newsF);
         setSupportActionBar(tBar);
-        setSupportActionBar(tBar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         tBar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -156,6 +155,8 @@ public class Activity_nf_url_connector extends AppCompatActivity {
             XmlPullParser xpp = factory.newPullParser();
             xpp.setInput(inStream, "UTF-8");
 
+            NEWS.clear();
+
             /** loop through the xml file*/
             while (xpp.getEventType() != XmlPullParser.END_DOCUMENT) {
                 if (xpp.getEventType() == XmlPullParser.START_TAG
@@ -188,27 +189,26 @@ public class Activity_nf_url_connector extends AppCompatActivity {
 
                 if (!foundURL && tagName.equals("url")) {
                     foundURL = true;
-                    //if(xpp.nextText() != null || xpp.nextText() != "")
-                        urlAddress = xpp.nextText();
+                    urlAddress = xpp.nextText();
                     Log.e("News Feed ", "Find URL: " + urlAddress);
                     publishProgress(25);
                 } else if (!foundTitle && tagName.equals("title")) {
                     foundTitle = true;
-                    //if(xpp.nextText() != null || xpp.nextText() != "")
-                        title = xpp.nextText();
+                    title = xpp.nextText();
                     Log.e("News Feed ", "Find a title: " + title);
                     publishProgress(50);
                 } else if (!foundText && tagName.equals("text")) {
                     foundText = true;
-                    //if(xpp.nextText() != null || xpp.nextText() != "")
-                        text = xpp.nextText();
+                    text = xpp.nextText();
                     Log.e("News Feed ", "Find the text: " + text);
                     publishProgress(75);
 
                 }
             }
 
-            if (foundTitle && foundText && foundURL)
+            if (foundTitle && foundText && foundURL
+                    && urlAddress != null && title != null && text != null
+                    && urlAddress.length() > 0 && title.length() > 0 && text.length() > 0)
                 NEWS.add(new NF_Article(title, text, urlAddress));
     }
 
@@ -269,16 +269,16 @@ public class Activity_nf_url_connector extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }*/
 
-    @Override
+    /*@Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == EMPTY_ACTIVITY) {
             if (resultCode == RESULT_OK) //if you hit the delete button instead of back button
             {
                 Log.e("Activity_nf_connector","get the result from Activity_nf_empty");
-                /*long id = data.getLongExtra(ITEM_ID, 0);
+                *//*long id = data.getLongExtra(ITEM_ID, 0);
                 int position = data.getIntExtra(ITEM_POSITION, 0);
-                deleteMessage(id, position);*/
+                deleteMessage(id, position);*//*
             }
         }
-    }
+    }*/
 }

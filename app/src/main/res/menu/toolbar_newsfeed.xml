@@ -2,36 +2,36 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/dictionary"
+        android:id="@+id/nf_dictionary"
         android:icon="@drawable/icons_dict"
         android:title="@string/menu_title_dict"
         android:orderInCategory="100"
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/flightStat_newsFeed"
+        android:id="@+id/nf_flightStat"
         android:icon="@drawable/icon_flight"
         android:title="@string/menu_title_flightstatus"
         android:orderInCategory="101"
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/item_NYtime_newsFeed"
+        android:id="@+id/nf_nytime"
         android:icon="@drawable/icon_nytimes"
         android:title="@string/menu_title_nytimes"
         android:orderInCategory="102"
         app:showAsAction="always"/>
 
     <item
-        android:id="@+id/item_NYtime_favorate"
+        android:id="@+id/nf_favorite"
         android:icon="@drawable/icon_nf_favorate"
         android:title="@string/menu_title_nytimes"
         android:orderInCategory="103"
         app:showAsAction="always"/>
 
     <item
-        android:id="@+id/item_help_newsFeed"
-        android:icon="@drawable/icon_nytimes"
+        android:id="@+id/nf_help"
+        android:icon="@drawable/icon_nf_help"
         android:title="@string/help_newsF"
         android:orderInCategory="103"
         app:showAsAction="never"/>

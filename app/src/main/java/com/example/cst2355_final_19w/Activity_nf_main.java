@@ -110,30 +110,35 @@ public class Activity_nf_main extends AppCompatActivity
     {
         switch(item.getItemId())
         {
-            case R.id.dictionary:
+            case R.id.nf_dictionary:
 
                 /** go to dictionary section when click the icon*/
                 Intent goDictionary = new Intent(Activity_nf_main.this, Activity_dict.class);
                 startActivity(goDictionary);
                 break;
 
-            case R.id.flightStat_newsFeed:
+            case R.id.nf_flightStat:
 
                 /** go to flight state section when click the icon*/
                 Intent goFlight = new Intent(Activity_nf_main.this, Activity_flightstatus.class);
                 startActivity(goFlight);
                 break;
 
-            case R.id.item_NYtime_newsFeed:
+            case R.id.nf_nytime:
 
                 /** show a snack bar when click New York Time icon on toolbar */
                 showSnackBar();
                 break;
 
-            case R.id.item_help_newsFeed:
+            case R.id.nf_help:
 
                 /** make a alert when click overflow title */
                 alert();
+                break;
+
+            case R.id.nf_favorite:
+                /** make a list of favorites*/
+                favorList();
                 break;
         }
         return true;
@@ -198,5 +203,10 @@ public class Activity_nf_main extends AppCompatActivity
                 results.moveToNext();
             }
         }
+    }
+
+    public void favorList()
+    {
+
     }
 }
