@@ -12,7 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
+        android:hardwareAccelerated="false"
+        android:largeHeap="true">
         <activity android:name=".Activity_nf_main"/>
         <activity android:name=".Activity_nf_url_connector"/>
         <activity android:name=".Activity_nf_empty"/>

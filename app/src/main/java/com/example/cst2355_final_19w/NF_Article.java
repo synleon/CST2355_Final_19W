@@ -19,10 +19,10 @@ public class NF_Article
         setId(id);
     }
 
-    public NF_Article(String title, String text, long id)
+    public NF_Article(String title, String imageLink, long id)
     {
         setTitle(title);
-        setText(text);
+        setText(imageLink);
         setId(id);
     }
 

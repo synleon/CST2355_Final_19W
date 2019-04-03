@@ -20,9 +20,6 @@ public class NF_DetailFragment extends Fragment
     private boolean isTablet;
     private int position;
     private Bundle dataFromActivity;
-    //protected static SQLiteDatabase DB;
-    //protected NF_DatabaseOpenHelper dbOpener;
-    private Toolbar tBar;
 
     public void setTablet(boolean tablet)
     {
@@ -34,9 +31,6 @@ public class NF_DetailFragment extends Fragment
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View result =  inflater.inflate(R.layout.activity_nf_fragment_layout_detail, container, false);
-
-        //dbOpener = new NF_DatabaseOpenHelper(result.getContext());
-        //DB = dbOpener.getWritableDatabase();
 
         dataFromActivity = getArguments();
 
@@ -61,7 +55,6 @@ public class NF_DetailFragment extends Fragment
             intent.setData(Uri.parse(urlHop));
             startActivity(intent);
         });
-
 
         Button saveToFavor = (Button) result.findViewById(R.id.save);
         saveToFavor.setOnClickListener( stf -> {

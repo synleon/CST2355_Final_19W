@@ -20,7 +20,7 @@ public class Activity_nf_empty extends AppCompatActivity {
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.empty_frame, dFragment)
-                .addToBackStack(null)
+                /*.addToBackStack(null)*/
                 .commit();
     }
 }
