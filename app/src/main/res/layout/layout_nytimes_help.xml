@@ -61,13 +61,16 @@
         android:id="@+id/textView_instruction"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/nytimes_instructon"
         android:layout_below="@id/textView_version"
-        android:layout_marginTop="4dp"
+        android:layout_alignStart="@id/textView_title"
+        android:layout_alignEnd="@id/textView_title"
         android:layout_marginLeft="4dp"
+        android:layout_marginTop="4dp"
         android:layout_marginRight="4dp"
         android:layout_marginBottom="4dp"
-        android:layout_alignStart="@id/textView_title"
-        android:textSize="20sp"/>
+        android:maxLines="10"
+        android:minLines="8"
+        android:text="@string/nytimes_instructon"
+        android:textSize="15sp" />
 
 </RelativeLayout>

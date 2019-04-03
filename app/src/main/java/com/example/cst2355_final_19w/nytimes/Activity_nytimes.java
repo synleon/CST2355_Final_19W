@@ -127,7 +127,7 @@ public class Activity_nytimes extends AppCompatActivity {
         setContentView(R.layout.activity_nytimes);
 
         // make toast message
-        Toast.makeText(this, "Welcome to New York Times!", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, getString(R.string.nytimes_welcom_message), Toast.LENGTH_LONG).show();
 
         // initialize customized adapter
         adapter = new MyListAdapter(this, R.id.ny_list);
@@ -138,7 +138,7 @@ public class Activity_nytimes extends AppCompatActivity {
         theList.setAdapter(adapter);
 
         // initialize progressbar
-        progressBar = findViewById(R.id.ny_progressBar);
+//        progressBar = findViewById(R.id.ny_progressBar);
 
         //get a database:
         dbOpener = new MyDatabaseOpenHelper(this);
@@ -164,9 +164,9 @@ public class Activity_nytimes extends AppCompatActivity {
         fillListWithSavedArticles();
 
         // set return button onclick listener
-        Button btn = findViewById(R.id.ny_button);
+        Button btn = findViewById(R.id.ny_goback_button);
         btn.setOnClickListener(v -> {
-            Snackbar sb = Snackbar.make(btn, "Go back?", Snackbar.LENGTH_LONG)
+            Snackbar sb = Snackbar.make(btn, getString(R.string.goback), Snackbar.LENGTH_LONG)
                     .setAction("Yes", e -> finish());
             sb.show();
         });
@@ -194,6 +194,7 @@ public class Activity_nytimes extends AppCompatActivity {
                     NytimesArticleQuery articleQuery = new NytimesArticleQuery();
 
                     // let progress bar appear
+                    progressBar = new ProgressBar(Activity_nytimes.this, null, android.R.attr.progressBarStyleHorizontal);
                     progressBar.setVisibility(View.VISIBLE);
 
                     articleQuery.execute(queryString);
@@ -228,7 +229,6 @@ public class Activity_nytimes extends AppCompatActivity {
                 MyDatabaseOpenHelper.COL_TITLE,MyDatabaseOpenHelper.COL_URL,MyDatabaseOpenHelper.COL_SAVED};
         Cursor results = db.query(false, MyDatabaseOpenHelper.TABLE_NAME, columns,
                 null, null, null, null, null, null);
-//        Cursor results = db.rawQuery("SELECT _id,pub_date,author,title,url,saved from " + MyDatabaseOpenHelper.TABLE_NAME, null);
 
         //iterate over the results, and populate the list view
         //find the column indices:
@@ -259,34 +259,10 @@ public class Activity_nytimes extends AppCompatActivity {
                 builder.setView(R.layout.layout_nytimes_help).setPositiveButton("OK", null);
                 builder.create().show();
                 break;
-//            case R.id.ny_saved_article:
-//                // TODO: open a new fragment to show
-//                break;
             default:
                 break;
         }
         return true;
-    }
-
-    /**
-     * Method used to save articles to SQLite database
-     *
-     * @param view the view that user clicked save button, can be used to change how the view looks like after clicked
-     * @param article article needs to be saved
-     */
-    public void saveArticle(View view, NytimesArticleData article) {
-        ContentValues newRowValues = new ContentValues();
-        newRowValues.put(MyDatabaseOpenHelper.COL_ID, article.getArticle_id());
-        newRowValues.put(MyDatabaseOpenHelper.COL_PUBDATE, article.getArticle_pubData());
-        newRowValues.put(MyDatabaseOpenHelper.COL_TITLE, article.getArticle_title());
-        newRowValues.put(MyDatabaseOpenHelper.COL_AUTHOR, article.getArticle_byline());
-        newRowValues.put(MyDatabaseOpenHelper.COL_URL, article.getArticle_url());
-        long id = db.insert(MyDatabaseOpenHelper.TABLE_NAME, null, newRowValues);
-        String message = (id != -1) ? "Article saved successfully!" : "Save article failed!";
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-//        Button btn = view.findViewById(R.id.ny_article_save);
-//        btn.setText("Saved!");
-//        btn.setEnabled(false);
     }
 
     /**
@@ -308,9 +284,9 @@ public class Activity_nytimes extends AppCompatActivity {
             newRowValues.put(MyDatabaseOpenHelper.COL_URL, article.getArticle_url());
             newRowValues.put(MyDatabaseOpenHelper.COL_SAVED, 1);
             long id = db.insert(MyDatabaseOpenHelper.TABLE_NAME, null, newRowValues);
-            String message = (id != -1) ? "Article saved successfully!" : "Save article failed!";
+            String message = (id != -1) ? getString(R.string.nytimes_article_save_success_message) : getString(R.string.nytimes_article_save_fail_message);
             Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-            switchSave.setText("Saved");
+            switchSave.setText(getString(R.string.nytimes_article_saved));
             article.setSaved(1);
         }
         else {
@@ -318,9 +294,9 @@ public class Activity_nytimes extends AppCompatActivity {
             String whereClause = MyDatabaseOpenHelper.COL_ID + "=?";
             int rows = db.delete(MyDatabaseOpenHelper.TABLE_NAME, whereClause, new String[]{article.getArticle_id()});
             if (rows > 0) {
-                Toast.makeText(this, "Article deleted!", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getString(R.string.nytimes_article_delete_message), Toast.LENGTH_LONG).show();
             }
-            switchSave.setText("Not Saved");
+            switchSave.setText(getString(R.string.nytimes_article_not_saved));
             article.setSaved(0);
         }
 
@@ -373,12 +349,6 @@ public class Activity_nytimes extends AppCompatActivity {
 
                 // parse result string to JSON object
                 JSONObject jObject = new JSONObject(result);
-
-//                String status = jObject.getString("status");
-//                Log.i("NYTIMES", "status=[" + status + "]");
-//
-//                String copyright = jObject.getString("copyright");
-//                Log.i("NYTIMES", "copyright=[" + copyright + "]");
 
                 // determine how many docs returned
                 JSONObject response = jObject.getJSONObject("response");
@@ -635,11 +605,11 @@ public class Activity_nytimes extends AppCompatActivity {
             // set saved switch
             if (article.getSaved() == 1) {
                 switchSaved.setChecked(true);
-                switchSaved.setText("Saved");
+                switchSaved.setText(getString(R.string.nytimes_article_saved));
             }
             else {
                 switchSaved.setChecked(false);
-                switchSaved.setText("Not Saved");
+                switchSaved.setText(getString(R.string.nytimes_article_not_saved));
             }
 
             // set listener, has to go after setCheck
