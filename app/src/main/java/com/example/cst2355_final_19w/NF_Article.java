@@ -1,44 +1,36 @@
 package com.example.cst2355_final_19w;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+
 public class NF_Article
 {
     private String title;
     private String text;
     private String urlAddress;
     private String imageLink;
+    private Drawable image;
     private long id;
+    private Bitmap bitmap;
 
-    public NF_Article(String title)
-    {
-        setTitle(title);
-    }
-
-    public NF_Article(String title, long id)
-    {
-        setTitle(title);
-        setId(id);
-    }
-
-    public NF_Article(String title, String imageLink, long id)
-    {
-        setTitle(title);
-        setText(imageLink);
-        setId(id);
-    }
-
-    public NF_Article(String title, String text, String url)
-    {
-        setTitle(title);
-        setText(text);
-        setUrlAddress(url);
-    }
-
-    public NF_Article(String title, String text, String url, String imageLink)
+    /** used for adding favor list*/
+    public NF_Article(String title, String text, String url, String imageLink, long id)
     {
         setTitle(title);
         setText(text);
         setUrlAddress(url);
         setImageLink(imageLink);
+        setId(id);
+    }
+
+    /** used for adding search list*/
+    public NF_Article(String title, String text, String url, String imageLink, Bitmap bitmap)
+    {
+        setTitle(title);
+        setText(text);
+        setUrlAddress(url);
+        setImageLink(imageLink);
+        setBitmap(bitmap);
     }
 
     public void setTitle(String title)
@@ -89,5 +81,15 @@ public class NF_Article
     public String getImageLink()
     {
         return imageLink;
+    }
+
+    public void setBitmap(Bitmap bitmap)
+    {
+        this.bitmap = bitmap;
+    }
+
+    public Bitmap getBitmap()
+    {
+        return bitmap;
     }
 }

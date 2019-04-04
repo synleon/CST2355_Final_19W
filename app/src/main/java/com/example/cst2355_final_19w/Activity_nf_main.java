@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 import android.support.design.widget.Snackbar;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
@@ -83,6 +84,9 @@ public class Activity_nf_main extends AppCompatActivity {
 
         OPENHELPER = new NF_DatabaseOpenHelper(this);
         DB = OPENHELPER.getWritableDatabase();
+
+        /*File address = getDatabasePath(NF_DatabaseOpenHelper.TABLE_NAME);
+        Log.e("ac","path is " +address);*/
 
         /** set a function for "SEARCH" button. */
         Button searchButton = (Button) findViewById(R.id.sb_newsF);

@@ -1,7 +1,10 @@
 package com.example.cst2355_final_19w;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -21,7 +24,12 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -33,23 +41,26 @@ import java.util.ArrayList;
  *  then set the info into a layout file */
 
 public class Activity_nf_url_connector extends AppCompatActivity {
-    ProgressBar progressBar;
-    EditText searchEditText;
-    ImageView icon;
-    TextView articleTitle;
-    TextView articleUrl;
-    TextView articleText;
-    NewsAdapter adapter;
-    int positionClicked = 0;
+    private ProgressBar progressBar;
+    private EditText searchEditText;
+    private ImageView icon;
+    private TextView articleTitle;
+    private TextView articleUrl;
+    private TextView articleText;
+    private NewsAdapter adapter;
+    private int positionClicked = 0;
     private Toolbar tBar;
-    private File file;
 
-    //public static SQLiteDatabase DB;
+    private Bitmap bitmap;
+    private InputStream inputStream;
 
     public static final String ITEM_SELECTED = "TITLE";
     public static final String ITEM_TEXT = "TEXT";
     public static final String ITEM_URL = "URL";
     public static final String ITEM_POSITION = "POSITION";
+    public static  final String ITEM_PIC = "PICTURE";
+    public static Drawable drawable;
+    private String imageLink;
 
     protected static ArrayList<NF_Article> NEWS = new ArrayList<>();
 
@@ -59,7 +70,7 @@ public class Activity_nf_url_connector extends AppCompatActivity {
         setContentView(R.layout.activity_nf_list_all);
 
         /** create an object of tool bar and display it.*/
-        tBar = (Toolbar) findViewById(R.id.toolbar_newsF);
+        tBar = (Toolbar) findViewById(R.id.toolbar_search_list);
         setSupportActionBar(tBar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -90,11 +101,13 @@ public class Activity_nf_url_connector extends AppCompatActivity {
             //save the position in case this object gets deleted or updatednew
             positionClicked = position;
 
+
             Bundle dataToPass = new Bundle();
             dataToPass.putString(ITEM_SELECTED, NEWS.get(position).getTitle());
             dataToPass.putString(ITEM_TEXT, NEWS.get(position).getText());
             dataToPass.putString(ITEM_URL, NEWS.get(position).getUrlAddress());
             dataToPass.putInt(ITEM_POSITION, position);
+            dataToPass.putParcelable(ITEM_PIC, NEWS.get(position).getBitmap());
 
             if (isTablet) {
                 NF_Search_DetailFragment dFragment = new NF_Search_DetailFragment(); //add a DetailFragment
@@ -115,13 +128,9 @@ public class Activity_nf_url_connector extends AppCompatActivity {
     }
 
     private class NFQuery extends AsyncTask<String, Integer, String> {
-        private final int maxNewsCount = 2;
         private String urlAddress;
         private String title;
         private String text;
-        private String iconName;
-        private String imageLink;
-        Bitmap image;
 
         @Override
         protected String doInBackground(String... strings) {
@@ -175,7 +184,8 @@ public class Activity_nf_url_connector extends AppCompatActivity {
             boolean foundText = false;
             boolean foundImage = false;
 
-            while (true) {
+            // while (true) when use my own phone as a emulator
+            while (NEWS.size() < 3) {
                 xpp.next();
                 if (xpp.getEventType() == XmlPullParser.END_DOCUMENT)
                     break;
@@ -205,15 +215,16 @@ public class Activity_nf_url_connector extends AppCompatActivity {
                 } else if (!foundImage && tagName.equals("main_image")) {
                     foundImage = true;
                     imageLink = xpp.nextText();
-                    Log.e("News Feed ", "Find the text: " + imageLink);
+                    downloadImage(imageLink);
+                    Log.e("News Feed ", "Find the image link: " + imageLink);
                     publishProgress(100);
                 }
             }
 
-            if (foundTitle && foundText && foundURL
+            if (foundTitle && foundText && foundURL && foundImage
                     && urlAddress != null && title != null && text != null && imageLink != null
-                    && urlAddress.length() > 0 && title.length() > 0 && text.length() > 0 && imageLink.length() > 0)
-                NEWS.add(new NF_Article(title, text, urlAddress, imageLink));
+                    && urlAddress.length() > 0 && title.length() > 0 && text.length() > 0 && imageLink.length() != 0)
+                NEWS.add(new NF_Article(title, text, urlAddress, imageLink, bitmap));
         }
 
         @Override
@@ -230,7 +241,31 @@ public class Activity_nf_url_connector extends AppCompatActivity {
             progressBar.setVisibility(View.INVISIBLE);
         }
 
+        protected Bitmap downloadImage(String imageLink) {
+            if (imageLink != null || imageLink.length() > 0) {
+                try {
+                    URL imageUrl = new URL(imageLink);
+                    HttpURLConnection iconConnecter = (HttpURLConnection) imageUrl.openConnection();
+                    iconConnecter.setReadTimeout(10000  /* milliseconds */);
+                    iconConnecter.setConnectTimeout(15000  /* milliseconds */);
+                    iconConnecter.setDoInput(true);
+                    iconConnecter.connect();
 
+                    // create an object of InputStream
+                    inputStream = iconConnecter.getInputStream();
+
+                    bitmap = BitmapFactory.decodeStream(inputStream);
+
+                    iconConnecter.disconnect();
+
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            return bitmap;
+        }
     }
 
     protected class NewsAdapter extends BaseAdapter {
@@ -262,15 +297,27 @@ public class Activity_nf_url_connector extends AppCompatActivity {
             TextView rowText = (TextView) newView.findViewById(R.id.article_title);
             rowText.setText(getItem(position).toString());
 
-            /*ImageView imageView = (ImageView) newView.findViewById(R.id.icon);
-            imageView.setImageBitmap();*/
+            ImageView image = (ImageView) newView.findViewById(R.id.icon);
+            image.setImageBitmap(bitmap);
 
             return newView;
         }
     }
-
-    public boolean fileExistance(String fname) {
-        file = getBaseContext().getFileStreamPath(fname);
-        return file.exists();
-    }
 }
+
+    /**
+     * reference _Anonymous_  CSDN https://blog.csdn.net/wudongjiang333/article/details/78122234
+     */
+   /* protected Bitmap compressImage(Bitmap image) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.JPEG, 100, baos);//质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
+        int options = 100;
+        while (baos.toByteArray().length / 1024 > 100) {  //循环判断如果压缩后图片是否大于100kb,大于继续压缩
+            baos.reset();//重置baos即清空baos
+            image.compress(Bitmap.CompressFormat.JPEG, options, baos);//这里压缩options%，把压缩后的数据存放到baos中
+            options -= 10;//每次都减少10
+        }
+        ByteArrayInputStream isBm = new ByteArrayInputStream(baos.toByteArray());//把压缩后的数据baos存放到ByteArrayInputStream中
+        bitmap = BitmapFactory.decodeStream(isBm, null, null);//把ByteArrayInputStream数据生成图片
+        return bitmap;
+    }*/

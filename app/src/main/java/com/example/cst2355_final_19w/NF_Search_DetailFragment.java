@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class NF_Search_DetailFragment extends Fragment
@@ -44,6 +45,10 @@ public class NF_Search_DetailFragment extends Fragment
         TextView text = (TextView)result.findViewById(R.id.textOfArticle);
         text.setText(dataFromActivity.getString(Activity_nf_url_connector.ITEM_TEXT));
 
+        // show the image
+        ImageView image = (ImageView) result.findViewById(R.id.icon);
+        image.setImageBitmap(dataFromActivity.getParcelable(Activity_nf_url_connector.ITEM_PIC));
+
         //show the url:
         TextView url = (TextView)result.findViewById(R.id.urlOfArticle);
         url.setText(dataFromActivity.getString(Activity_nf_url_connector.ITEM_URL ));
@@ -63,7 +68,8 @@ public class NF_Search_DetailFragment extends Fragment
             ContentValues newValue = new ContentValues();
             newValue.put(NF_DatabaseOpenHelper.COL_TITLE, Activity_nf_url_connector.NEWS.get(position).getTitle());
             newValue.put(NF_DatabaseOpenHelper.COL_TEXT, Activity_nf_url_connector.NEWS.get(position).getText());
-            newValue.put(NF_DatabaseOpenHelper.COL_URL,Activity_nf_url_connector.NEWS.get(position).getUrlAddress());
+            newValue.put(NF_DatabaseOpenHelper.COL_URL, Activity_nf_url_connector.NEWS.get(position).getUrlAddress());
+            newValue.put(NF_DatabaseOpenHelper.COL_IMAGELINK, Activity_nf_url_connector.NEWS.get(position).getImageLink());
             long newId = Activity_nf_main.DB.insert(NF_DatabaseOpenHelper.TABLE_NAME, null, newValue);
             Snackbar.make( saveToFavor,"Inserted one favorite article which id is : " + newId, Snackbar.LENGTH_LONG).show();
         });
