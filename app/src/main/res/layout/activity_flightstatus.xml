@@ -11,8 +11,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/buttomgotocheckflight"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"/>
+        android:layout_below="@id/toolbar_flightstatus"
+        android:layout_toRightOf="@id/flightstatus_editText1"
+        />
 
     <ListView
         android:id="@+id/flightstatus_list"
@@ -32,19 +33,19 @@
         android:id="@+id/flightstatus_editText1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:textSize="30sp"
         android:hint="input airport code"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"/>
 
-    <!--<android.support.v7.widget.Toolbar-->
-        <!--android:id="@+id/toolbar"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:background="@color/colorAccent"-->
-        <!--android:layout_height="?attr/actionBarSize"-->
-        <!--&gt;-->
-    <!--</android.support.v7.widget.Toolbar>-->
+        android:layout_below="@id/toolbar_flightstatus"
+        android:layout_alignParentStart="true"
+        />
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_flightstatus"
+        android:layout_width="match_parent"
+        android:background="@color/colorAccent"
+        android:layout_height="?attr/actionBarSize"
+        >
+    </android.support.v7.widget.Toolbar>
 
 
 </RelativeLayout>

@@ -193,7 +193,7 @@ public class Activity_flightstatus extends AppCompatActivity {
                     String flightNo = flight.getString("iataNumber");
 
                     JSONObject departure = item.getJSONObject("departure");
-                    String airport = departure.getString("")
+                    String airport = departure.getString("");
 
 //
 //                    String arrival = doc.getString("arrival.iataCode");
@@ -328,7 +328,7 @@ public class Activity_flightstatus extends AppCompatActivity {
         View helpView = getLayoutInflater().inflate(R.layout.activity_dialogbox_flightstatus, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        builder.setMessage(R.string.flightstatus_help)
+        builder.setMessage(R.string.flight_help)
                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                          }

@@ -13,4 +13,11 @@
     <string name="author">Author: Linlin Cheng</string>
     <string name="versionNum">Version Number: 1.0</string>
     <string name="instruction">Instruction</string>
+
+    <string name="flight_author">application Author: Deyuan Liu</string>
+    <string name="flight_versionNumber">application version number 10</string>
+    <string name="flight_instruction">application flight Instruction</string>
+    <string name="flight_help">flight help</string>
+
+
 </resources>
