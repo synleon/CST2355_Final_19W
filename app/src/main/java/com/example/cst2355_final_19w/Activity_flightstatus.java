@@ -1,12 +1,10 @@
 package com.example.cst2355_final_19w;
 
 import android.app.Dialog;
-import android.content.ContentValues;
+
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+
 import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
@@ -56,6 +54,9 @@ public class Activity_flightstatus extends AppCompatActivity {
 
 
     private ProgressBar progressBar;
+//    String icoCode;
+//    String flight_number;
+
 
 
     @Override
@@ -64,8 +65,14 @@ public class Activity_flightstatus extends AppCompatActivity {
         setContentView(R.layout.activity_flightstatus);
         mToolbar = (Toolbar) findViewById(R.id.toolbar_flightstatus);
 
+
+
+        icoCode = (TextView) findViewById(R.id.icoCode);
+        flight_number = (TextView) findViewById(R.id.flight_number);
+
         //message = "You clicked on the overflow menu";
         setSupportActionBar(mToolbar);
+
 
         /**
          * toast message
@@ -83,11 +90,11 @@ public class Activity_flightstatus extends AppCompatActivity {
          * add items to flightlist
          */
 
-        flightlistAdapter.add("Ottawa-Montreal");
+        flightlistAdapter.add("flightNo");
 
-        flightlistAdapter.add("Toronto-Montreal");
+        flightlistAdapter.add("airport");
 
-        flightlistAdapter.add("NEW York-Beijing");
+
 
 
         /**
@@ -169,6 +176,9 @@ public class Activity_flightstatus extends AppCompatActivity {
                 HttpURLConnection UVConnection = (HttpURLConnection) UVurl.openConnection();
                 InputStream inStream = UVConnection.getInputStream();
 
+
+
+
                 //create a JSON object from the response
                 BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, "UTF-8"), 8);
                 StringBuilder sb = new StringBuilder();
@@ -193,23 +203,9 @@ public class Activity_flightstatus extends AppCompatActivity {
                     String flightNo = flight.getString("iataNumber");
 
                     JSONObject departure = item.getJSONObject("departure");
-                    String airport = departure.getString("");
+                    String airport = departure.getString("iataCode");
 
-//
-//                    String arrival = doc.getString("arrival.iataCode");
-//                    Log.i("Activity_flightstatus", "\tWeb_url=[" + webUrl + "]");
-//
-//                    String flightnumber = doc.getString("flight.number");
-//                    Log.i("Activity_flightstatus", "\tflightnumber=[" + pubDate + "]");
-//
-//                    // create a flightarriving information object
-//                    flightArrivingInformation arrivingFlight = new flightArrivingInformation(arrival, flightnumber);
-
-                    // send the article object to UI thread
-                    //publishProgress(arrivingFlight);
                 }
-
-
 
             } catch (Exception ex) {
                 Log.e("Crash!!", ex.getMessage());
@@ -226,7 +222,7 @@ public class Activity_flightstatus extends AppCompatActivity {
 
         @Override
         protected void onProgressUpdate(Integer... values) {
-            Log.i("WeatherForcast", "update:" + values[0]);
+            Log.i("flightstatus", "update:" + values[0]);
             progressBar.setProgress(values[0]);
 
         }
@@ -237,7 +233,7 @@ public class Activity_flightstatus extends AppCompatActivity {
 
             // messageBox.setText("Finished all tasks");
 
-            icoCode.setText("Min Temperature:" + icoCode);
+            icoCode.setText("icoCode:" + icoCode);
             flight_number.setText("flight_number:" + flight_number);
 
 
@@ -266,7 +262,7 @@ public class Activity_flightstatus extends AppCompatActivity {
 
 
         /**
-         * method to provide detial information for each flight
+         * method to provide detail information for each flight
          *
          * @param position    this is
          * @param convertView
