@@ -17,7 +17,8 @@
         android:largeHeap="true">
         <activity android:name=".Activity_nf_main"/>
         <activity android:name=".Activity_nf_url_connector"/>
-        <activity android:name=".Activity_nf_empty"/>
+        <activity android:name=".Activity_nf_search_empty"/>
+        <activity android:name=".Activity_nf_favor_empty"/>
         <activity android:name=".Activity_nf_favorites"/>
         <activity android:name=".Activity_nytimes" />
         <activity android:name=".Activity_flightstatus" />

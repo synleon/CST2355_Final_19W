@@ -1,11 +1,7 @@
 package com.example.cst2355_final_19w;
 
-import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -26,9 +22,6 @@ import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -56,6 +49,7 @@ public class Activity_nf_url_connector extends AppCompatActivity {
     public static final String ITEM_SELECTED = "TITLE";
     public static final String ITEM_TEXT = "TEXT";
     public static final String ITEM_URL = "URL";
+    public static final String ITEM_POSITION = "POSITION";
 
     protected static ArrayList<NF_Article> NEWS = new ArrayList<>();
 
@@ -100,9 +94,10 @@ public class Activity_nf_url_connector extends AppCompatActivity {
             dataToPass.putString(ITEM_SELECTED, NEWS.get(position).getTitle());
             dataToPass.putString(ITEM_TEXT, NEWS.get(position).getText());
             dataToPass.putString(ITEM_URL, NEWS.get(position).getUrlAddress());
+            dataToPass.putInt(ITEM_POSITION, position);
 
             if (isTablet) {
-                NF_DetailFragment dFragment = new NF_DetailFragment(); //add a DetailFragment
+                NF_Search_DetailFragment dFragment = new NF_Search_DetailFragment(); //add a DetailFragment
                 dFragment.setArguments(dataToPass); //pass it a bundle for information
                 dFragment.setTablet(true);  //tell the fragment if it's running on a tablet or not
                 getSupportFragmentManager()
@@ -112,7 +107,7 @@ public class Activity_nf_url_connector extends AppCompatActivity {
                         .commit(); //actually load the fragment.
             } else //isPhone
             {
-                Intent nextActivity = new Intent(Activity_nf_url_connector.this, Activity_nf_empty.class);
+                Intent nextActivity = new Intent(Activity_nf_url_connector.this, Activity_nf_search_empty.class);
                 nextActivity.putExtras(dataToPass); //send data to next activity
                 startActivity(nextActivity);
             } // end of if else

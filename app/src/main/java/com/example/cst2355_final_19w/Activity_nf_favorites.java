@@ -14,7 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.zip.Inflater;
 
 public class Activity_nf_favorites extends AppCompatActivity {
 
@@ -60,19 +59,25 @@ public class Activity_nf_favorites extends AppCompatActivity {
         }
 
         favorListView.setOnItemClickListener((parent, view, position, id) -> {
-            Log.e("you clicked on :", "item " + position);
+
             //save the position in case this object gets deleted or updatednew
             positionClicked = position;
+            id = favorList.get(position).getId();
+
+            Toast.makeText(this,"you clicked on favorite article which id is " + id + " and position is " + position, Toast.LENGTH_LONG).show();
 
             Bundle dataToPass = new Bundle();
             dataToPass.putString(ITEM_SELECTED, favorList.get(position).getTitle());
             dataToPass.putString(ITEM_TEXT, favorList.get(position).getText());
             dataToPass.putString(ITEM_URL, favorList.get(position).getUrlAddress());
+            dataToPass.putLong(ITEM_ID, favorList.get(position).getId());
+            dataToPass.putInt(ITEM_POSITION, position);
+
 
             boolean isTablet = findViewById(R.id.frame) != null;
 
             if (isTablet) {
-                NF_DetailFragment dFragment = new NF_DetailFragment(); //add a DetailFragment
+                NF_Favor_DetailFragment dFragment = new NF_Favor_DetailFragment(); //add a DetailFragment
                 dFragment.setArguments(dataToPass); //pass it a bundle for information
                 dFragment.setTablet(true);  //tell the fragment if it's running on a tablet or not
                 getSupportFragmentManager()
@@ -82,7 +87,7 @@ public class Activity_nf_favorites extends AppCompatActivity {
                         .commit(); //actually load the fragment.
             } else //isPhone
             {
-                Intent nextActivity = new Intent(Activity_nf_favorites.this, Activity_nf_empty.class);
+                Intent nextActivity = new Intent(Activity_nf_favorites.this, Activity_nf_favor_empty.class);
                 nextActivity.putExtras(dataToPass); //send data to next activity
                 startActivityForResult(nextActivity, EMPTY_ACTIVITY);
             } // end of if else

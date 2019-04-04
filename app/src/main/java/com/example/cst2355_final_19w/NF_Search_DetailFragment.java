@@ -15,11 +15,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class NF_DetailFragment extends Fragment
+public class NF_Search_DetailFragment extends Fragment
 {
     private boolean isTablet;
     private int position;
     private Bundle dataFromActivity;
+    private long id;
 
     public void setTablet(boolean tablet)
     {
@@ -33,6 +34,7 @@ public class NF_DetailFragment extends Fragment
         View result =  inflater.inflate(R.layout.activity_nf_fragment_layout_detail, container, false);
 
         dataFromActivity = getArguments();
+        position = dataFromActivity.getInt(Activity_nf_url_connector.ITEM_POSITION);
 
         //show the title
         TextView title = (TextView)result.findViewById(R.id.titleOfArticle);

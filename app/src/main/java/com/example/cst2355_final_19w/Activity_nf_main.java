@@ -1,7 +1,9 @@
 package com.example.cst2355_final_19w;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -63,13 +65,17 @@ public class Activity_nf_main extends AppCompatActivity {
     private static final int RESULTCODE = 50;
 
     protected static String SEARCHTERM = null;
+    private SharedPreferences prefs;
+    private EditText typedSearchTerm;
+
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nf_mainlayout);
 
-        Toast.makeText(this, "Welcome to News Feed page", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "WELCOME TO NEWS FEED PAGE", Toast.LENGTH_LONG).show();
 
         /** create an object of tool bar and display it.*/
         tBar = (Toolbar) findViewById(R.id.toolbar_newsF);
@@ -95,12 +101,23 @@ public class Activity_nf_main extends AppCompatActivity {
 
         });
 
-        /** set a function for "GO BACK" button. */
-        /*Button goBackBu = (Button)findViewById(R.id.goback);
-        goBackBu.setOnClickListener( b -> {
-            Intent goBackIntent = new Intent(Activity_nf_main.this, MainActivity.class);
-            startActivity(goBackIntent);
-        });*/
+        typedSearchTerm = (EditText) findViewById(R.id.searchEdit_newsF);
+        prefs = getSharedPreferences("SearchTermFile", Context.MODE_PRIVATE);
+        String searchTerm = prefs.getString("SearchTerm", "");
+        typedSearchTerm.setText(searchTerm);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        SharedPreferences.Editor editor = prefs.edit();
+        String searchTerm = typedSearchTerm.getText().toString();
+        editor.putString("SearchTerm",searchTerm);
+
+        // it means the data will be saved in Userinfo.xml file created in onCreate().
+        editor.commit();
+
     }
 
     /**
