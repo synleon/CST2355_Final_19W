@@ -1,13 +1,14 @@
 package com.example.cst2355_final_19w.nytimes;
 
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
 import android.os.AsyncTask;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -46,7 +47,7 @@ import java.net.URL;
  * @since March 30 2019
  *
  */
-public class Activity_nytimes extends AppCompatActivity {
+public class Activity_nytimes extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
     /**
      * Ny times query service URL
@@ -72,10 +73,11 @@ public class Activity_nytimes extends AppCompatActivity {
      * create ID instance
      */
     public static final String ITEM_ID = "ID";
+
     /**
-     * create the number of EMPTY_ACTTIVITY
+     * create the number of CONTAINER_ACTIVITY_REQUESTCODE
      */
-    public static final int EMPTY_ACTIVITY = 345;
+    public static final int CONTAINER_ACTIVITY_REQUESTCODE = 135;
 
     /**
      * The key name of shared preference for last search keyword
@@ -157,8 +159,16 @@ public class Activity_nytimes extends AppCompatActivity {
 
             NytimesArticleData article = (NytimesArticleData) parent.getItemAtPosition(position);
 
-            Intent nextActivity = new Intent(Intent.ACTION_VIEW, Uri.parse(article.getArticle_url()));
-            startActivity(nextActivity);
+            // Data to send
+            Bundle dataToSend = new Bundle();
+            dataToSend.putInt("SAVED", article.getSaved());
+            dataToSend.putString("URL", article.getArticle_url());
+            dataToSend.putInt("POSITION", position);
+
+            // start an external web browser intent to view the article
+            Intent nextActivity = new Intent(Activity_nytimes.this, EmptyContainerActivity.class);
+            nextActivity.putExtras(dataToSend);
+            startActivityForResult(nextActivity, CONTAINER_ACTIVITY_REQUESTCODE);
         });
 
         fillListWithSavedArticles();
@@ -172,41 +182,7 @@ public class Activity_nytimes extends AppCompatActivity {
         });
 
         SearchView searchView = findViewById(R.id.search_nytimes);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                if (query == null || query.isEmpty()) {
-                    return false;
-                }
-                else {
-                    // save search keyword
-                    lastSearch = query;
-
-                    // start async task to perform the article search on new york times
-                    // form full query request url
-                    String queryString = nytimesUrl + "?api-key=" + nytimesAPIKEY + "&q=" + query.replace(' ', '+');
-
-                    // add log info
-                    Log.i("NYTIMES", "QUERY URL=[" + queryString + "]");
-
-                    // let go the query task
-                    NytimesArticleQuery articleQuery = new NytimesArticleQuery();
-
-                    // let progress bar appear
-                    progressBar = new ProgressBar(Activity_nytimes.this, null, android.R.attr.progressBarStyleHorizontal);
-                    progressBar.setVisibility(View.VISIBLE);
-
-                    articleQuery.execute(queryString);
-                    return true;
-                }
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-        });
+        searchView.setOnQueryTextListener(this);
 
         // read last search keyword and set it to search view
         prefs = getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE);
@@ -217,6 +193,75 @@ public class Activity_nytimes extends AppCompatActivity {
             searchView.setQuery(lastSearch, false);
             // clear focus to avoiding keyboard show
             searchView.clearFocus();
+        }
+    }
+
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        if (query == null || query.isEmpty()) {
+            return false;
+        } else {
+            // save search keyword
+            lastSearch = query;
+
+            // start async task to perform the article search on new york times
+            // form full query request url
+            String queryString = nytimesUrl + "?api-key=" + nytimesAPIKEY + "&q=" + query.replace(' ', '+');
+
+            // add log info
+            Log.i("NYTIMES", "QUERY URL=[" + queryString + "]");
+
+            // let go the query task
+            NytimesArticleQuery articleQuery = new NytimesArticleQuery();
+
+            // let progress bar appear
+            progressBar = findViewById(R.id.ny_progressBar);
+            progressBar.setVisibility(View.VISIBLE);
+
+            articleQuery.execute(queryString);
+            return true;
+        }
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        return false;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == CONTAINER_ACTIVITY_REQUESTCODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                int actionCode = data.getIntExtra("ACTION", 0);
+                int position = data.getIntExtra("POSITION", 0);
+
+                ListView listView = findViewById(R.id.ny_list);
+
+                View view = null;
+
+                final int firstListItemPosition = listView.getFirstVisiblePosition();
+                final int lastListItemPosition = firstListItemPosition + listView.getChildCount() - 1;
+
+                if (position < firstListItemPosition || position > lastListItemPosition ) {
+                    view = listView.getAdapter().getView(position, null, listView);
+                } else {
+                    final int childIndex = position - firstListItemPosition;
+                    view = listView.getChildAt(childIndex);
+                }
+
+                Switch switchSave = view.findViewById(R.id.ny_article_switch_saved);
+                if (actionCode == 1)
+                {
+                    // save
+                    switchSave.setChecked(true);
+                    saveArticle(view, true, adapter.getItem(position));
+                }
+                else if (actionCode == 0) {
+                    switchSave.setChecked(false);
+                    saveArticle(view, false, adapter.getItem(position));
+                }
+            }
         }
     }
 
@@ -274,20 +319,22 @@ public class Activity_nytimes extends AppCompatActivity {
      */
     public void saveArticle(View view, boolean isSaveChecked, NytimesArticleData article) {
         Switch switchSave = view.findViewById(R.id.ny_article_switch_saved);
-        if (isSaveChecked && !isArticleSaved(article)) {
-            // save article
-            ContentValues newRowValues = new ContentValues();
-            newRowValues.put(MyDatabaseOpenHelper.COL_ID, article.getArticle_id());
-            newRowValues.put(MyDatabaseOpenHelper.COL_PUBDATE, article.getArticle_pubData());
-            newRowValues.put(MyDatabaseOpenHelper.COL_TITLE, article.getArticle_title());
-            newRowValues.put(MyDatabaseOpenHelper.COL_AUTHOR, article.getArticle_byline());
-            newRowValues.put(MyDatabaseOpenHelper.COL_URL, article.getArticle_url());
-            newRowValues.put(MyDatabaseOpenHelper.COL_SAVED, 1);
-            long id = db.insert(MyDatabaseOpenHelper.TABLE_NAME, null, newRowValues);
-            String message = (id != -1) ? getString(R.string.nytimes_article_save_success_message) : getString(R.string.nytimes_article_save_fail_message);
-            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-            switchSave.setText(getString(R.string.nytimes_article_saved));
-            article.setSaved(1);
+        if (isSaveChecked) {
+            if (!isArticleSaved(article)) {
+                // save article
+                ContentValues newRowValues = new ContentValues();
+                newRowValues.put(MyDatabaseOpenHelper.COL_ID, article.getArticle_id());
+                newRowValues.put(MyDatabaseOpenHelper.COL_PUBDATE, article.getArticle_pubData());
+                newRowValues.put(MyDatabaseOpenHelper.COL_TITLE, article.getArticle_title());
+                newRowValues.put(MyDatabaseOpenHelper.COL_AUTHOR, article.getArticle_byline());
+                newRowValues.put(MyDatabaseOpenHelper.COL_URL, article.getArticle_url());
+                newRowValues.put(MyDatabaseOpenHelper.COL_SAVED, 1);
+                long id = db.insert(MyDatabaseOpenHelper.TABLE_NAME, null, newRowValues);
+                String message = (id != -1) ? getString(R.string.nytimes_article_save_success_message) : getString(R.string.nytimes_article_save_fail_message);
+                Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+                switchSave.setText(getString(R.string.nytimes_article_saved));
+                article.setSaved(1);
+            }
         }
         else {
             // delete article

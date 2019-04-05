@@ -22,7 +22,6 @@ public class EmptyContainerActivity extends AppCompatActivity {
         getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.fragmentLocation, dFragment)
-                //.addToBackStack("AnyName")
                 .commit();
     }
 }
