@@ -1,16 +1,16 @@
 package com.example.cst2355_final_19w.nytimes;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.example.cst2355_final_19w.R;
 
@@ -24,22 +24,13 @@ public class Fragment_nytimes_article extends Fragment {
      * create dataFromActivity instance
      */
     private Bundle dataFromActivity;
-    /**
-     * create message instance
-     */
-    private String message;
-    /**
-     * create ID instance
-     */
-    private long id;
+
     /**
      * create position instance
      */
     private int position;
-    /**
-     * create to check is sent or not
-     */
-    private boolean isSent;
+
+    private Button button;
 
 
     public void setTablet(boolean tablet) {
@@ -51,70 +42,59 @@ public class Fragment_nytimes_article extends Fragment {
                              Bundle savedInstanceState) {
 
         dataFromActivity = getArguments();
-        id = dataFromActivity.getLong(Activity_nytimes.ITEM_ID);
-        position = dataFromActivity.getInt("position");
-        // position = dataFromActivity.getLong(Activity_nytimes.ITEM_POSITION );
-        // isSent = dataFromActivity.getInt(Activity_nytimes.ITEM_ISSEND ) ==1 ? true : false;
+        int saved = dataFromActivity.getInt("SAVED");
+        String url = dataFromActivity.getString("URL", "www.google.ca");
+        position = dataFromActivity.getInt("POSITION");
+
 
         // Inflate the layout for this fragment
-        View result = inflater.inflate(R.layout.lab8_2, container, false);
+        View view = inflater.inflate(R.layout.layout_nytimes_article_webview, container, false);
 
-        //show the message
-        TextView message = (TextView) result.findViewById(R.id.message);
-        //message.setText(dataFromActivity.getString(Activity_nytimes.ITEM_MESSAGE));
+        WebView webView = view.findViewById(R.id.nytimes_articleview_webview);
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.setWebViewClient(new WebViewClient());
+        webView.loadUrl(url);
 
-        //show the id:
-        TextView idView = (TextView) result.findViewById(R.id.idText);
-        idView.setText("DatabaseId=" + id + "       Position=" + position + "      isSent=" + isSent);
+        // set action button text according to saved
+        button = view.findViewById(R.id.nytimes_articleview_actionbutton);
+        if (saved == 0) {
+            button.setText("Save article");
+        }
+        else if (saved == 1) {
+            button.setText("Delete article");
+        }
 
-        // get the delete button, and add a click listener:
-        Button deleteButton = (Button) result.findViewById(R.id.deleteButton);
-        deleteButton.setOnClickListener(clk -> {
+        button.setOnClickListener(v -> {
+            EmptyContainerActivity containerActivity = (EmptyContainerActivity)getActivity();
+            Intent backToFragment = new Intent();
 
-            alertExample();
-//
+            //Button buttonSave = view.findViewById(R.id.nytimes_articleview_actionbutton);
+            String btnText = button.getText().toString();
+            if (btnText.equals("Save article")) {
+                backToFragment.putExtra("ACTION", 1);
+            }
+            else if (btnText.equals("Delete article")) {
+                backToFragment.putExtra("ACTION", 0);
+            }
+            backToFragment.putExtra("POSITION", position);
 
+            containerActivity.setResult(Activity.RESULT_OK, backToFragment);
+            containerActivity.finish();
         });
 
-        return result;
-
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//        builder.setNegativeButton("message deleted", null);
-//                //.setMessage("fight Information").setView(detailView)
-//                //.setPositiveButton("OK", null);
-//        builder.create().show();
+        return view;
     }
 
-    /**
-     * set up dialog box for delete button
-     */
-    public void alertExample() {
-        View middle = getLayoutInflater().inflate(R.layout.dialog, null);
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.i("NYTIMES_FRAGMENT", "Fragment_nytimes_article.onDestroy()");
+    }
 
-
-        //btn.setOnClickListener( clk -> et.setText("You clicked my button!"));
-
-        android.support.v7.app.AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setMessage("Delete?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        EmptyContainerActivity parent = (EmptyContainerActivity) getActivity();
-                        Intent backToFragmentExample = new Intent();
-                        backToFragmentExample.putExtra(Activity_nytimes.ITEM_ID, dataFromActivity.getLong(Activity_nytimes.ITEM_ID));
-                        // backToFragmentExample.putExtra(Activity_nytimes.ITEM_POSITION, dataFromActivity.getLong(ChatRoomActivitylab5_lab8.ITEM_POSITION ));
-                        parent.setResult(Activity.RESULT_OK, backToFragmentExample);
-                        //send data back to FragmentExample in onActivityResult()
-                        parent.finish(); //go back
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // What to do on Cancel
-                        //message = "This is the initial message";
-                    }
-                }).setView(middle);
-
-        builder.create().show();
+    @Override
+    public void onDetach() {
+        Log.i("NYTIMES_FRAGMENT", "Fragment_nytimes_article.onDetach()");
+        super.onDetach();
     }
 }
 

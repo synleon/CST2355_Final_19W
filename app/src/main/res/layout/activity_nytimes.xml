@@ -37,13 +37,13 @@
         android:layout_above="@id/ny_goback_button"
         android:layout_below="@id/search_nytimes"/>
 
-    <!--<ProgressBar-->
-        <!--android:id="@+id/ny_progressBar"-->
-        <!--style="?android:attr/progressBarStyle"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_above="@id/ny_button"-->
-        <!--android:visibility="invisible" />-->
+    <ProgressBar
+        android:id="@+id/ny_progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/ny_goback_button"
+        android:visibility="invisible" />
 
     <Button
         android:id="@+id/ny_goback_button"
