@@ -27,4 +27,8 @@
     <string name="nytimes_article_save_success_message">Article saved successfully!</string>
     <string name="nytimes_article_save_fail_message">Article save failed!</string>
     <string name="nytimes_article_delete_message">Article deleted!</string>
+    <string name="flight_author">application Author: Deyuan Liu</string>
+    <string name="flight_versionNumber">application version number 10</string>
+    <string name="flight_instruction">application flight Instruction</string>
+    <string name="flight_help">flight help</string>
 </resources>

@@ -21,9 +21,9 @@
         <activity android:name=".Activity_nf_favor_empty"/>
         <activity android:name=".Activity_nf_favorites"/>
         <activity android:name=".nytimes.Activity_nytimes" />
+        <activity android:name=".nytimes.EmptyContainerActivity" />
         <activity android:name=".Activity_flightstatus" />
         <activity android:name=".Activity_dict" />
-        <activity android:name=".nytimes.EmptyContainerActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

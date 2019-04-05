@@ -28,4 +28,8 @@
     <string name="nytimes_article_save_success_message">文章保存成功!</string>
     <string name="nytimes_article_save_fail_message">文章保存失败!</string>
     <string name="nytimes_article_delete_message">文章已删除!</string>
+    <string name="flight_author">应用软件作者：刘德媛</string>
+    <string name="flight_versionNumber">应用软件版本号： 10</string>
+    <string name="flight_instruction">应用软件说明</string>
+    <string name="flight_help">航班帮手</string>
 </resources>
