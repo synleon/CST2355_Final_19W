@@ -47,6 +47,7 @@ public class Activity_nf_favorites extends AppCompatActivity {
     public static final String ITEM_SELECTED = "TITLE";
     public static final String ITEM_TEXT = "TEXT";
     public static final String ITEM_URL = "URL";
+    public static  final String ITEM_PIC = "PICTURE";
 
     public static final String ITEM_POSITION = "POSITION";
     public static final String ITEM_ID = "ID";
