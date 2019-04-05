@@ -101,7 +101,6 @@ public class Activity_nf_url_connector extends AppCompatActivity {
             //save the position in case this object gets deleted or updatednew
             positionClicked = position;
 
-
             Bundle dataToPass = new Bundle();
             dataToPass.putString(ITEM_SELECTED, NEWS.get(position).getTitle());
             dataToPass.putString(ITEM_TEXT, NEWS.get(position).getText());
@@ -167,13 +166,15 @@ public class Activity_nf_url_connector extends AppCompatActivity {
 
             /** loop through the xml file*/
             while (xpp.getEventType() != XmlPullParser.END_DOCUMENT) {
+                if (NEWS.size() >= 3)
+                    break;
+
                 if (xpp.getEventType() == XmlPullParser.START_TAG
                         && xpp.getName().equalsIgnoreCase("post")) {
                     parsePost(xpp);
                 }
                 xpp.next();
             }
-            webHoseConnecter.disconnect();
         }
 
         private void parsePost(XmlPullParser xpp)
@@ -185,8 +186,8 @@ public class Activity_nf_url_connector extends AppCompatActivity {
             boolean foundText = false;
             boolean foundImage = false;
 
-            // while (true) when use my own phone as a emulator
-            while (NEWS.size() < 3) {
+            while (true)
+            {
                 xpp.next();
                 if (xpp.getEventType() == XmlPullParser.END_DOCUMENT)
                     break;
@@ -226,6 +227,7 @@ public class Activity_nf_url_connector extends AppCompatActivity {
                     && urlAddress != null && title != null && text != null && imageLink != null
                     && urlAddress.length() > 0 && title.length() > 0 && text.length() > 0 && imageLink.length() != 0)
                 NEWS.add(new NF_Article(title, text, urlAddress, imageLink, bitmap));
+
         }
 
         @Override
