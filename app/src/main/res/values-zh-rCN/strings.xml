@@ -4,7 +4,7 @@
     <string name="menu_title_dict">韦氏词典</string>
     <string name="menu_title_newsfeed">新闻提要</string>
     <string name="menu_title_flightstatus">航班状态跟踪</string>
-    <string name="menu_title_nytimes">纽约时报文章搜索</string>
+    <string name="menu_title_nytimes">纽约时报文章</string>
     <string name="buttomgotocheckflight">航班跟踪按钮</string>
     <string name="greeting_newsFeed">欢迎来到新闻提要专栏</string>
     <string name="help_newsF">帮助</string>
@@ -17,4 +17,15 @@
     <string name="deleteButton">删除</string>
     <string name="favor">收藏夹列表</string>
     <string name="save">保存到收藏夹</string>
+    <string name="nytimes_author">作者：李扬</string>
+    <string name="nytimes_version">版本：1.0</string>
+    <string name="nytimes_instructon">使用说明\n1.列表中显示以保存文章。\n2.点击搜索按钮开始搜索纽约时报文章。\n3.点击列表中文章打开浏览器浏览文章。\n4.使用列表项最右端开关控制是否保存该文章。</string>
+    <string name="nytimes_article_search_hint">输入关键词开始查询</string>
+    <string name="nytimes_saved_article">已保存文章</string>
+    <string name="nytimes_article_saved">已保存</string>
+    <string name="nytimes_article_not_saved">未保存</string>
+    <string name="nytimes_welcom_message">欢迎来到纽约时报!</string>
+    <string name="nytimes_article_save_success_message">文章保存成功!</string>
+    <string name="nytimes_article_save_fail_message">文章保存失败!</string>
+    <string name="nytimes_article_delete_message">文章已删除!</string>
 </resources>

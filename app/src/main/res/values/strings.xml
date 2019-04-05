@@ -6,7 +6,7 @@
     <string name="menu_title_nytimes">New York Times Article Search</string>
     <string name="buttomgotocheckflight">buttomgotocheckflight</string>
     <string name="greeting_newsFeed">WELCOME TO NEWS FEED</string>
-    <string name="help_newsF">HELP</string>
+    <string name="help_newsF">Help</string>
     <string name="searchText_newsF">Type here to search</string>
     <string name="goback">GO BACK</string>
     <string name="sbText">Search</string>
@@ -16,4 +16,15 @@
     <string name="deleteButton">DELETE</string>
     <string name="favor">FAVORITES</string>
     <string name="save">SAVE TO FAVORITES</string>
+    <string name="nytimes_author">Author:leon</string>
+    <string name="nytimes_version">Version:1.0</string>
+    <string name="nytimes_instructon">instruction\n1.The saved articles will be displayed in list view.\n2.Click search button to start an article search in New York Times.\n3.Click an item in list view will open a browser to view the article.\n4.Click the switch in the end of each item in article list will save or delete the article.</string>
+    <string name="nytimes_article_search_hint">Enter a keyword to start search</string>
+    <string name="nytimes_saved_article">Saved articles</string>
+    <string name="nytimes_article_saved">Saved</string>
+    <string name="nytimes_article_not_saved">Not saved</string>
+    <string name="nytimes_welcom_message">Welcome to New York Times!</string>
+    <string name="nytimes_article_save_success_message">Article saved successfully!</string>
+    <string name="nytimes_article_save_fail_message">Article save failed!</string>
+    <string name="nytimes_article_delete_message">Article deleted!</string>
 </resources>

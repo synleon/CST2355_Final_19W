@@ -1,42 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity_nytimes">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".nytimes.Activity_nytimes">
 
-    <Button
-        android:id="@+id/ny_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Button"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"/>
-
-       <ProgressBar
-        android:id="@+id/ny_progressBar"
-        style="?android:attr/progressBarStyleHorizontal"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/ny_main_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/ny_button"/>
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/menu_title_nytimes"
+            android:textSize="20sp" />
+    </android.support.v7.widget.Toolbar>
 
+    <android.support.v7.widget.SearchView
+        android:id="@+id/search_nytimes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ny_main_toolbar"
+        app:queryHint="@string/nytimes_article_search_hint" />
 
     <ListView
         android:id="@+id/ny_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/ny_progressBar"
-        android:layout_below="@id/ny_editText"/>
+        android:layout_above="@id/ny_goback_button"
+        android:layout_below="@id/search_nytimes"/>
 
-    <EditText
-        android:id="@+id/ny_editText"
+    <ProgressBar
+        android:id="@+id/ny_progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/ny_goback_button"
+        android:visibility="invisible" />
+
+    <Button
+        android:id="@+id/ny_goback_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:textSize="30sp"
-        android:hint="type your name here"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"/>
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:text="@string/goback" />
 </RelativeLayout>

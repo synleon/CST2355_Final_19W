@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/imageView_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/icon_nytimes"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="4dp"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:id="@+id/textView_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/menu_title_nytimes"
+        android:textSize="30sp"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="4dp"
+        android:layout_below="@id/imageView_logo"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:id="@+id/textView_author"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/nytimes_author"
+        android:layout_below="@id/textView_title"
+        android:layout_marginTop="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="4dp"
+        android:layout_alignStart="@id/textView_title"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/textView_version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/nytimes_version"
+        android:layout_below="@id/textView_author"
+        android:layout_marginTop="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="4dp"
+        android:layout_alignStart="@id/textView_title"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/textView_instruction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textView_version"
+        android:layout_alignStart="@id/textView_title"
+        android:layout_alignEnd="@id/textView_title"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="4dp"
+        android:maxLines="10"
+        android:minLines="8"
+        android:text="@string/nytimes_instructon"
+        android:textSize="15sp" />
+
+</RelativeLayout>
