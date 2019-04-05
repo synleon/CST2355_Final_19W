@@ -241,30 +241,31 @@ public class Activity_nf_url_connector extends AppCompatActivity {
             progressBar.setVisibility(View.INVISIBLE);
         }
 
-        protected Bitmap downloadImage(String imageLink) {
-            if (imageLink != null || imageLink.length() > 0) {
-                try {
-                    URL imageUrl = new URL(imageLink);
-                    HttpURLConnection iconConnecter = (HttpURLConnection) imageUrl.openConnection();
-                    iconConnecter.setReadTimeout(10000  /* milliseconds */);
-                    iconConnecter.setConnectTimeout(15000  /* milliseconds */);
-                    iconConnecter.setDoInput(true);
-                    iconConnecter.connect();
+        protected void downloadImage(String imageLink) {
+            if (imageLink == null || imageLink.length() == 0)
+                return;
 
-                    // create an object of InputStream
-                    inputStream = iconConnecter.getInputStream();
+            bitmap = null;
+            try {
+                URL imageUrl = new URL(imageLink);
+                HttpURLConnection iconConnecter = (HttpURLConnection) imageUrl.openConnection();
+                iconConnecter.setReadTimeout(10000  /* milliseconds */);
+                iconConnecter.setConnectTimeout(15000  /* milliseconds */);
+                iconConnecter.setDoInput(true);
+                iconConnecter.connect();
 
-                    bitmap = BitmapFactory.decodeStream(inputStream);
+                // create an object of InputStream
+                inputStream = iconConnecter.getInputStream();
 
-                    iconConnecter.disconnect();
+                bitmap = BitmapFactory.decodeStream(inputStream);
 
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                iconConnecter.disconnect();
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            return bitmap;
         }
     }
 
@@ -280,7 +281,7 @@ public class Activity_nf_url_connector extends AppCompatActivity {
 
         @Override
         public Object getItem(int position) {
-            return NEWS.get(position).getTitle();
+            return NEWS.get(position);
         }
 
         @Override
@@ -291,14 +292,15 @@ public class Activity_nf_url_connector extends AppCompatActivity {
         @Override
         public View getView(int position, View oldView, ViewGroup parent) {
             LayoutInflater inflater = getLayoutInflater();
-
             View newView = inflater.inflate(R.layout.activity_nf_single_row_type, parent, false);
 
-            TextView rowText = (TextView) newView.findViewById(R.id.article_title);
-            rowText.setText(getItem(position).toString());
+            NF_Article currentArticle = (NF_Article)getItem(position);
+
+            TextView titleTextView = (TextView) newView.findViewById(R.id.article_title);
+            titleTextView.setText(currentArticle.getTitle().toString());
 
             ImageView image = (ImageView) newView.findViewById(R.id.icon);
-            image.setImageBitmap(bitmap);
+            image.setImageBitmap(currentArticle.getBitmap());
 
             return newView;
         }
