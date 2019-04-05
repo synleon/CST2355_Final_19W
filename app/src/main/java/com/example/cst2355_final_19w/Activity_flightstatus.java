@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -28,6 +29,8 @@ import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -35,6 +38,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
 
 
 public class Activity_flightstatus extends AppCompatActivity {
@@ -49,13 +54,10 @@ public class Activity_flightstatus extends AppCompatActivity {
     private String message;
     private flighttrackadapter flightlistAdapter;
 
-    private TextView icoCode;
-    private TextView flight_number;
-
 
     private ProgressBar progressBar;
-//    String icoCode;
-//    String flight_number;
+    String icoCode;
+   String flight_number;
 
 
 
@@ -66,11 +68,6 @@ public class Activity_flightstatus extends AppCompatActivity {
         mToolbar = (Toolbar) findViewById(R.id.toolbar_flightstatus);
 
 
-
-        icoCode = (TextView) findViewById(R.id.icoCode);
-        flight_number = (TextView) findViewById(R.id.flight_number);
-
-        //message = "You clicked on the overflow menu";
         setSupportActionBar(mToolbar);
 
 
@@ -86,14 +83,6 @@ public class Activity_flightstatus extends AppCompatActivity {
 
         flightList.setAdapter(flightlistAdapter);
 
-        /**
-         * add items to flightlist
-         */
-
-        flightlistAdapter.add("flightNo");
-
-        flightlistAdapter.add("airport");
-
 
 
 
@@ -101,9 +90,10 @@ public class Activity_flightstatus extends AppCompatActivity {
          * progressBar function
          */
 
-        ProgressBar progressBar = findViewById(R.id.flight_progressBar);
+        progressBar = findViewById(R.id.flight_progressBar);
 
         progressBar.setProgress(100);
+
 
         /**
          * add click listener function to Button
@@ -114,8 +104,11 @@ public class Activity_flightstatus extends AppCompatActivity {
 //                    .setAction("Yes", e -> finish());
 //            sb.show();
 
-            flightsearch search = new flightsearch();
-            search.execute();
+            FlightSearch query = new FlightSearch();
+
+            EditText editText = findViewById(R.id.flightstatus_editText1);
+            String airport = editText.getText().toString();
+            query.execute(airport);
         });
 
 
@@ -164,19 +157,18 @@ public class Activity_flightstatus extends AppCompatActivity {
     }
 
 
-    private class flightsearch extends AsyncTask<String, Integer, String> {
+    private class FlightSearch extends AsyncTask<String, Eachflight, String> {
 
         @Override
         protected String doInBackground(String... params) {
             try {
                 //get the string url:
-                // Strg myUrl = params[0];
-
-                URL UVurl = new URL("http://aviation-edge.com/v2/public/flights?key=f76ac6-220e2a&arrIata=YOW");
+                String airportCode = params[0];
+                //create the network connection
+                String serviceUrl = "http://aviation-edge.com/v2/public/flights?key=f76ac6-220e2a&arrIata=";
+                URL UVurl = new URL( serviceUrl + airportCode);
                 HttpURLConnection UVConnection = (HttpURLConnection) UVurl.openConnection();
                 InputStream inStream = UVConnection.getInputStream();
-
-
 
 
                 //create a JSON object from the response
@@ -189,9 +181,10 @@ public class Activity_flightstatus extends AppCompatActivity {
                 }
                 String result = sb.toString();
 
-                //now a JSON table:
-                //JSONObject jObject = new JSONObject(result);
+                //create a JSON object from the result
+
                 JSONArray jsonArray = new JSONArray(result);
+                //JSONObject jObject = new JSONObject(result);
 
                 // loop every document
                 for (int i = 0; i < jsonArray.length(); ++i) {
@@ -205,14 +198,18 @@ public class Activity_flightstatus extends AppCompatActivity {
                     JSONObject departure = item.getJSONObject("departure");
                     String airport = departure.getString("iataCode");
 
+                    Eachflight eachflight = new Eachflight(flightNo, airport);
+
+                    publishProgress(eachflight);
+
                 }
 
             } catch (Exception ex) {
-                Log.e("Crash!!", ex.getMessage());
+                Log.e("activity_flightstatus", ex.getMessage());
             }
 
 
-            return "finished task";
+            return "task done";
         }
 
         public boolean fileExistance(String fname) {
@@ -221,10 +218,9 @@ public class Activity_flightstatus extends AppCompatActivity {
         }
 
         @Override
-        protected void onProgressUpdate(Integer... values) {
+        protected void onProgressUpdate(Eachflight... values) {
             Log.i("flightstatus", "update:" + values[0]);
-            progressBar.setProgress(values[0]);
-
+            flightlistAdapter.add(values[0]);
         }
 
         @Override
@@ -233,17 +229,16 @@ public class Activity_flightstatus extends AppCompatActivity {
 
             // messageBox.setText("Finished all tasks");
 
-            icoCode.setText("icoCode:" + icoCode);
-            flight_number.setText("flight_number:" + flight_number);
-
-
-            progressBar.setVisibility(View.INVISIBLE);
+         progressBar.setVisibility(View.INVISIBLE);
         }
     }
+
+
     /**
      * construct a fligthtrackadapter adapter
+     *
      */
-    private class flighttrackadapter extends ArrayAdapter<String> {
+    private class flighttrackadapter extends ArrayAdapter<Eachflight> {
 
         private LayoutInflater inflater;
 
@@ -272,10 +267,13 @@ public class Activity_flightstatus extends AppCompatActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
 
-            View view = inflater.inflate(R.layout.layout_flightdetail, null);
-            TextView textView = view.findViewById(R.id.airport_code);
+            View view = inflater.inflate(R.layout.activity_flight_listview, null);
+            TextView textViewAirport = view.findViewById(R.id.flight_number);
+            TextView textViewFlightCode = view.findViewById(R.id.icoCode);
 
-            textView.setText(getItem(position));
+            textViewAirport.setText(getItem(position).getairport());
+
+            textViewFlightCode.setText(getItem(position).getflightNo());
 
             return view;
         }
