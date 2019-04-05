@@ -166,8 +166,8 @@ public class Activity_nf_url_connector extends AppCompatActivity {
 
             /** loop through the xml file*/
             while (xpp.getEventType() != XmlPullParser.END_DOCUMENT) {
-                if (NEWS.size() >= 3)
-                    break;
+                /*if (NEWS.size() >= 3)
+                    break;*/
 
                 if (xpp.getEventType() == XmlPullParser.START_TAG
                         && xpp.getName().equalsIgnoreCase("post")) {
