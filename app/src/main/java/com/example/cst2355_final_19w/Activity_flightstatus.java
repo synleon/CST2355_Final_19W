@@ -115,7 +115,7 @@ public class Activity_flightstatus extends AppCompatActivity {
          */
         flightList.setOnItemClickListener((parent, container, position, id) -> {
             String airportcode = (String) parent.getItemAtPosition(position);
-            chooseflight(airportcode);
+            // chooseflight(airportcode);
         });
     }
 
