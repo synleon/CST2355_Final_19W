@@ -41,7 +41,10 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 
-
+/**
+ * author: Deyuan Liu
+ * flighttrack main activity
+ */
 public class Activity_flightstatus extends AppCompatActivity {
 
     private Toolbar mToolbar;
@@ -85,7 +88,6 @@ public class Activity_flightstatus extends AppCompatActivity {
 
 
 
-
         /**
          * progressBar function
          */
@@ -96,13 +98,10 @@ public class Activity_flightstatus extends AppCompatActivity {
 
 
         /**
-         * add click listener function to Button
+         * add click listener function to BUTTONGOTOCHECKFLIGHT button
          */
         Button btn = findViewById(R.id.flightstatus_button);
         btn.setOnClickListener(v -> {
-//            Snackbar sb = Snackbar.make(btn, "Go back?", Snackbar.LENGTH_LONG)
-//                    .setAction("Yes", e -> finish());
-//            sb.show();
 
             FlightSearch query = new FlightSearch();
 
@@ -110,7 +109,6 @@ public class Activity_flightstatus extends AppCompatActivity {
             String airport = editText.getText().toString();
             query.execute(airport);
         });
-
 
         /**
          * Add click listener function to listview
@@ -132,19 +130,8 @@ public class Activity_flightstatus extends AppCompatActivity {
         TextView flightdetailview = detailView.findViewById(R.id.airport_detail);
         TextView flightview = detailView.findViewById(R.id.airport_code);
 
-/**
- * search airportcode function
- */
-        flightview.setText(airportcode);
-        if (airportcode.equals("Ottawa-Montreal")) {
-            flightdetailview.setText("ottawa speed altitude status");
-        } else if (airportcode.equals("Toronto-Montreal")) {
-            flightdetailview.setText(" Toronto speed altitude status ");
-        } else if (airportcode.equals("NEW York-Beijing")) {
-            flightdetailview.setText("New York speed altitude status");
-        } else if (airportcode.equals("null")) {
-            flightdetailview.setText("the flight is not exist");
-        }
+
+
 
 /**
  * show search result alertdialog
@@ -156,6 +143,9 @@ public class Activity_flightstatus extends AppCompatActivity {
         builder.create().show();
     }
 
+    /**
+     * AsyncTask class for searching flight information
+     */
 
     private class FlightSearch extends AsyncTask<String, Eachflight, String> {
 
@@ -208,15 +198,25 @@ public class Activity_flightstatus extends AppCompatActivity {
                 Log.e("activity_flightstatus", ex.getMessage());
             }
 
-
             return "task done";
         }
+
+        /**
+         *
+         *
+         * @param fname
+         * @return
+         */
 
         public boolean fileExistance(String fname) {
             File file = getBaseContext().getFileStreamPath(fname);
             return file.exists();
         }
 
+        /**
+         * update GUI
+         * @param values
+         */
         @Override
         protected void onProgressUpdate(Eachflight... values) {
             Log.i("flightstatus", "update:" + values[0]);
@@ -225,9 +225,7 @@ public class Activity_flightstatus extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String s) {
-            //the parameter String s will be "Finished task" from line 27
 
-            // messageBox.setText("Finished all tasks");
 
          progressBar.setVisibility(View.INVISIBLE);
         }
@@ -259,7 +257,7 @@ public class Activity_flightstatus extends AppCompatActivity {
         /**
          * method to provide detail information for each flight
          *
-         * @param position    this is
+         * @param position    this
          * @param convertView
          * @param parent
          * @return
