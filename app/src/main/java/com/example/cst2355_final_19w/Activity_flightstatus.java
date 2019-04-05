@@ -162,9 +162,9 @@ public class Activity_flightstatus extends AppCompatActivity {
 
 
                 //create a JSON object from the response
-                BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, "UTF-8"), 8);
-                StringBuilder sb = new StringBuilder();
+                BufferedReader reader =new BufferedReader(new InputStreamReader(inStream, "UTF-8"), 8);
 
+                StringBuilder sb =new StringBuilder();
                 String line = null;
                 while ((line = reader.readLine()) != null) {
                     sb.append(line + "\n");
@@ -174,9 +174,9 @@ public class Activity_flightstatus extends AppCompatActivity {
                 //create a JSON object from the result
 
                 JSONArray jsonArray = new JSONArray(result);
-                //JSONObject jObject = new JSONObject(result);
 
-                // loop every document
+
+                // loop every element
                 for (int i = 0; i < jsonArray.length(); ++i) {
 
                     Log.i("Activity_flightstatus", "doc[" + i + "]");
@@ -257,7 +257,7 @@ public class Activity_flightstatus extends AppCompatActivity {
         /**
          * method to provide detail information for each flight
          *
-         * @param position    this
+         * @param position
          * @param convertView
          * @param parent
          * @return
