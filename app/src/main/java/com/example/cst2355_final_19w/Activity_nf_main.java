@@ -20,6 +20,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 import android.support.design.widget.Snackbar;
 
+import com.example.cst2355_final_19w.nytimes.Activity_nytimes;
+
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
