@@ -97,7 +97,7 @@ public class Activity_nf_url_connector extends AppCompatActivity {
         boolean isTablet = findViewById(R.id.frame) != null;
 
         newsList.setOnItemClickListener((parent, view, position, id) -> {
-            Log.e("you clicked on :", "item " + position);
+            //Log.e("you clicked on :", "item " + position);
             //save the position in case this object gets deleted or updatednew
             positionClicked = position;
 
@@ -166,8 +166,8 @@ public class Activity_nf_url_connector extends AppCompatActivity {
 
             /** loop through the xml file*/
             while (xpp.getEventType() != XmlPullParser.END_DOCUMENT) {
-                /*if (NEWS.size() >= 3)
-                    break;*/
+               if (NEWS.size() >= 10)
+                    break;
 
                 if (xpp.getEventType() == XmlPullParser.START_TAG
                         && xpp.getName().equalsIgnoreCase("post")) {
@@ -202,24 +202,24 @@ public class Activity_nf_url_connector extends AppCompatActivity {
                 if (!foundURL && tagName.equals("url")) {
                     foundURL = true;
                     urlAddress = xpp.nextText();
-                    Log.e("News Feed ", "Find URL: " + urlAddress);
                     publishProgress(25);
+                    //Log.e("News Feed ", "Find URL: " + urlAddress);
                 } else if (!foundTitle && tagName.equals("title")) {
                     foundTitle = true;
                     title = xpp.nextText();
-                    Log.e("News Feed ", "Find a title: " + title);
                     publishProgress(50);
+                    //Log.e("News Feed ", "Find a title: " + title);
                 } else if (!foundText && tagName.equals("text")) {
                     foundText = true;
                     text = xpp.nextText();
-                    Log.e("News Feed ", "Find the text: " + text);
                     publishProgress(75);
+                    //Log.e("News Feed ", "Find the text: " + text);
                 } else if (!foundImage && tagName.equals("main_image")) {
                     foundImage = true;
                     imageLink = xpp.nextText();
                     downloadImage(imageLink);
-                    Log.e("News Feed ", "Find the image link: " + imageLink);
                     publishProgress(100);
+                    //Log.e("News Feed ", "Find the image link: " + imageLink);
                 }
             }
 
@@ -262,7 +262,7 @@ public class Activity_nf_url_connector extends AppCompatActivity {
                 inputStream = iconConnecter.getInputStream();
 
                 bitmap = BitmapFactory.decodeStream(inputStream);
-                compressImage();
+                bitmap = resizeImage(bitmap);
 
                 iconConnecter.disconnect();
 
@@ -275,18 +275,10 @@ public class Activity_nf_url_connector extends AppCompatActivity {
         /**
          * reference _Anonymous_  CSDN https://blog.csdn.net/wudongjiang333/article/details/78122234
          */
-        protected void compressImage()
+        protected Bitmap resizeImage(Bitmap originalImage)
         {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);//质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
-            int options = 100;
-            while (baos.toByteArray().length / 1024 > 100) {  //循环判断如果压缩后图片是否大于100kb,大于继续压缩
-                baos.reset();//重置baos即清空baos
-                bitmap.compress(Bitmap.CompressFormat.JPEG, options, baos);//这里压缩options%，把压缩后的数据存放到baos中
-                options -= 10;//每次都减少10
-            }
-            ByteArrayInputStream isBm = new ByteArrayInputStream(baos.toByteArray());//把压缩后的数据baos存放到ByteArrayInputStream中
-            bitmap = BitmapFactory.decodeStream(isBm, null, null);//把ByteArrayInputStream数据生成图片
+            Bitmap resizedImage = Bitmap.createScaledBitmap(originalImage, 120, 100, false);
+            return resizedImage;
         }
     }
 
