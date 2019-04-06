@@ -277,7 +277,25 @@ public class Activity_nf_url_connector extends AppCompatActivity {
          */
         protected Bitmap resizeImage(Bitmap originalImage)
         {
-            Bitmap resizedImage = Bitmap.createScaledBitmap(originalImage, 120, 100, false);
+            final int maxWidth = 480;
+            final int maxHeight = 320;
+
+            int originalWidth = originalImage.getWidth();
+            int originalHeight = originalImage.getHeight();
+            if (maxWidth >= originalWidth && maxHeight >= originalHeight)
+                return originalImage;
+
+            float scaleWidth = ((float) originalWidth) / maxWidth;
+            float scaleHeight = ((float) originalHeight) / maxHeight;
+
+            int newWeight = maxWidth;
+            int newHeight = maxHeight;
+            if (scaleWidth > scaleHeight)
+                newHeight = (int) (((float) originalHeight) / scaleWidth);
+            else
+                newWeight = (int) (((float) originalHeight) / scaleHeight);
+
+            Bitmap resizedImage = Bitmap.createScaledBitmap(originalImage, newWeight, newHeight, false);
             return resizedImage;
         }
     }
