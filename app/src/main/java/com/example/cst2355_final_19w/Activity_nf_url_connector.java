@@ -1,6 +1,5 @@
 package com.example.cst2355_final_19w;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -24,12 +23,6 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -166,8 +159,8 @@ public class Activity_nf_url_connector extends AppCompatActivity {
 
             /** loop through the xml file*/
             while (xpp.getEventType() != XmlPullParser.END_DOCUMENT) {
-               if (NEWS.size() >= 10)
-                    break;
+              /* if (NEWS.size() >= 10)
+                    break;*/
 
                 if (xpp.getEventType() == XmlPullParser.START_TAG
                         && xpp.getName().equalsIgnoreCase("post")) {
@@ -272,9 +265,7 @@ public class Activity_nf_url_connector extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-        /**
-         * reference _Anonymous_  CSDN https://blog.csdn.net/wudongjiang333/article/details/78122234
-         */
+
         protected Bitmap resizeImage(Bitmap originalImage)
         {
             final int maxWidth = 480;
@@ -323,7 +314,7 @@ public class Activity_nf_url_connector extends AppCompatActivity {
         @Override
         public View getView(int position, View oldView, ViewGroup parent) {
             LayoutInflater inflater = getLayoutInflater();
-            View newView = inflater.inflate(R.layout.activity_nf_single_row_type, parent, false);
+            View newView = inflater.inflate(R.layout.activity_nf_searchlist_single_row_type, parent, false);
 
             NF_Article currentArticle = (NF_Article)getItem(position);
 

@@ -2,13 +2,11 @@ package com.example.cst2355_final_19w;
 
 import android.content.ContentValues;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +30,7 @@ public class NF_Search_DetailFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View result =  inflater.inflate(R.layout.activity_nf_fragment_layout_detail, container, false);
+        View result =  inflater.inflate(R.layout.activity_nf_searchlist_detail, container, false);
 
         dataFromActivity = getArguments();
         position = dataFromActivity.getInt(Activity_nf_url_connector.ITEM_POSITION);
