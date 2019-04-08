@@ -180,7 +180,7 @@ public class Fragment_nytimes_article extends Fragment implements View.OnClickLi
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
 }
