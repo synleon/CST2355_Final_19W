@@ -17,7 +17,7 @@ public class EmptyContainerActivity extends AppCompatActivity {
 
         //This is copied directly from FragmentExample.java lines 47-54
         Fragment_nytimes_article dFragment = new Fragment_nytimes_article();
-        dFragment.setArguments( dataToPass ); //pass data to the the fragment
+        dFragment.setArguments(dataToPass); //pass data to the the fragment
         dFragment.setTablet(false); //tell the Fragment that it's on a phone.
         getSupportFragmentManager()
                 .beginTransaction()
