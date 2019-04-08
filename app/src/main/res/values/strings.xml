@@ -31,4 +31,5 @@
     <string name="flight_versionNumber">application version number 10</string>
     <string name="flight_instruction">application flight Instruction</string>
     <string name="flight_help">flight help</string>
+    <string name="nytimes_no_internet_connection">There is no internet connection!</string>
 </resources>

@@ -164,6 +164,7 @@ public class Activity_nytimes extends AppCompatActivity implements SearchView.On
             dataToSend.putInt("SAVED", article.getSaved());
             dataToSend.putString("URL", article.getArticle_url());
             dataToSend.putInt("POSITION", position);
+            dataToSend.putString("ARTICLE_ID", article.getArticle_id());
 
             // start an external web browser intent to view the article
             Intent nextActivity = new Intent(Activity_nytimes.this, EmptyContainerActivity.class);
@@ -660,9 +661,11 @@ public class Activity_nytimes extends AppCompatActivity implements SearchView.On
             }
 
             // set listener, has to go after setCheck
-            switchSaved.setOnCheckedChangeListener((v, c) -> {
-                saveArticle(v, c, article);
-            });
+            // do not let user to directly click switch button to save/delete article
+//            switchSaved.setOnCheckedChangeListener((v, c) -> {
+//                saveArticle(v, c, article);
+//            });
+            switchSaved.setEnabled(false);
 
             return view;
         }
