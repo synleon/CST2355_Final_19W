@@ -7,7 +7,6 @@ import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,8 +21,6 @@ import android.widget.Toast;
 import com.example.cst2355_final_19w.R;
 
 import java.io.File;
-
-import static android.content.Context.CONNECTIVITY_SERVICE;
 
 
 public class Fragment_nytimes_article extends Fragment implements View.OnClickListener {
@@ -105,29 +102,48 @@ public class Fragment_nytimes_article extends Fragment implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
-        EmptyContainerActivity containerActivity = (EmptyContainerActivity) getActivity();
-        Intent backToFragment = new Intent();
+
+        int actionCode = 0;
 
         String btnText = button.getText().toString();
 
         String archiveFileName = getContext().getFilesDir().getAbsoluteFile() + File.separator + article_id + ".mht";
 
         if (btnText.equals("Save article")) {
-            backToFragment.putExtra("ACTION", 1);
+
+            actionCode = 1;
+
             // save article to local storage as mht file
             webView.saveWebArchive(archiveFileName);
         } else if (btnText.equals("Delete article")) {
-            backToFragment.putExtra("ACTION", 0);
+
+            actionCode = 0;
+
             // delete article archive mht file from local storage
             if (fileExistance(archiveFileName)) {
                 File file = new File(archiveFileName);
                 file.delete();
             }
         }
-        backToFragment.putExtra("POSITION", position);
 
-        containerActivity.setResult(Activity.RESULT_OK, backToFragment);
-        containerActivity.finish();
+        if (isTablet) {
+            Activity_nytimes parentActivity = (Activity_nytimes)getActivity();
+            if (parentActivity != null) {
+                parentActivity.processResult(actionCode, position);
+                // remove current fragment
+                parentActivity.getSupportFragmentManager().beginTransaction().remove(this).commit();
+            }
+        }
+        else {
+            EmptyContainerActivity containerActivity = (EmptyContainerActivity) getActivity();
+            Intent backToFragment = new Intent();
+            backToFragment.putExtra("ACTION", actionCode);
+            backToFragment.putExtra("POSITION", position);
+            if (containerActivity != null) {
+                containerActivity.setResult(Activity.RESULT_OK, backToFragment);
+                containerActivity.finish();
+            }
+        }
     }
 
     @Override
