@@ -204,7 +204,7 @@ public class Dict_MainActivity extends AppCompatActivity {
         // et.setText("");
         et.setText(getString(R.string.dict_intro));
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Author")
+        builder.setMessage(getString(R.string.dict_helpdia))
 
                 .setNegativeButton("Close", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
@@ -220,6 +220,11 @@ public class Dict_MainActivity extends AppCompatActivity {
         View middle = getLayoutInflater().inflate(R.layout.dict_searchdialog, null);
         EditText et = (EditText) middle.findViewById(R.id.dict_searchEditText);
 
+        //get an editor object
+        SharedPreferences.Editor editor = sp.edit();
+        String prevSearch = sp.getString("word", null);
+        et.setText(prevSearch);
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Search")
                 .setPositiveButton("Search", new DialogInterface.OnClickListener() {
@@ -230,8 +235,7 @@ public class Dict_MainActivity extends AppCompatActivity {
                             Intent searchDetailPage = new Intent(getApplicationContext(), Dict_SearchDetail.class);
                             searchDetailPage.putExtra("searchKeyword", et.getText().toString());
 
-                            //get an editor object
-                            SharedPreferences.Editor editor = sp.edit();
+
 
                             //save what was typed under the name "ReserveName"
                             String whatWasTyped = et.getText().toString();
