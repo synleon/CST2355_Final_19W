@@ -69,6 +69,9 @@ public class NF_Search_DetailFragment extends Fragment
             newValue.put(NF_DatabaseOpenHelper.COL_URL, Activity_nf_url_connector.NEWS.get(position).getUrlAddress());
             newValue.put(NF_DatabaseOpenHelper.COL_IMAGELINK, Activity_nf_url_connector.NEWS.get(position).getImageLink());
             long newId = Activity_nf_main.DB.insert(NF_DatabaseOpenHelper.TABLE_NAME, null, newValue);
+
+            saveToFavor.setVisibility(View.INVISIBLE);
+
             Snackbar.make( saveToFavor,"Inserted one favorite article which id is : " + newId, Snackbar.LENGTH_LONG).show();
         });
 

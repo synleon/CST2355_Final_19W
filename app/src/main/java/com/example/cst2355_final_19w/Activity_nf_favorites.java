@@ -57,7 +57,7 @@ public class Activity_nf_favorites extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nf_favorites);
 
-        image = (ImageView) findViewById(R.id.favor_icon);
+        //image = (ImageView) findViewById(R.id.favor_icon);
 
         //results = DB.rawQuery("SELECT " +  NF_DatabaseOpenHelper.COL_TITLE + ", " + NF_DatabaseOpenHelper.COL_IMAGELINK + " FROM " + NF_DatabaseOpenHelper.TABLE_NAME, null);
         results = Activity_nf_main.DB.rawQuery("SELECT * FROM " + NF_DatabaseOpenHelper.TABLE_NAME, null);

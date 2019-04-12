@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -28,6 +29,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 
 /** This class is used for connecting the the web "http://webhose.io"  and get useful information
@@ -80,7 +82,7 @@ public class Activity_nf_url_connector extends AppCompatActivity {
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
         NFQuery nfQuery = new NFQuery();
-        nfQuery.execute("http://webhose.io/filterWebContent?token=264a10ac-9a70-4d5b-9f57-280bb2ec5604&format=xml&sort=crawled&q=" + Activity_nf_main.SEARCHTERM);
+        nfQuery.execute("http://webhose.io/filterWebContent?token=264a10ac-9a70-4d5b-9f57-280bb2ec5604&format=xml&sort=crawled&q=" + Uri.decode(Activity_nf_main.SEARCHTERM));
 
 
         ListView newsList = (ListView) findViewById(R.id.list_newsF);
@@ -137,7 +139,7 @@ public class Activity_nf_url_connector extends AppCompatActivity {
         private void parseXMLContent()
                 throws MalformedURLException, IOException, XmlPullParserException, InterruptedException {
             /** connect to an url to find the weather info */
-            URL url = new URL("http://webhose.io/filterWebContent?token=264a10ac-9a70-4d5b-9f57-280bb2ec5604&format=xml&sort=crawled&q=" + Activity_nf_main.SEARCHTERM);
+            URL url = new URL("http://webhose.io/filterWebContent?token=264a10ac-9a70-4d5b-9f57-280bb2ec5604&format=xml&sort=crawled&q=" + Uri.decode(Activity_nf_main.SEARCHTERM));
             HttpURLConnection webHoseConnecter = (HttpURLConnection) url.openConnection();
 
             webHoseConnecter.setReadTimeout(10000 /* milliseconds */);

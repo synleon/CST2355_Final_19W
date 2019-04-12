@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -91,13 +92,17 @@ public class Activity_nf_main extends AppCompatActivity {
         Button searchButton = (Button) findViewById(R.id.sb_newsF);
         searchButton.setOnClickListener(sb ->
         {
-            try {
+            EditText editSearchText = (EditText) findViewById(R.id.searchEdit_newsF);
+            SEARCHTERM = editSearchText.getText().toString();
+            Uri.encode(SEARCHTERM, "UTF-8");
+
+            /*try {
                 EditText editSearchText = (EditText) findViewById(R.id.searchEdit_newsF);
                 SEARCHTERM = editSearchText.getText().toString();
                 URLEncoder.encode(SEARCHTERM, "UTF-8");
             } catch (UnsupportedEncodingException e) {
-                Log.e("Crash", e.getMessage());
-            }
+                e.printStackTrace();
+            }*/
 
             Intent nextToDo = new Intent(Activity_nf_main.this, Activity_nf_url_connector.class);
             startActivity(nextToDo);
@@ -186,8 +191,8 @@ public class Activity_nf_main extends AppCompatActivity {
          *  use it to set a message and a button with function needed,
          *  then show the view. */
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(R.string.help_newsF)
-                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+        //.setMessage(R.string.help_newsF)
+        builder.setPositiveButton("GO BACK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // What to do on Accept
                     }
