@@ -33,4 +33,14 @@
     <string name="flight_instruction">application flight Instruction</string>
     <string name="flight_help">flight help</string>
     <string name="nytimes_no_internet_connection">There is no internet connection!</string>
+    <string name="dict_back">Go Back</string>
+    <string name="dict_name">Name</string>
+    <string name="dict_research">Recent search</string>
+    <string name="dict_save">Saved</string>
+    <string name="dict_research_back">BACK</string>
+    <string name="dict_research_word">Enter text to search</string>
+    <string name="dict_help">Help</string>
+    <string name="dict_menu_search">Search</string>
+    <string name="dict_intro">This dictionary is developed by Belle.To use this dictionary, go to the main page and click the dictionary icon on the top toolbar. Once there, just click the search button on the top dictionary toolbar to get inside. Once search dialogue show up, input the words you’d like to search in the dialogue, detailed information about the search work will come out.</string>
+    <string name="dict_delete">delete</string>
 </resources>
