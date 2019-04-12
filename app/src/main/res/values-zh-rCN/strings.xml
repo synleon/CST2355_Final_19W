@@ -33,4 +33,13 @@
     <string name="flight_instruction">应用软件说明</string>
     <string name="flight_help">航班帮手</string>
     <string name="nytimes_no_internet_connection">没有可用的互联网连接！</string>
+    <string name="dict_back">返回</string>
+    <string name="dict_name">名字</string>
+    <string name="dict_research">最近搜索</string>
+    <string name="dict_save">保存</string>
+    <string name="dict_research_back">返回</string>
+    <string name="dict_research_word">查找</string>
+    <string name="dict_help">求助</string>
+    <string name="dict_menu_search">查找</string>
+    <string name="dict_delete">删除</string>
 </resources>

@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
         {
             //what to do when the menu item is selected:
             case R.id.menu_dict:
-                startActivity(new Intent(MainActivity.this, Activity_dict.class));
+                startActivity(new Intent(MainActivity.this, Dict_MainActivity.class));
                 break;
             case R.id.menu_newsfeed:
                 startActivity(new Intent(MainActivity.this, Activity_nf_main.class));

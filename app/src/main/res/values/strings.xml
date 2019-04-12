@@ -32,4 +32,13 @@
     <string name="flight_instruction">application flight Instruction</string>
     <string name="flight_help">flight help</string>
     <string name="nytimes_no_internet_connection">There is no internet connection!</string>
+    <string name="dict_back">Go Back</string>
+    <string name="dict_name">Name</string>
+    <string name="dict_research">Recent search</string>
+    <string name="dict_save">Saved</string>
+    <string name="dict_research_back">BACK</string>
+    <string name="dict_research_word">Enter text to search</string>
+    <string name="dict_help">Help</string>
+    <string name="dict_menu_search">Search</string>
+    <string name="dict_delete">Delete</string>
 </resources>

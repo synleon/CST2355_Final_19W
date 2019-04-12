@@ -3,29 +3,35 @@
     package="com.example.cst2355_final_19w">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <supports-screens android:requiresSmallestWidthDp="600"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
+    <supports-screens android:requiresSmallestWidthDp="600" />
 
     <application
         android:allowBackup="true"
+        android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true"
-        android:hardwareAccelerated="false"
-        android:largeHeap="true">
-        <activity android:name=".Activity_nf_main"/>
-        <activity android:name=".Activity_nf_url_connector"/>
-        <activity android:name=".Activity_nf_search_empty"/>
-        <activity android:name=".Activity_nf_favor_empty"/>
-        <activity android:name=".Activity_nf_favorites"/>
+        android:usesCleartextTraffic="true">
+        <activity android:name=".Dict_SearchDetail"></activity>
+        <activity android:name=".Dict_Model" />
+        <activity android:name=".Dict_MainActivity" />
+        <activity android:name=".Dict_Fragment" />
+        <activity android:name=".Dict_EmptyActivity" />
+        <activity android:name=".Dict_DBHelper" />
+        <activity android:name=".Activity_nf_main" />
+        <activity android:name=".Activity_nf_url_connector" />
+        <activity android:name=".Activity_nf_search_empty" />
+        <activity android:name=".Activity_nf_favor_empty" />
+        <activity android:name=".Activity_nf_favorites" />
         <activity android:name=".nytimes.Activity_nytimes" />
         <activity android:name=".nytimes.EmptyContainerActivity" />
         <activity android:name=".Activity_flightstatus" />
-        <activity android:name=".Activity_dict" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
