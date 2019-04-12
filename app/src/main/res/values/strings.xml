@@ -40,5 +40,6 @@
     <string name="dict_research_word">Enter text to search</string>
     <string name="dict_help">Help</string>
     <string name="dict_menu_search">Search</string>
-    <string name="dict_delete">Delete</string>
+    <string name="dict_intro">This dictionary is developed by Belle.To use this dictionary, go to the main page and click the dictionary icon on the top toolbar. Once there, just click the search button on the top dictionary toolbar to get inside. Once search dialogue show up, input the words you’d like to search in the dialogue, detailed information about the search work will come out.</string>
+    <string name="dict_delete">delete</string>
 </resources>

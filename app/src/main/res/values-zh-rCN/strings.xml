@@ -42,4 +42,5 @@
     <string name="dict_help">求助</string>
     <string name="dict_menu_search">查找</string>
     <string name="dict_delete">删除</string>
+    <string name="dict_intro">这本词典是由 belle开发的. 要使用这本词典, 请转到主页, 然后单击顶部工具栏上的字典图标。一旦到了那里, 只需点击顶部词典工具栏上的搜索按钮进入。一旦搜索对话显示, 在对话中输入您想搜索的单词, 就会显示有关搜索工作的详细信息。</string>
 </resources>

@@ -201,7 +201,8 @@ public class Dict_MainActivity extends AppCompatActivity {
     public void helpDialog() {
         View middle = getLayoutInflater().inflate(R.layout.dict_helpdialog, null);
         TextView et = (TextView) middle.findViewById(R.id.dict_helpTextView);
-        et.setText("This dictionary is developed by Belle.To use this dictionary, go to the main page and click the dictionary icon on the top toolbar. Once there, just click the search button on the top dictionary toolbar to get inside. Once search dialogue show up, input the words you’d like to search in the dialogue, detailed information about the search work will come out.");
+        // et.setText("");
+        et.setText(getString(R.string.dict_intro));
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Author")
 
