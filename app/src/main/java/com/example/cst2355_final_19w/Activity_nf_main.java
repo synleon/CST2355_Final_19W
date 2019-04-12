@@ -148,7 +148,7 @@ public class Activity_nf_main extends AppCompatActivity {
             case R.id.nf_dictionary:
 
                 /** go to dictionary section when click the icon*/
-                Intent goDictionary = new Intent(Activity_nf_main.this, Activity_dict.class);
+                Intent goDictionary = new Intent(Activity_nf_main.this, Dict_MainActivity.class);
                 startActivity(goDictionary);
                 break;
 
