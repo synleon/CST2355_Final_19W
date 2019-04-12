@@ -33,4 +33,5 @@
     <string name="flight_versionNumber">应用软件版本号： 10</string>
     <string name="flight_instruction">应用软件说明</string>
     <string name="flight_help">航班帮手</string>
+    <string name="nytimes_no_internet_connection">没有可用的互联网连接！</string>
 </resources>

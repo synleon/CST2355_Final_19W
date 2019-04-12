@@ -151,6 +151,9 @@ public class Activity_nytimes extends AppCompatActivity implements SearchView.On
         Toolbar toolbar = findViewById(R.id.ny_main_toolbar);
         setSupportActionBar(toolbar);
 
+        // is a tablet?
+        boolean isTablet = (findViewById(R.id.nytimes_fragmentLocation) != null);
+
 
 
         //This listens for items being clicked in the list view
@@ -164,11 +167,25 @@ public class Activity_nytimes extends AppCompatActivity implements SearchView.On
             dataToSend.putInt("SAVED", article.getSaved());
             dataToSend.putString("URL", article.getArticle_url());
             dataToSend.putInt("POSITION", position);
+            dataToSend.putString("ARTICLE_ID", article.getArticle_id());
 
-            // start an external web browser intent to view the article
-            Intent nextActivity = new Intent(Activity_nytimes.this, EmptyContainerActivity.class);
-            nextActivity.putExtras(dataToSend);
-            startActivityForResult(nextActivity, CONTAINER_ACTIVITY_REQUESTCODE);
+            if (isTablet) {
+                Fragment_nytimes_article dFragment = new Fragment_nytimes_article();
+                dFragment.setArguments(dataToSend); //pass data to the the fragment
+                dFragment.setTablet(true); //tell the Fragment that it's on a phone.
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.nytimes_fragmentLocation, dFragment)
+                        .commit();
+            }
+            else {
+                // start an external web browser intent to view the article
+                Intent nextActivity = new Intent(Activity_nytimes.this, EmptyContainerActivity.class);
+                nextActivity.putExtras(dataToSend);
+                startActivityForResult(nextActivity, CONTAINER_ACTIVITY_REQUESTCODE);
+            }
+
+
         });
 
         fillListWithSavedArticles();
@@ -236,32 +253,81 @@ public class Activity_nytimes extends AppCompatActivity implements SearchView.On
                 int actionCode = data.getIntExtra("ACTION", 0);
                 int position = data.getIntExtra("POSITION", 0);
 
-                ListView listView = findViewById(R.id.ny_list);
+                processResult(actionCode, position);
 
-                View view = null;
-
-                final int firstListItemPosition = listView.getFirstVisiblePosition();
-                final int lastListItemPosition = firstListItemPosition + listView.getChildCount() - 1;
-
-                if (position < firstListItemPosition || position > lastListItemPosition ) {
-                    view = listView.getAdapter().getView(position, null, listView);
-                } else {
-                    final int childIndex = position - firstListItemPosition;
-                    view = listView.getChildAt(childIndex);
-                }
-
-                Switch switchSave = view.findViewById(R.id.ny_article_switch_saved);
-                if (actionCode == 1)
-                {
-                    // save
-                    switchSave.setChecked(true);
-                    saveArticle(view, true, adapter.getItem(position));
-                }
-                else if (actionCode == 0) {
-                    switchSave.setChecked(false);
-                    saveArticle(view, false, adapter.getItem(position));
-                }
+//                ListView listView = findViewById(R.id.ny_list);
+//
+//                View view = null;
+//
+//
+//                // get the view of the item of list view identified by position
+//                final int firstListItemPosition = listView.getFirstVisiblePosition();
+//                final int lastListItemPosition = firstListItemPosition + listView.getChildCount() - 1;
+//
+//                if (position < firstListItemPosition || position > lastListItemPosition ) {
+//                    view = listView.getAdapter().getView(position, null, listView);
+//                } else {
+//                    final int childIndex = position - firstListItemPosition;
+//                    view = listView.getChildAt(childIndex);
+//                }
+//
+//                // get switch reference
+//                Switch switchSave = view.findViewById(R.id.ny_article_switch_saved);
+//                if (actionCode == 1)
+//                {
+//                    // update UI
+//                    switchSave.setChecked(true);
+//                    // save article to database
+//                    saveArticle(view, true, adapter.getItem(position));
+//                }
+//                else if (actionCode == 0) {
+//                    // update UI
+//                    switchSave.setChecked(false);
+//                    // delete article from database
+//                    saveArticle(view, false, adapter.getItem(position));
+//                }
             }
+        }
+    }
+
+    /**
+     * process the result based on action and position
+     * first update switch button status
+     * second save/delete article to/from SQLite
+     * @param actionCode 1 to save the article 0 to delete the article
+     * @param position where the list item is
+     */
+    public void processResult(int actionCode, int position) {
+        ListView listView = findViewById(R.id.ny_list);
+
+        View view = null;
+
+
+        // get the view of the item of list view identified by position
+        final int firstListItemPosition = listView.getFirstVisiblePosition();
+        final int lastListItemPosition = firstListItemPosition + listView.getChildCount() - 1;
+
+        if (position < firstListItemPosition || position > lastListItemPosition ) {
+            view = listView.getAdapter().getView(position, null, listView);
+        } else {
+            final int childIndex = position - firstListItemPosition;
+            view = listView.getChildAt(childIndex);
+        }
+
+        // get switch reference
+        Switch switchSave = view.findViewById(R.id.ny_article_switch_saved);
+        if (actionCode == 1)
+        {
+            // update UI
+            switchSave.setChecked(true);
+            // save article to database
+            saveArticle(view, true, adapter.getItem(position));
+        }
+        else if (actionCode == 0) {
+            // update UI
+            switchSave.setChecked(false);
+            // delete article from database
+            saveArticle(view, false, adapter.getItem(position));
         }
     }
 
@@ -311,7 +377,7 @@ public class Activity_nytimes extends AppCompatActivity implements SearchView.On
     }
 
     /**
-     * Method used to save articles to SQLite database
+     * Method used to save or delete articles to SQLite database
      *
      * @param view the view that user clicked save switch
      * @param isSaveChecked whether save switch is checked or not
@@ -660,9 +726,11 @@ public class Activity_nytimes extends AppCompatActivity implements SearchView.On
             }
 
             // set listener, has to go after setCheck
-            switchSaved.setOnCheckedChangeListener((v, c) -> {
-                saveArticle(v, c, article);
-            });
+            // do not let user to directly click switch button to save/delete article
+//            switchSaved.setOnCheckedChangeListener((v, c) -> {
+//                saveArticle(v, c, article);
+//            });
+            switchSaved.setEnabled(false);
 
             return view;
         }
