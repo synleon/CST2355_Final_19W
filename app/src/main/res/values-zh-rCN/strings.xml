@@ -13,7 +13,8 @@
     <string name="sbText">搜索</string>
     <string name="author">作者：程琳琳</string>
     <string name="versionNum">版本号：1.0</string>
-    <string name="instruction">使用说明</string>
+    <string name="instructionTitle">使用说明:</string>
+    <string name="instructionContent">1. 这个APP有4个主要的功能：搜索，存入收藏夹，从收藏夹中删除，进入文章所在网址。\n\n2. 用户可以点击搜索列表中任意文章读取全部内容，并存入到收藏夹中。\n\n3. 用户可以点击屏幕上方的图标链接进入其他模块，比如查看收藏夹只需点击带有心形的图标，查看航班情况点击飞机图标./  </string>
     <string name="deleteButton">删除</string>
     <string name="favor">收藏夹列表</string>
     <string name="save">保存到收藏夹</string>

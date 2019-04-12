@@ -1,5 +1,6 @@
 package com.example.cst2355_final_19w;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
@@ -15,9 +16,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 
 public class Activity_nf_favorites extends AppCompatActivity {
@@ -47,7 +45,7 @@ public class Activity_nf_favorites extends AppCompatActivity {
     public static final String ITEM_SELECTED = "TITLE";
     public static final String ITEM_TEXT = "TEXT";
     public static final String ITEM_URL = "URL";
-    public static  final String ITEM_PIC = "PICTURE";
+    public static  final String ITEM_IMAGELINK = "IMAGELINK";
 
     public static final String ITEM_POSITION = "POSITION";
     public static final String ITEM_ID = "ID";
@@ -59,7 +57,7 @@ public class Activity_nf_favorites extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nf_favorites);
 
-        image = (ImageView) findViewById(R.id.favor_icon);
+        //image = (ImageView) findViewById(R.id.favor_icon);
 
         //results = DB.rawQuery("SELECT " +  NF_DatabaseOpenHelper.COL_TITLE + ", " + NF_DatabaseOpenHelper.COL_IMAGELINK + " FROM " + NF_DatabaseOpenHelper.TABLE_NAME, null);
         results = Activity_nf_main.DB.rawQuery("SELECT * FROM " + NF_DatabaseOpenHelper.TABLE_NAME, null);
@@ -74,7 +72,7 @@ public class Activity_nf_favorites extends AppCompatActivity {
         imageLinkColIndex = results.getColumnIndex(NF_DatabaseOpenHelper.COL_IMAGELINK);
         idColIndex = results.getColumnIndex(NF_DatabaseOpenHelper.COL_ID);
 
-
+        String resultString = results.toString();
 
         while (results.moveToNext()) {
             title = results.getString(titleColIndex);
@@ -98,6 +96,7 @@ public class Activity_nf_favorites extends AppCompatActivity {
             dataToPass.putString(ITEM_TEXT, favorList.get(position).getText());
             dataToPass.putString(ITEM_URL, favorList.get(position).getUrlAddress());
             dataToPass.putLong(ITEM_ID, favorList.get(position).getId());
+            dataToPass.putString(ITEM_IMAGELINK, favorList.get(position).getImageLink());
             dataToPass.putInt(ITEM_POSITION, position);
 
 
@@ -146,7 +145,7 @@ public class Activity_nf_favorites extends AppCompatActivity {
         public View getView(int position, View convertView, ViewGroup parent) {
             View newView;
             LayoutInflater inflater = getLayoutInflater();
-            newView = inflater.inflate(R.layout.activity_nf_single_row_type, parent, false);
+            newView = inflater.inflate(R.layout.activity_nf_favor_single_rwo_type, parent, false);
 
             TextView favorTitleView = (TextView) newView.findViewById(R.id.article_title);
             favorTitleView.setText(getItem(position).toString());

@@ -2,13 +2,11 @@ package com.example.cst2355_final_19w;
 
 import android.content.ContentValues;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +30,7 @@ public class NF_Search_DetailFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View result =  inflater.inflate(R.layout.activity_nf_fragment_layout_detail, container, false);
+        View result =  inflater.inflate(R.layout.activity_nf_searchlist_detail, container, false);
 
         dataFromActivity = getArguments();
         position = dataFromActivity.getInt(Activity_nf_url_connector.ITEM_POSITION);
@@ -71,6 +69,9 @@ public class NF_Search_DetailFragment extends Fragment
             newValue.put(NF_DatabaseOpenHelper.COL_URL, Activity_nf_url_connector.NEWS.get(position).getUrlAddress());
             newValue.put(NF_DatabaseOpenHelper.COL_IMAGELINK, Activity_nf_url_connector.NEWS.get(position).getImageLink());
             long newId = Activity_nf_main.DB.insert(NF_DatabaseOpenHelper.TABLE_NAME, null, newValue);
+
+            saveToFavor.setVisibility(View.INVISIBLE);
+
             Snackbar.make( saveToFavor,"Inserted one favorite article which id is : " + newId, Snackbar.LENGTH_LONG).show();
         });
 

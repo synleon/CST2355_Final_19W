@@ -15,18 +15,31 @@
         android:id="@+id/author"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/author"/>
+        android:text="@string/author"
+        android:textSize="25dp"
+        android:textStyle="bold"/>
 
     <TextView
         android:id="@+id/versionNum"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/versionNum" />
+        android:text="@string/versionNum"
+        android:textSize="25dp"
+        android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/instruction"
+        android:id="@+id/instructionTile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/instruction" />
+        android:text="@string/instructionTitle"
+        android:textSize="25dp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/instructionContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/instructionContent"
+        android:textSize="18dp"/>
 
 </LinearLayout>

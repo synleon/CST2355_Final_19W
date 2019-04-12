@@ -10,9 +10,10 @@
     <string name="searchText_newsF">Type here to search</string>
     <string name="goback">GO BACK</string>
     <string name="sbText">Search</string>
-    <string name="author">Author: Linlin Cheng</string>
-    <string name="versionNum">Version Number: 1.0</string>
-    <string name="instruction">Instruction</string>
+    <string name="author">Author: Linlin Cheng\n</string>
+    <string name="versionNum">Version Number: 1.0\n</string>
+    <string name="instructionTitle">Instruction:\n</string>
+    <string name="instructionContent">1. This app has 4 main functions which are search, add to favorites, delete from favorites, and link to the original web.\n\n2. If clients want to read the whole article just clicking the item listed on the screen after searching and save it by simply clicking the save button if you want. \n\n3. Clicking the icons listed on the top, clients can go to different sections this app linked such as the icon with heart is for favorites and the plane icon is for checking airplane status. </string>
     <string name="deleteButton">DELETE</string>
     <string name="favor">FAVORITES</string>
     <string name="save">SAVE TO FAVORITES</string>

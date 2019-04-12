@@ -1,10 +1,10 @@
 package com.example.cst2355_final_19w;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -24,17 +24,12 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 
 /** This class is used for connecting the the web "http://webhose.io"  and get useful information
@@ -87,7 +82,7 @@ public class Activity_nf_url_connector extends AppCompatActivity {
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
         NFQuery nfQuery = new NFQuery();
-        nfQuery.execute("http://webhose.io/filterWebContent?token=264a10ac-9a70-4d5b-9f57-280bb2ec5604&format=xml&sort=crawled&q=" + Activity_nf_main.SEARCHTERM);
+        nfQuery.execute("http://webhose.io/filterWebContent?token=264a10ac-9a70-4d5b-9f57-280bb2ec5604&format=xml&sort=crawled&q=" + Uri.decode(Activity_nf_main.SEARCHTERM));
 
 
         ListView newsList = (ListView) findViewById(R.id.list_newsF);
@@ -97,7 +92,7 @@ public class Activity_nf_url_connector extends AppCompatActivity {
         boolean isTablet = findViewById(R.id.frame) != null;
 
         newsList.setOnItemClickListener((parent, view, position, id) -> {
-            Log.e("you clicked on :", "item " + position);
+            //Log.e("you clicked on :", "item " + position);
             //save the position in case this object gets deleted or updatednew
             positionClicked = position;
 
@@ -144,7 +139,7 @@ public class Activity_nf_url_connector extends AppCompatActivity {
         private void parseXMLContent()
                 throws MalformedURLException, IOException, XmlPullParserException, InterruptedException {
             /** connect to an url to find the weather info */
-            URL url = new URL("http://webhose.io/filterWebContent?token=264a10ac-9a70-4d5b-9f57-280bb2ec5604&format=xml&sort=crawled&q=" + Activity_nf_main.SEARCHTERM);
+            URL url = new URL("http://webhose.io/filterWebContent?token=264a10ac-9a70-4d5b-9f57-280bb2ec5604&format=xml&sort=crawled&q=" + Uri.decode(Activity_nf_main.SEARCHTERM));
             HttpURLConnection webHoseConnecter = (HttpURLConnection) url.openConnection();
 
             webHoseConnecter.setReadTimeout(10000 /* milliseconds */);
@@ -166,7 +161,7 @@ public class Activity_nf_url_connector extends AppCompatActivity {
 
             /** loop through the xml file*/
             while (xpp.getEventType() != XmlPullParser.END_DOCUMENT) {
-                /*if (NEWS.size() >= 3)
+              /* if (NEWS.size() >= 10)
                     break;*/
 
                 if (xpp.getEventType() == XmlPullParser.START_TAG
@@ -202,24 +197,24 @@ public class Activity_nf_url_connector extends AppCompatActivity {
                 if (!foundURL && tagName.equals("url")) {
                     foundURL = true;
                     urlAddress = xpp.nextText();
-                    Log.e("News Feed ", "Find URL: " + urlAddress);
                     publishProgress(25);
+                    //Log.e("News Feed ", "Find URL: " + urlAddress);
                 } else if (!foundTitle && tagName.equals("title")) {
                     foundTitle = true;
                     title = xpp.nextText();
-                    Log.e("News Feed ", "Find a title: " + title);
                     publishProgress(50);
+                    //Log.e("News Feed ", "Find a title: " + title);
                 } else if (!foundText && tagName.equals("text")) {
                     foundText = true;
                     text = xpp.nextText();
-                    Log.e("News Feed ", "Find the text: " + text);
                     publishProgress(75);
+                    //Log.e("News Feed ", "Find the text: " + text);
                 } else if (!foundImage && tagName.equals("main_image")) {
                     foundImage = true;
                     imageLink = xpp.nextText();
                     downloadImage(imageLink);
-                    Log.e("News Feed ", "Find the image link: " + imageLink);
                     publishProgress(100);
+                    //Log.e("News Feed ", "Find the image link: " + imageLink);
                 }
             }
 
@@ -262,7 +257,7 @@ public class Activity_nf_url_connector extends AppCompatActivity {
                 inputStream = iconConnecter.getInputStream();
 
                 bitmap = BitmapFactory.decodeStream(inputStream);
-                compressImage();
+                bitmap = resizeImage(bitmap);
 
                 iconConnecter.disconnect();
 
@@ -272,21 +267,29 @@ public class Activity_nf_url_connector extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-        /**
-         * reference _Anonymous_  CSDN https://blog.csdn.net/wudongjiang333/article/details/78122234
-         */
-        protected void compressImage()
+
+        protected Bitmap resizeImage(Bitmap originalImage)
         {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);//质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
-            int options = 100;
-            while (baos.toByteArray().length / 1024 > 100) {  //循环判断如果压缩后图片是否大于100kb,大于继续压缩
-                baos.reset();//重置baos即清空baos
-                bitmap.compress(Bitmap.CompressFormat.JPEG, options, baos);//这里压缩options%，把压缩后的数据存放到baos中
-                options -= 10;//每次都减少10
-            }
-            ByteArrayInputStream isBm = new ByteArrayInputStream(baos.toByteArray());//把压缩后的数据baos存放到ByteArrayInputStream中
-            bitmap = BitmapFactory.decodeStream(isBm, null, null);//把ByteArrayInputStream数据生成图片
+            final int maxWidth = 480;
+            final int maxHeight = 320;
+
+            int originalWidth = originalImage.getWidth();
+            int originalHeight = originalImage.getHeight();
+            if (maxWidth >= originalWidth && maxHeight >= originalHeight)
+                return originalImage;
+
+            float scaleWidth = ((float) originalWidth) / maxWidth;
+            float scaleHeight = ((float) originalHeight) / maxHeight;
+
+            int newWeight = maxWidth;
+            int newHeight = maxHeight;
+            if (scaleWidth > scaleHeight)
+                newHeight = (int) (((float) originalHeight) / scaleWidth);
+            else
+                newWeight = (int) (((float) originalHeight) / scaleHeight);
+
+            Bitmap resizedImage = Bitmap.createScaledBitmap(originalImage, newWeight, newHeight, false);
+            return resizedImage;
         }
     }
 
@@ -313,7 +316,7 @@ public class Activity_nf_url_connector extends AppCompatActivity {
         @Override
         public View getView(int position, View oldView, ViewGroup parent) {
             LayoutInflater inflater = getLayoutInflater();
-            View newView = inflater.inflate(R.layout.activity_nf_single_row_type, parent, false);
+            View newView = inflater.inflate(R.layout.activity_nf_searchlist_single_row_type, parent, false);
 
             NF_Article currentArticle = (NF_Article)getItem(position);
 

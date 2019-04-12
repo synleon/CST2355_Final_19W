@@ -14,7 +14,7 @@
 
     <TextView
         android:id="@+id/favor"
-        android:layout_width="400dp"
+        android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:text="@string/favor"
@@ -27,7 +27,7 @@
 
     <ListView
         android:id="@+id/favor_list"
-        android:layout_width="400dp"
+        android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/favor"
         android:layout_marginRight="5dp"
