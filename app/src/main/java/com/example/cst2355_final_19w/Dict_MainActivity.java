@@ -67,12 +67,15 @@ public class Dict_MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dict_mainlayout);
+
         boolean isTablet = findViewById(R.id.fragment) != null; //check if the FrameLayout is loaded
         recent = (TextView) findViewById(R.id.recentWord);
+
         sp = getSharedPreferences("recentWord", Context.MODE_PRIVATE);
         String savedString = sp.getString("word", "No word");
         recent.setText(savedString);
         // create main toolbar for all the menu entries
+
         Toolbar toolbar = findViewById(R.id.dict_toolbar);
         setSupportActionBar(toolbar);
         theList = (ListView) findViewById(R.id.the_list);
@@ -110,6 +113,9 @@ public class Dict_MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * veiw data
+     */
     private void viewData() {
         Cursor cursor = db.viewData();
 
@@ -271,6 +277,10 @@ public class Dict_MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * delete by id
+     * @param id
+     */
     public void deleteById(String id)
     {
 
