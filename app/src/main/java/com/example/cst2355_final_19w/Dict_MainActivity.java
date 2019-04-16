@@ -67,12 +67,15 @@ public class Dict_MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dict_mainlayout);
+
         boolean isTablet = findViewById(R.id.fragment) != null; //check if the FrameLayout is loaded
         recent = (TextView) findViewById(R.id.recentWord);
+
         sp = getSharedPreferences("recentWord", Context.MODE_PRIVATE);
         String savedString = sp.getString("word", "No word");
         recent.setText(savedString);
         // create main toolbar for all the menu entries
+
         Toolbar toolbar = findViewById(R.id.dict_toolbar);
         setSupportActionBar(toolbar);
         theList = (ListView) findViewById(R.id.the_list);
@@ -110,6 +113,9 @@ public class Dict_MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * veiw data
+     */
     private void viewData() {
         Cursor cursor = db.viewData();
 
@@ -204,7 +210,7 @@ public class Dict_MainActivity extends AppCompatActivity {
         // et.setText("");
         et.setText(getString(R.string.dict_intro));
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Author")
+        builder.setMessage(getString(R.string.dict_helpdia))
 
                 .setNegativeButton("Close", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
@@ -220,6 +226,11 @@ public class Dict_MainActivity extends AppCompatActivity {
         View middle = getLayoutInflater().inflate(R.layout.dict_searchdialog, null);
         EditText et = (EditText) middle.findViewById(R.id.dict_searchEditText);
 
+        //get an editor object
+        SharedPreferences.Editor editor = sp.edit();
+        String prevSearch = sp.getString("word", null);
+        et.setText(prevSearch);
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Search")
                 .setPositiveButton("Search", new DialogInterface.OnClickListener() {
@@ -230,8 +241,7 @@ public class Dict_MainActivity extends AppCompatActivity {
                             Intent searchDetailPage = new Intent(getApplicationContext(), Dict_SearchDetail.class);
                             searchDetailPage.putExtra("searchKeyword", et.getText().toString());
 
-                            //get an editor object
-                            SharedPreferences.Editor editor = sp.edit();
+
 
                             //save what was typed under the name "ReserveName"
                             String whatWasTyped = et.getText().toString();
@@ -267,6 +277,10 @@ public class Dict_MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * delete by id
+     * @param id
+     */
     public void deleteById(String id)
     {
 

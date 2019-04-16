@@ -45,18 +45,27 @@ public class Dict_DBHelper extends SQLiteOpenHelper {
 
     public static final String COL_DEFINITION = "DEFINITION";
 
-
-    public void Dict_DBHelper(){
+    /**
+     * blank constructor
+     */
+    public void  Dict_DBHelper(){
 
 
     }
 
+    /**
+     * constructor with activity
+     * @param ctx
+     */
     public Dict_DBHelper(Activity ctx){
         //The factory parameter should be null, unless you know a lot about Database Memory management
         super(ctx, DATABASE_NAME, null, VERSION_NUM );
     }
 
-
+    /**
+     * create databae db
+     * @param db
+     */
     public void onCreate(SQLiteDatabase db)
     {
         //Make sure you put spaces between SQL statements and Java strings:
@@ -65,6 +74,12 @@ public class Dict_DBHelper extends SQLiteOpenHelper {
                 + COL_WORD + " TEXT,  "+ COL_PRONUNCIATION + " TEXT, " + COL_DEFINITION + " TEXT)");
     }
 
+    /**
+     * upgrade database
+     * @param db
+     * @param oldVersion
+     * @param newVersion
+     */
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
     {
         Log.i("Database upgrade", "Old version:" + oldVersion + " newVersion:"+newVersion);
@@ -76,6 +91,12 @@ public class Dict_DBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    /**
+     * downgrade database
+     * @param db
+     * @param oldVersion
+     * @param newVersion
+     */
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion)
     {
         Log.i("Database downgrade", "Old version:" + oldVersion + " newVersion:"+newVersion);
