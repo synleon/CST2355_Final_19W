@@ -1,15 +1,15 @@
-package com.example.cst2355_final_19w;
+package com.example.cst2355_final_19w.newsfeed;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 
+/** this class defines an article searched on website */
 public class NF_Article
 {
     private String title;
     private String text;
     private String urlAddress;
     private String imageLink;
-    private Drawable image;
     private long id;
     private Bitmap bitmap;
 

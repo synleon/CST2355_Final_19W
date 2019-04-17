@@ -24,11 +24,11 @@
         <activity android:name=".Dict_Fragment" />
         <activity android:name=".Dict_EmptyActivity" />
         <activity android:name=".Dict_DBHelper" />
-        <activity android:name=".Activity_nf_main" />
-        <activity android:name=".Activity_nf_url_connector" />
-        <activity android:name=".Activity_nf_search_empty" />
-        <activity android:name=".Activity_nf_favor_empty" />
-        <activity android:name=".Activity_nf_favorites" />
+        <activity android:name=".newsfeed.Activity_nf_main" />
+        <activity android:name=".newsfeed.Activity_nf_url_connector" />
+        <activity android:name=".newsfeed.Activity_nf_search_empty" />
+        <activity android:name=".newsfeed.Activity_nf_favor_empty" />
+        <activity android:name=".newsfeed.Activity_nf_favorites" />
         <activity android:name=".nytimes.Activity_nytimes" />
         <activity android:name=".nytimes.EmptyContainerActivity" />
         <activity android:name=".Activity_flightstatus" />

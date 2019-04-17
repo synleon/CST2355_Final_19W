@@ -1,4 +1,4 @@
-package com.example.cst2355_final_19w;
+package com.example.cst2355_final_19w.newsfeed;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -20,6 +20,8 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.cst2355_final_19w.R;
+
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -29,46 +31,55 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLDecoder;
 import java.util.ArrayList;
 
-/** This class is used for connecting the the web "http://webhose.io"  and get useful information
- *  then set the info into a layout file */
-
-public class Activity_nf_url_connector extends AppCompatActivity {
+/**
+ *  This class is used for connecting the the web "http://webhose.io"  and get useful information
+ *  then display the result.
+ */
+public class Activity_nf_url_connector extends AppCompatActivity
+{
+    /**  these parameters used for finding view on an activity page */
     private ProgressBar progressBar;
     private EditText searchEditText;
     private ImageView icon;
     private TextView articleTitle;
     private TextView articleUrl;
     private TextView articleText;
-    private NewsAdapter adapter;
-    private int positionClicked = 0;
     private Toolbar tBar;
 
+    /** this parameter is used for populating a list view*/
+    private NewsAdapter adapter;
+
+    /** these two parameter are used for getting a image from website*/
     private Bitmap bitmap;
     private InputStream inputStream;
 
+    /** these five static parameters are used for passing data to next page */
     public static final String ITEM_SELECTED = "TITLE";
     public static final String ITEM_TEXT = "TEXT";
     public static final String ITEM_URL = "URL";
     public static final String ITEM_POSITION = "POSITION";
     public static  final String ITEM_PIC = "PICTURE";
-    public static Drawable drawable;
+
+    /** this parameter is used for saving an image url */
     private String imageLink;
 
+    /** create an object of ArrayList */
     protected static ArrayList<NF_Article> NEWS = new ArrayList<>();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nf_list_all);
 
-        /** create an object of tool bar and display it.*/
+        /** declare an object of tool bar called "search" and
+         *  set a listener to it*/
         tBar = (Toolbar) findViewById(R.id.toolbar_search_list);
         setSupportActionBar(tBar);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true); // determine if the icon on the left top can be clicked
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // add a backward arrow on the left top
         tBar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,26 +87,30 @@ public class Activity_nf_url_connector extends AppCompatActivity {
             }
         });
 
+        /** declare four variables used for setting the layout view based on website searched*/
         articleTitle = (TextView) findViewById(R.id.titleOfArticle);
         articleUrl = (TextView) findViewById(R.id.urlOfArticle);
         articleText = (TextView) findViewById(R.id.textOfArticle);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
+        /** declare two object of NFQuery and uses it to */
         NFQuery nfQuery = new NFQuery();
         nfQuery.execute("http://webhose.io/filterWebContent?token=264a10ac-9a70-4d5b-9f57-280bb2ec5604&format=xml&sort=crawled&q=" + Uri.decode(Activity_nf_main.SEARCHTERM));
 
-
+        /** declare an object of ListsView and then call setAdapter on it to populate a list view */
         ListView newsList = (ListView) findViewById(R.id.list_newsF);
         adapter = new NewsAdapter();
         newsList.setAdapter(adapter);
 
+        /** this boolean variable is used for determine if the device is a tablet */
         boolean isTablet = findViewById(R.id.frame) != null;
 
+        /** set on click listener for list view*/
         newsList.setOnItemClickListener((parent, view, position, id) -> {
             //Log.e("you clicked on :", "item " + position);
             //save the position in case this object gets deleted or updatednew
-            positionClicked = position;
 
+            /** declare an object of Bundle for passing data to the next page or a fragment depending on the device*/
             Bundle dataToPass = new Bundle();
             dataToPass.putString(ITEM_SELECTED, NEWS.get(position).getTitle());
             dataToPass.putString(ITEM_TEXT, NEWS.get(position).getText());
@@ -121,11 +136,14 @@ public class Activity_nf_url_connector extends AppCompatActivity {
         });
     }
 
-    private class NFQuery extends AsyncTask<String, Integer, String> {
+    /** this inner class is used for open web pages asynchronizedly  */
+    private class NFQuery extends AsyncTask<String, Integer, String>
+    {
         private String urlAddress;
         private String title;
         private String text;
 
+        /** */
         @Override
         protected String doInBackground(String... strings) {
             try {
@@ -151,12 +169,13 @@ public class Activity_nf_url_connector extends AppCompatActivity {
             InputStream inStream = webHoseConnecter.getInputStream();
 
 
-            /** create a pull parser use the Factory pattern*/
+            /** create a pull parser uses the Factory pattern*/
             XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
             factory.setNamespaceAware(false);
             XmlPullParser xpp = factory.newPullParser();
             xpp.setInput(inStream, "UTF-8");
 
+            /** clear the ArrayList for next search */
             NEWS.clear();
 
             /** loop through the xml file*/
@@ -164,23 +183,26 @@ public class Activity_nf_url_connector extends AppCompatActivity {
               /* if (NEWS.size() >= 10)
                     break;*/
 
+              /** determine if the search starts with the start tag called "post" */
                 if (xpp.getEventType() == XmlPullParser.START_TAG
                         && xpp.getName().equalsIgnoreCase("post")) {
                     parsePost(xpp);
                 }
                 xpp.next();
             }
+            webHoseConnecter.disconnect();
         }
 
         private void parsePost(XmlPullParser xpp)
                 throws IOException, XmlPullParserException, InterruptedException {
-            // if there are more than one URL, Title, and Text in this post,
-            // only fetch the first
+            /** these boolean variables are used for fetching the first useful value
+             *  if there are more than one URL, Title, and Text between a pair of "post" tag. */
             boolean foundURL = false;
             boolean foundTitle = false;
             boolean foundText = false;
             boolean foundImage = false;
 
+            /** use while loop to fetch and save needed information */
             while (true)
             {
                 xpp.next();
@@ -218,27 +240,32 @@ public class Activity_nf_url_connector extends AppCompatActivity {
                 }
             }
 
+            // determine if the info gotten can be added in the list
             if (foundTitle && foundText && foundURL && foundImage
                     && urlAddress != null && title != null && text != null && imageLink != null
                     && urlAddress.length() > 0 && title.length() > 0 && text.length() > 0 && imageLink.length() != 0)
                 NEWS.add(new NF_Article(title, text, urlAddress, imageLink, bitmap));
-
         }
 
         @Override
-        protected void onProgressUpdate(Integer... values) {
-
+        protected void onProgressUpdate(Integer... values)
+        {
+            /** set progress bar visible*/
             progressBar.setVisibility(View.VISIBLE);
             progressBar.setProgress(values[0]);
         }
 
         @Override
-        protected void onPostExecute(String s) {
+        protected void onPostExecute(String s)
+        {
+            /** refresh the list by calling notifyDataSetChanged() function */
             adapter.notifyDataSetChanged();
 
             progressBar.setVisibility(View.INVISIBLE);
         }
 
+        /** this method is used for connecting the web site that the image exists
+         *  and then download it*/
         protected void downloadImage(String imageLink)
         {
             if (imageLink == null || imageLink.length() == 0)
@@ -253,9 +280,10 @@ public class Activity_nf_url_connector extends AppCompatActivity {
                 iconConnecter.setDoInput(true);
                 iconConnecter.connect();
 
-                // create an object of InputStream
+                /** create an object of InputStream */
                 inputStream = iconConnecter.getInputStream();
 
+                /** save an image in an object of bitmapfactory and then resize the image*/
                 bitmap = BitmapFactory.decodeStream(inputStream);
                 bitmap = resizeImage(bitmap);
 
@@ -268,19 +296,24 @@ public class Activity_nf_url_connector extends AppCompatActivity {
             }
         }
 
+        /** this method is used for resizing the image which is to large too send to the next page */
         protected Bitmap resizeImage(Bitmap originalImage)
         {
+            /** these two final int variables are used for determining scale size */
             final int maxWidth = 480;
             final int maxHeight = 320;
 
+            /** check if the image need to be resized */
             int originalWidth = originalImage.getWidth();
             int originalHeight = originalImage.getHeight();
             if (maxWidth >= originalWidth && maxHeight >= originalHeight)
                 return originalImage;
 
+            /** calculate the target scale of width and height */
             float scaleWidth = ((float) originalWidth) / maxWidth;
             float scaleHeight = ((float) originalHeight) / maxHeight;
 
+            /** used the target scale to resize the image */
             int newWeight = maxWidth;
             int newHeight = maxHeight;
             if (scaleWidth > scaleHeight)
@@ -288,11 +321,13 @@ public class Activity_nf_url_connector extends AppCompatActivity {
             else
                 newWeight = (int) (((float) originalHeight) / scaleHeight);
 
+            /** save the resized image in Bitmap for passing later */
             Bitmap resizedImage = Bitmap.createScaledBitmap(originalImage, newWeight, newHeight, false);
             return resizedImage;
         }
     }
 
+    /** this inner class is used for populate a list view*/
     protected class NewsAdapter extends BaseAdapter {
         public NewsAdapter() {
             super();
@@ -313,6 +348,7 @@ public class Activity_nf_url_connector extends AppCompatActivity {
             return position;
         }
 
+        /** this method is used for inflating a new view to display the list of searching*/
         @Override
         public View getView(int position, View oldView, ViewGroup parent) {
             LayoutInflater inflater = getLayoutInflater();

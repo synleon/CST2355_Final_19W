@@ -1,17 +1,15 @@
-package com.example.cst2355_final_19w;
+package com.example.cst2355_final_19w.newsfeed;
 
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -21,70 +19,55 @@ import android.widget.EditText;
 import android.widget.Toast;
 import android.support.design.widget.Snackbar;
 
+import com.example.cst2355_final_19w.Activity_flightstatus;
+import com.example.cst2355_final_19w.Dict_MainActivity;
+import com.example.cst2355_final_19w.R;
 import com.example.cst2355_final_19w.nytimes.Activity_nytimes;
 
-import java.io.File;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-
 /**
- *  This class is a main class for launch the News Feed section of the final project application.
  *
  *  @Author: Linlin Cheng
  *  @Since: 2019-03-24
  *  @Reference: Professor Eric Torunski, InClassExamples_W19
+ *
+ *  This class is a main class for launch the News Feed section of the final project application.
  */
 
-public class Activity_nf_main extends AppCompatActivity {
-
-    /**
-     * declare a variable with type Toolbar used for creating a toolbar object.
-     *
-     * @param tBar
-     */
+public class Activity_nf_main extends AppCompatActivity
+{
+    /** @param tBar and typedSearchTerm used for find view on an activity page */
     private Toolbar tBar;
+    private EditText typedSearchTerm;
 
-    /** declare a variable with type ArrayList to list the articles found online
-     *  @param news */
-    //protected static ArrayList<NF_Article> NEWS = new ArrayList<>();
-
-    /**
-     * declare several final static variables with type String for using in a database
-     *
-     * @param ITEM_SELECTED
-     * @param ITEM_POSITION
-     * @param ITEM_ID
-     * @param db
-     */
-    private static final String ITEM_SELECTED = "ITEM";
-    private static final String ITEM_POSITION = "POSITION";
-    private static final String ITEM_ID = "ID";
+    /** @param DB used for create a database while OPENHELPER is used for open the database */
     protected static SQLiteDatabase DB;
     protected static NF_DatabaseOpenHelper OPENHELPER;
 
-    /**
-     * declare two variables with type static final int for startActivityForResult function
-     */
-    private static final int REQUSTCODE = 20;
-    private static final int RESULTCODE = 50;
-
+    /** @param SEARCHTERM used for passing user's searching to an url */
     protected static String SEARCHTERM = null;
+
+    /** @param prefs used for saving search term */
     private SharedPreferences prefs;
-    private EditText typedSearchTerm;
 
-
+    /**
+     *
+     * @param savedInstanceState
+     * This method is used for loading an activity
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nf_mainlayout);
 
+        /** set text to a toast.*/
         Toast.makeText(this, "WELCOME TO NEWS FEED PAGE", Toast.LENGTH_LONG).show();
 
         /** create an object of tool bar and display it.*/
         tBar = (Toolbar) findViewById(R.id.toolbar_newsF);
         setSupportActionBar(tBar);
 
+        /** create an object of NF_DatabaseOpenHelper and use it to open a writable database*/
         OPENHELPER = new NF_DatabaseOpenHelper(this);
         DB = OPENHELPER.getWritableDatabase();
 
@@ -109,21 +92,26 @@ public class Activity_nf_main extends AppCompatActivity {
 
         });
 
+        /** get edit text view and set it to the edit text */
         typedSearchTerm = (EditText) findViewById(R.id.searchEdit_newsF);
         prefs = getSharedPreferences("SearchTermFile", Context.MODE_PRIVATE);
         String searchTerm = prefs.getString("SearchTerm", "");
         typedSearchTerm.setText(searchTerm);
     }
 
+    /**
+     *  this method will be called when launch other activity
+     */
     @Override
     protected void onPause() {
         super.onPause();
 
+        /** save the user's typed words in a file called SearchTermFile in adb shell */
         SharedPreferences.Editor editor = prefs.edit();
         String searchTerm = typedSearchTerm.getText().toString();
         editor.putString("SearchTerm",searchTerm);
 
-        // it means the data will be saved in Userinfo.xml file created in onCreate().
+        /** it means the data will be saved in the file created in onCreate(). */
         editor.commit();
 
     }
@@ -172,7 +160,7 @@ public class Activity_nf_main extends AppCompatActivity {
                 break;
 
             case R.id.nf_favorite:
-                /** make a list of favorites*/
+                /** go to favorites page when click favorites icon on toolbar */
                 Intent nextToDo = new Intent(Activity_nf_main.this, Activity_nf_favorites.class);
                 startActivity(nextToDo);
                 break;
@@ -183,15 +171,16 @@ public class Activity_nf_main extends AppCompatActivity {
     /**
      * this method will be executed when the item "HELP" in the toolbar is clicked.
      */
+
     public void alert() {
-        /** create an object of View used to set the "HELP" layout later*/
+        /** create an object of View used to set the "HELP" layout later */
         View helpView = getLayoutInflater().inflate(R.layout.activity_nf_helpdialog, null);
 
         /** create an object of AlertDialog.Builder and
          *  use it to set a message and a button with function needed,
          *  then show the view. */
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        //.setMessage(R.string.help_newsF)
+        // .setMessage(R.string.help_newsF)
         builder.setPositiveButton("GO BACK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // What to do on Accept

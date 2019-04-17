@@ -1,4 +1,4 @@
-package com.example.cst2355_final_19w;
+package com.example.cst2355_final_19w.newsfeed;
 
 import android.content.ContentValues;
 import android.content.Intent;
@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.cst2355_final_19w.R;
 
 public class NF_Search_DetailFragment extends Fragment
 {
