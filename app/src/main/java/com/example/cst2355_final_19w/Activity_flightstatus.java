@@ -90,7 +90,9 @@ public class Activity_flightstatus extends AppCompatActivity {
         mToolbar = (Toolbar) findViewById(R.id.toolbar_flightstatus);
 
         setSupportActionBar(mToolbar);
-
+/**
+ * instantiate SharedPreferences object
+ */
         sharedPreferences = getSharedPreferences("test",
                 Activity.MODE_PRIVATE);
 
@@ -110,7 +112,9 @@ public class Activity_flightstatus extends AppCompatActivity {
 
             }
         });
-
+/**
+ *initiate flightlistAdapter
+ */
         flightlistAdapter = new flighttrackadapter(this, R.id.flightstatus_list);
 
         flightList.setAdapter(flightlistAdapter);
@@ -140,13 +144,25 @@ public class Activity_flightstatus extends AppCompatActivity {
             String airport = editText.getText().toString();
             query.execute(airport);
 
+/**
+ * instanticate SharedPreferences.Editor object
+ */
             SharedPreferences.Editor editor = sharedPreferences.edit();
+
+            /**
+             * save data by using putString method
+             */
             editor.putString(KEY_CITY_CODE, airport);
+            /**
+             * submit data
+             */
             editor.commit();
 
 
         });
-
+/**
+ * get value for SharedPreferences
+ */
         String lastSearch = sharedPreferences.getString(KEY_CITY_CODE, "");
         editText.setText(lastSearch);
 

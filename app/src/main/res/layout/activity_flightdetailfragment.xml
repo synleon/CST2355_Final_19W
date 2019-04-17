@@ -10,7 +10,17 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="aaa"
+        android:text="location:
+        latitude 45.1323
+        longitude -75.4753
+        altitude 1524.39
+        speed:
+        horizontal 471.635
+        isGround   0
+        vertical 0
+        status:
+        en-route
+         "
         android:id="@+id/flight_latitude"/>
 
     <TextView
