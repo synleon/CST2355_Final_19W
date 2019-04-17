@@ -62,6 +62,18 @@ public class Activity_flightstatus extends AppCompatActivity {
     String icoCode;
    String flight_number;
 
+    //// SQLite database
+//    protected static FlightDatabaseOpenHelper chatData;
+//    protected SQLiteDatabase db;
+//    Cursor results;
+//    flighttrackadapter messageAdapter;
+//
+//    //milestone3
+//    public static final String ITEM_SELECTED = "ITEM";
+//    public static final String ITEM_TYPE = "TYPE";
+//    public static final String ITEM_POSITION = "POSITION";
+//    public static final String ITEM_ID = "ID";
+//    public static final int EMPTY_ACTIVITY = 345;
 
 
     @Override
@@ -155,7 +167,7 @@ public class Activity_flightstatus extends AppCompatActivity {
                 //get the string url:
                 String airportCode = params[0];
                 //create the network connection
-                String serviceUrl = "http://aviation-edge.com/v2/public/flights?key=f76ac6-220e2a&arrIata=";
+                String serviceUrl = "http://aviation-edge.com/v2/public/flights?key=1054cc-e386ce&arrIata=";
                 URL UVurl = new URL( serviceUrl + airportCode);
                 HttpURLConnection UVConnection = (HttpURLConnection) UVurl.openConnection();
                 InputStream inStream = UVConnection.getInputStream();
@@ -187,6 +199,7 @@ public class Activity_flightstatus extends AppCompatActivity {
 
                     JSONObject departure = item.getJSONObject("departure");
                     String airport = departure.getString("iataCode");
+
 
                     Eachflight eachflight = new Eachflight(flightNo, airport);
 
