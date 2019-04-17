@@ -1,10 +1,13 @@
 package com.example.cst2355_final_19w;
 
+import android.app.Activity;
 import android.app.Dialog;
 
 import android.content.Context;
 import android.content.DialogInterface;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
@@ -18,6 +21,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -56,6 +60,9 @@ public class Activity_flightstatus extends AppCompatActivity {
     private Snackbar sb;
     private String message;
     private flighttrackadapter flightlistAdapter;
+    private SharedPreferences sharedPreferences;
+
+    final private String KEY_CITY_CODE = "KEY_CITY_CODE";
 
 
     private ProgressBar progressBar;
@@ -82,9 +89,10 @@ public class Activity_flightstatus extends AppCompatActivity {
         setContentView(R.layout.activity_flightstatus);
         mToolbar = (Toolbar) findViewById(R.id.toolbar_flightstatus);
 
-
         setSupportActionBar(mToolbar);
 
+        sharedPreferences = getSharedPreferences("test",
+                Activity.MODE_PRIVATE);
 
         /**
          * toast message
@@ -93,6 +101,15 @@ public class Activity_flightstatus extends AppCompatActivity {
 
 
         ListView flightList = findViewById(R.id.flightstatus_list);
+        flightList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.e("FlightStatus","clicked");
+                Intent intent = new Intent();
+                startActivity(new Intent(Activity_flightstatus.this, Activity_flightemptyfragment.class));
+
+            }
+        });
 
         flightlistAdapter = new flighttrackadapter(this, R.id.flightstatus_list);
 
@@ -112,23 +129,35 @@ public class Activity_flightstatus extends AppCompatActivity {
         /**
          * add click listener function to BUTTONGOTOCHECKFLIGHT button
          */
+
+        EditText editText = findViewById(R.id.flightstatus_editText1);
+
         Button btn = findViewById(R.id.flightstatus_button);
         btn.setOnClickListener(v -> {
 
             FlightSearch query = new FlightSearch();
 
-            EditText editText = findViewById(R.id.flightstatus_editText1);
             String airport = editText.getText().toString();
             query.execute(airport);
+
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString(KEY_CITY_CODE, airport);
+            editor.commit();
+
+
         });
 
-        /**
-         * Add click listener function to listview
-         */
-        flightList.setOnItemClickListener((parent, container, position, id) -> {
-            String airportcode = (String) parent.getItemAtPosition(position);
-            chooseflight(airportcode);
-        });
+        String lastSearch = sharedPreferences.getString(KEY_CITY_CODE, "");
+        editText.setText(lastSearch);
+
+
+//        /**
+//         * Add click listener function to listview
+//         */
+//        flightList.setOnItemClickListener((parent, container, position, id) -> {
+//            String airportcode = (String) parent.getItemAtPosition(position);
+//            chooseflight(airportcode);
+//        });
     }
 
 
@@ -288,6 +317,7 @@ public class Activity_flightstatus extends AppCompatActivity {
 
             return view;
         }
+
     }
 
     @Override
