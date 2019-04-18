@@ -4,7 +4,7 @@
     <string name="menu_title_dict">韦氏词典</string>
     <string name="menu_title_newsfeed">新闻提要</string>
     <string name="menu_title_flightstatus">航班状态跟踪</string>
-    <string name="menu_title_nytimes">纽约时报文章</string>
+    <string name="menu_title_nytimes">纽约时报文章搜索</string>
     <string name="buttomgotocheckflight">航班跟踪按钮</string>
     <string name="greeting_newsFeed">欢迎来到新闻提要专栏</string>
     <string name="help_newsF">帮助</string>
@@ -30,6 +30,9 @@
     <string name="nytimes_article_save_fail_message">文章保存失败!</string>
     <string name="nytimes_article_delete_message">文章已删除!</string>
     <string name="flight_author">应用软件作者：刘德媛</string>
+    <string name="instruction">使用说明</string>
+
+    <string name="flight_author">应用软件作者：</string>
     <string name="flight_versionNumber">应用软件版本号： 10</string>
     <string name="flight_instruction">应用软件说明</string>
     <string name="flight_help">航班帮手</string>
@@ -45,4 +48,6 @@
     <string name="dict_delete">删除</string>
     <string name="dict_helpdia">求助</string>
     <string name="dict_intro">这本词典是由 belle开发的. 版本号是1.要使用这本词典, 请转到主页, 然后单击顶部工具栏上的字典图标。一旦到了那里, 只需点击顶部词典工具栏上的搜索按钮进入。一旦搜索对话显示, 在对话中输入您想搜索的单词, 就会显示有关搜索工作的详细信息。</string>
+    <string name="flight_save">保存航班</string>
+    <string name="flight_delete">删除航班</string>
 </resources>

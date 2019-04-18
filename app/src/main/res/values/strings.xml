@@ -30,7 +30,8 @@
     <string name="nytimes_article_delete_message">Article deleted!</string>
     <string name="flight_author">application Author: Deyuan Liu</string>
     <string name="flight_versionNumber">application version number 10</string>
-    <string name="flight_instruction">application flight Instruction</string>
+    <string name="flight_instruction">application flight Instruction:input airportcode, then click BUTTONGOTOCHECKFLIGHT. You will see the airplane code and departing code
+    click the airplane code. You will see the detail of the airplane</string>
     <string name="flight_help">flight help</string>
     <string name="nytimes_no_internet_connection">There is no internet connection!</string>
     <string name="dict_back">Go Back</string>
@@ -44,4 +45,10 @@
     <string name="dict_intro">This dictionary is developed by Belle. Version No.1. To use this dictionary, go to the main page and click the dictionary icon on the top toolbar. Once there, just click the search button on the top dictionary toolbar to get inside. Once search dialogue show up, input the words you’d like to search in the dialogue, detailed information about the search work will come out.</string>
     <string name="dict_delete">delete</string>
     <string name="dict_helpdia">HELP</string>
+    <string name="flight_save">flightsave</string>
+    <string name="flight_delete">flightdelete</string>
+
+
+    @string/flight_save"
+
 </resources>
