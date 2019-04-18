@@ -28,9 +28,12 @@ import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 /**
@@ -65,6 +68,10 @@ public class Activity_nf_url_connector extends AppCompatActivity
     /** this parameter is used for saving an image url */
     private String imageLink;
 
+
+    private String searchURL;
+    private String inputURL;
+
     /** create an object of ArrayList */
     protected static ArrayList<NF_Article> NEWS = new ArrayList<>();
 
@@ -95,7 +102,14 @@ public class Activity_nf_url_connector extends AppCompatActivity
 
         /** declare two object of NFQuery and uses it to */
         NFQuery nfQuery = new NFQuery();
-        nfQuery.execute("http://webhose.io/filterWebContent?token=264a10ac-9a70-4d5b-9f57-280bb2ec5604&format=xml&sort=crawled&q=" + Uri.decode(Activity_nf_main.SEARCHTERM));
+
+        try {
+            inputURL = ("http://webhose.io/filterWebContent?token=264a10ac-9a70-4d5b-9f57-280bb2ec5604&format=xml&sort=crawled&q="
+                    + URLEncoder.encode(Activity_nf_main.SEARCHTERM,"UTF-8"));
+            nfQuery.execute(inputURL);
+        } catch (UnsupportedEncodingException e){
+            e.getMessage();
+        }
 
         /** declare an object of ListsView and then call setAdapter on it to populate a list view */
         ListView newsList = (ListView) findViewById(R.id.list_newsF);
@@ -157,7 +171,7 @@ public class Activity_nf_url_connector extends AppCompatActivity
         private void parseXMLContent()
                 throws MalformedURLException, IOException, XmlPullParserException, InterruptedException {
             /** connect to an url to find the weather info */
-            URL url = new URL("http://webhose.io/filterWebContent?token=264a10ac-9a70-4d5b-9f57-280bb2ec5604&format=xml&sort=crawled&q=" + Uri.decode(Activity_nf_main.SEARCHTERM));
+            URL url = new URL(inputURL);
             HttpURLConnection webHoseConnecter = (HttpURLConnection) url.openConnection();
 
             webHoseConnecter.setReadTimeout(10000 /* milliseconds */);
