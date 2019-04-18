@@ -77,7 +77,7 @@ public class Activity_nf_main extends AppCompatActivity
         {
             EditText editSearchText = (EditText) findViewById(R.id.searchEdit_newsF);
             SEARCHTERM = editSearchText.getText().toString();
-            Uri.encode(SEARCHTERM, "UTF-8");
+            //Uri.encode(SEARCHTERM, "UTF-8");
 
             /*try {
                 EditText editSearchText = (EditText) findViewById(R.id.searchEdit_newsF);
