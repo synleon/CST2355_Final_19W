@@ -1,6 +1,5 @@
-package com.example.cst2355_final_19w;
+package com.example.cst2355_final_19w.newsfeed;
 
-import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
@@ -15,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.cst2355_final_19w.R;
 
 import java.util.ArrayList;
 
@@ -37,10 +38,6 @@ public class Activity_nf_favorites extends AppCompatActivity {
     private DatabaseAdapter dbAdapter;
     private ArrayList<NF_Article> favorList = new ArrayList<>();
     private ListView favorListView;
-    private int positionClicked = 0;
-
-    private Drawable drawable;
-    private ImageView image;
 
     public static final String ITEM_SELECTED = "TITLE";
     public static final String ITEM_TEXT = "TEXT";
@@ -56,8 +53,6 @@ public class Activity_nf_favorites extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nf_favorites);
-
-        //image = (ImageView) findViewById(R.id.favor_icon);
 
         //results = DB.rawQuery("SELECT " +  NF_DatabaseOpenHelper.COL_TITLE + ", " + NF_DatabaseOpenHelper.COL_IMAGELINK + " FROM " + NF_DatabaseOpenHelper.TABLE_NAME, null);
         results = Activity_nf_main.DB.rawQuery("SELECT * FROM " + NF_DatabaseOpenHelper.TABLE_NAME, null);
@@ -86,7 +81,6 @@ public class Activity_nf_favorites extends AppCompatActivity {
         favorListView.setOnItemClickListener((parent, view, position, id) -> {
 
             //save the position in case this object gets deleted or updatednew
-            positionClicked = position;
             id = favorList.get(position).getId();
 
             Toast.makeText(this,"you clicked on favorite article which id is " + id + " and position is " + position, Toast.LENGTH_LONG).show();
@@ -149,8 +143,6 @@ public class Activity_nf_favorites extends AppCompatActivity {
 
             TextView favorTitleView = (TextView) newView.findViewById(R.id.article_title);
             favorTitleView.setText(getItem(position).toString());
-
-            // need to add an image
 
             return newView;
         }

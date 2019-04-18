@@ -1,8 +1,12 @@
-package com.example.cst2355_final_19w;
+package com.example.cst2355_final_19w.newsfeed;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import com.example.cst2355_final_19w.R;
+
+/** this class is used for displaying the searching data passed from Activity_nf_rul_connector
+ *  if the device is a phone */
 public class Activity_nf_search_empty extends AppCompatActivity {
 
     @Override
@@ -12,7 +16,6 @@ public class Activity_nf_search_empty extends AppCompatActivity {
 
         Bundle dataToPass = getIntent().getExtras(); //get the data that was passed from Activity_nf_rul_connector
 
-        //This is copied directly from FragmentExample.java lines 47-54
         NF_Search_DetailFragment dFragment = new NF_Search_DetailFragment();
         dFragment.setArguments( dataToPass ); //pass data to the the fragment
         dFragment.setTablet(false); //tell the Fragment that it's on a phone.

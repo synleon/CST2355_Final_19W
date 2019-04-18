@@ -1,12 +1,16 @@
-package com.example.cst2355_final_19w;
+package com.example.cst2355_final_19w.newsfeed;
 
 import android.app.Activity;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+/**
+ *  This class is used for creating a database.
+ */
 public class NF_DatabaseOpenHelper extends SQLiteOpenHelper
 {
+    /** create several parameters for building a database */
     public final static String TABLE_NAME = "FavoriteNews";
     public final static String DATABASENAME = "NewsFeedDB";
     public final static String COL_ID = "_id";
@@ -17,10 +21,13 @@ public class NF_DatabaseOpenHelper extends SQLiteOpenHelper
 
     public static final int VERSION_NUM = 1;
 
-    public NF_DatabaseOpenHelper(Context ctx){
+    /** override constructor*/
+    public NF_DatabaseOpenHelper(Context ctx)
+    {
         super(ctx, DATABASENAME, null,VERSION_NUM );
     }
 
+    /** override method onCreate used for creating database by calling function execSQL() with a SQL statement*/
     @Override
     public void onCreate(SQLiteDatabase db)
     {
@@ -32,16 +39,22 @@ public class NF_DatabaseOpenHelper extends SQLiteOpenHelper
                 + COL_IMAGELINK + " TEXT);");
     }
 
+    /** override method onDowngrade will be called when the version of database in the constructor
+     *  is lower than the one that exists on the device */
     @Override
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion)
     {
+        /** drop table when it exists and then create a new database*/
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         onCreate(db);
     }
 
+    /** override method onUpgrade will be called when the version of database in the constructor
+     *  is newer than the one that exists on the device */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
     {
+        /** drop table when it exists and then create a new database*/
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         onCreate(db);
     }
