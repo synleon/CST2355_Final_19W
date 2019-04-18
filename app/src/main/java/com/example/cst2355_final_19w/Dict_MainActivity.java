@@ -80,8 +80,8 @@ public class Dict_MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         theList = (ListView) findViewById(R.id.the_list);
 
-        ProgressBar progressBar = findViewById(R.id.dict_progressBar);
-        progressBar.setProgress(100);
+//        ProgressBar progressBar = findViewById(R.id.dict_progressBar);
+//        progressBar.setProgress(100);
 
         db = new Dict_DBHelper(this);
         dbAccess = db.getWritableDatabase();
