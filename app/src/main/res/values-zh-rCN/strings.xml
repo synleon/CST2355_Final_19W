@@ -31,7 +31,8 @@
     <string name="nytimes_article_delete_message">文章已删除!</string>
     <string name="instruction">使用说明</string>
     <string name="flight_versionNumber">应用软件版本号： 10</string>
-    <string name="flight_instruction">应用软件说明</string>
+    <string name="flight_instruction">申请航班说明：输入机场代码，然后点击右边按钮。 您将看到飞机代码和离场代码
+     单击飞机代码。 你会看到飞机的细节</string>
     <string name="flight_help">航班帮手</string>
     <string name="nytimes_no_internet_connection">没有可用的互联网连接！</string>
     <string name="dict_back">返回</string>
